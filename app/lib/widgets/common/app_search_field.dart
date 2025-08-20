@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
+import 'app_shortcuts.dart';
 
 /// Campo de búsqueda reutilizable
 class AppSearchField extends StatelessWidget {
@@ -109,6 +110,9 @@ class AppSearchField extends StatelessWidget {
               SizedBox(width: isCompact ? 6 : 8),
               trailing!,
             ],
+            // Indicador de shortcut "B"
+            SizedBox(width: isCompact ? 6 : 8),
+            const SearchShortcutIndicator(),
           ],
         ),
       ),
@@ -117,7 +121,7 @@ class AppSearchField extends StatelessWidget {
 
   BoxDecoration _compactDecoration(ThemeData theme) {
     return BoxDecoration(
-      color: const Color(0xFFE9ECEF), // #e9ecef
+      color: Colors.white, // Cambié de #e9ecef a blanco
       borderRadius: BorderRadius.circular(6),
       border: Border.all(color: theme.dividerColor.withAlpha(120)),
     );

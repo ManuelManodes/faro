@@ -51,7 +51,7 @@ class AppColors {
   static const Color primaryDark = Colors.white;
   static Color get primaryLight => Colors.grey[100]!;
 
-  static const Color white = Color(0xFFE9ECEF); // #e9ecef
+  static const Color white = Colors.white; // Cambié de #e9ecef a blanco real
   static const Color black = Colors.black;
   static Color get grey => Colors.grey[600]!;
   static Color get lightGrey => const Color(0xFFE9ECEF); // #e9ecef

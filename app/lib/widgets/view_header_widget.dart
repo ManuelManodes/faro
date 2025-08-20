@@ -22,18 +22,19 @@ class ViewHeaderWidget extends StatelessWidget {
           ),
         ),
       ),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.md,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(title, style: theme.textTheme.headlineSmall),
-          const Spacer(),
-          // Área para controles de vista específicos (placeholders)
-          _buildViewControls(),
-        ],
+      child: FigmaGridContainer(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(title, style: theme.textTheme.headlineSmall),
+              const Spacer(),
+              // Área para controles de vista específicos (placeholders)
+              _buildViewControls(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -42,7 +43,7 @@ class ViewHeaderWidget extends StatelessWidget {
     return Row(
       children: [
         // Ejemplo: botones de acciones de la vista
-        AppSpacing.md_h,
+        AppSpacing.mdH,
       ],
     );
   }

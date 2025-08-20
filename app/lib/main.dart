@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'widgets/app_layout.dart';
+import 'widgets/common/common.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
       ),
-      home: const HomePage(),
+      home: const AppShortcuts(child: HomePage()),
     );
   }
 }
@@ -25,8 +26,22 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppLayout(
-      child: Center(child: Text('Placeholder para la vista principal')),
+    return AppLayout(
+      child: FigmaRow(
+        children: [
+          FigmaColumn(
+            columns: 8,
+            mobileColumns: 12,
+            tabletColumns: 10,
+            child: const Center(
+              child: Text(
+                'Contenido principal usando grilla de 12 columnas',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

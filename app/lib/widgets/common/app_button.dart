@@ -64,6 +64,21 @@ class AppButton extends StatelessWidget {
     );
   }
 
+  factory AppButton.white({
+    Key? key,
+    required String text,
+    VoidCallback? onPressed,
+    IconData? icon,
+  }) {
+    return AppButton(
+      key: key,
+      text: text,
+      onPressed: onPressed,
+      icon: icon,
+      style: AppButtonStyle.white,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -75,6 +90,8 @@ class AppButton extends StatelessWidget {
         return _buildSecondaryButton(theme);
       case AppButtonStyle.outlined:
         return _buildOutlinedButton(theme);
+      case AppButtonStyle.white:
+        return _buildWhiteButton(theme);
     }
   }
 
@@ -122,6 +139,25 @@ class AppButton extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildWhiteButton(ThemeData theme) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+      label: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black87,
+        padding:
+            padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius ?? BorderRadius.circular(8),
+          side: BorderSide(color: Colors.grey.shade300),
+        ),
+        elevation: 1,
+      ),
+    );
+  }
 }
 
-enum AppButtonStyle { primary, secondary, outlined }
+enum AppButtonStyle { primary, secondary, outlined, white }
