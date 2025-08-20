@@ -11,8 +11,8 @@ class ContentContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        // Fondo blanco para el área principal de contenido
-        color: AppColors.white,
+        // Fondo #FAFAFA para el área principal de contenido
+        color: const Color(0xFFFAFAFA),
         child: FigmaGridContainer(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),

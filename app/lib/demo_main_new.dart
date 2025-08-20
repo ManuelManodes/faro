@@ -17,32 +17,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         useMaterial3: true,
       ),
-      home: const AppShortcuts(child: WidgetDemoPage()),
+      home: const WidgetDemoPage(),
     );
   }
 }
 
-class WidgetDemoPage extends StatefulWidget {
+class WidgetDemoPage extends StatelessWidget {
   const WidgetDemoPage({super.key});
-
-  @override
-  State<WidgetDemoPage> createState() => _WidgetDemoPageState();
-}
-
-class _WidgetDemoPageState extends State<WidgetDemoPage> with SearchFieldMixin {
-  late TextEditingController _searchController;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +83,6 @@ class _WidgetDemoPageState extends State<WidgetDemoPage> with SearchFieldMixin {
                           AppButton.primary(text: 'Primario', icon: Icons.star),
                           AppButton.secondary(text: 'Secundario'),
                           AppButton.outlined(text: 'Con Borde'),
-                          AppButton.white(
-                            text: 'Fondo Blanco',
-                            icon: Icons.search,
-                          ),
                         ],
                       ),
                     ),
@@ -272,8 +249,7 @@ class _WidgetDemoPageState extends State<WidgetDemoPage> with SearchFieldMixin {
                       mobileColumns: 12,
                       tabletColumns: 8,
                       child: AppSearchField(
-                        controller: _searchController,
-                        focusNode: searchFocusNode,
+                        controller: TextEditingController(),
                         hintText: 'Buscar...',
                         onChanged: (value) {
                           debugPrint('Buscando: $value');

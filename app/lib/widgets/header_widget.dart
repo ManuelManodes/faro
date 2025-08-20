@@ -169,10 +169,10 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const FlutterLogo(size: 28),
+        const Icon(Icons.light_mode, size: 28, color: Colors.orangeAccent),
         AppSpacing.mdH,
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 200),
+          constraints: const BoxConstraints(maxWidth: 200), // 20% más ancho
           child: Text(
             'manodesdev',
             style: theme.textTheme.titleMedium,

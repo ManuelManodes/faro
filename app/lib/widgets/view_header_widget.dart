@@ -14,7 +14,7 @@ class ViewHeaderWidget extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: const Color(0xFFFAFAFA), // Fondo #FAFAFA
         border: Border(
           bottom: BorderSide(
             color: theme.dividerColor.withAlpha(60),
@@ -22,18 +22,15 @@ class ViewHeaderWidget extends StatelessWidget {
           ),
         ),
       ),
+      height: 80,
       child: FigmaGridContainer(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(title, style: theme.textTheme.headlineSmall),
-              const Spacer(),
-              // Área para controles de vista específicos (placeholders)
-              _buildViewControls(),
-            ],
-          ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(title, style: theme.textTheme.headlineSmall),
+            const Spacer(),
+            _buildViewControls(),
+          ],
         ),
       ),
     );

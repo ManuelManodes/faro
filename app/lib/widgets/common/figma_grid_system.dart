@@ -5,7 +5,8 @@ class FigmaGridSystem {
   // Configuración de la grilla
   static const int totalColumns = 12;
   static const double gutterWidth = 16.0;
-  static const double containerMaxWidth = 1200.0; // Ancho máximo del contenedor
+  static const double containerMaxWidth =
+      double.infinity; // Sin límite, 100% viewport
 
   // Breakpoints responsive
   static const double mobileBreakpoint = 375.0;
@@ -61,14 +62,7 @@ class FigmaGridContainer extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: margin),
       child: centerContent
-          ? Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: FigmaGridSystem.containerMaxWidth,
-                ),
-                child: child,
-              ),
-            )
+          ? child // Sin ConstrainedBox, ocupa todo el ancho
           : child,
     );
   }
