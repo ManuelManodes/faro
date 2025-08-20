@@ -1,0 +1,7 @@
+// Exportaciones centralizadas de widgets comunes
+export 'app_button.dart';
+export 'app_card.dart';
+export 'app_components.dart';
+export 'app_list_item.dart';
+export 'app_search_field.dart';
+export 'app_theme.dart';
