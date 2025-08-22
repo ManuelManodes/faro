@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'common/common.dart';
+import 'common/navigation_modal.dart';
 import 'content_container.dart';
 import 'footer_widget.dart';
 import 'header_widget.dart';
@@ -22,19 +23,17 @@ class _AppLayoutState extends State<AppLayout> {
   String _selected = HeaderWidget.navItems.contains('Flags')
       ? 'Flags'
       : HeaderWidget.navItems.first;
-  OverlayEntry? _navigationOverlay;
 
   @override
   void initState() {
     super.initState();
-    // Registrar el callback para mostrar el dropdown de navegación
-    SearchFocusManager().registerNavigationDropdown(_showNavigationDropdown);
+    // Registrar el callback para mostrar el modal de navegación
+    SearchFocusManager().registerNavigationModal(_showNavigationModal);
   }
 
   @override
   void dispose() {
-    _removeNavigationOverlay();
-    SearchFocusManager().unregisterNavigationDropdown();
+    SearchFocusManager().unregisterNavigationModal();
     super.dispose();
   }
 
@@ -42,45 +41,15 @@ class _AppLayoutState extends State<AppLayout> {
     setState(() {
       _selected = label;
     });
-    _removeNavigationOverlay();
   }
 
-  void _showNavigationDropdown() {
-    _removeNavigationOverlay();
-
-    final overlay = Overlay.of(context);
-    _showCenteredDropdown(overlay);
-  }
-
-  void _showCenteredDropdown(OverlayState overlay) {
-    _navigationOverlay = OverlayEntry(
-      builder: (context) {
-        return Positioned.fill(
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: _removeNavigationOverlay,
-            child: Container(
-              color: Colors.black.withOpacity(0.4),
-              child: Center(
-                child: NavigationDropdown(
-                  navigationItems: HeaderWidget.navItems,
-                  selectedItem: _selected,
-                  onItemSelected: _onSelect,
-                  onClose: _removeNavigationOverlay,
-                ),
-              ),
-            ),
-          ),
-        );
-      },
+  void _showNavigationModal() {
+    NavigationModal.show(
+      context,
+      navigationItems: HeaderWidget.navItems,
+      selectedItem: _selected,
+      onItemSelected: _onSelect,
     );
-
-    overlay.insert(_navigationOverlay!);
-  }
-
-  void _removeNavigationOverlay() {
-    _navigationOverlay?.remove();
-    _navigationOverlay = null;
   }
 
   @override
