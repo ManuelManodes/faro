@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'header_widget.dart';
 import 'content_container.dart';
 import 'view_header_widget.dart';
+import 'footer_widget.dart';
 import 'common/common.dart';
 
 /// Layout general que compone el Header, un título de vista y un contenedor
@@ -28,41 +30,45 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white, // Fondo blanco puro para toda la pantalla
-      // Sin SafeArea para que el header llegue hasta arriba
-      body: Column(
-        children: [
-          // Header que llega hasta el tope de la pantalla
-          Container(
-            decoration: BoxDecoration(
-              // Línea más delgada y suave entre el header y el área blanca
-              border: Border(
-                bottom: BorderSide(
-                  // Línea más marcada: mayor alpha y grosor 1.0
-                  color: Theme.of(context).dividerColor.withAlpha(60),
-                  width: 1.0,
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+
+        return Scaffold(
+          backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
+          body: Column(
+            children: [
+              // Header que llega hasta el tope de la pantalla
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                child: SafeArea(
+                  bottom: false,
+                  child: HeaderWidget(selected: _selected, onSelect: _onSelect),
                 ),
               ),
-            ),
-            child: SafeArea(
-              bottom: false, // Solo aplicar SafeArea abajo, no arriba
-              child: HeaderWidget(selected: _selected, onSelect: _onSelect),
-            ),
-          ),
 
-          // Espacio debajo del navbar horizontal que replica el nombre seleccionado
-          // en un título blanco, y con un área para controles específicos.
-          // Además el fondo del resto del layout será blanco.
-          Container(
-            color: AppColors.white,
-            child: ViewHeaderWidget(title: _selected),
-          ),
+              // Espacio debajo del navbar horizontal
+              Container(
+                color: isDarkMode ? const Color(0xFF121212) : AppColors.white,
+                child: ViewHeaderWidget(title: _selected),
+              ),
 
-          // Contenedor flexible para contenido dinámico con fondo blanco
-          ContentContainer(child: widget.child),
-        ],
-      ),
+              // Contenedor flexible para contenido dinámico
+              Expanded(child: ContentContainer(child: widget.child)),
+
+              // Footer moderno y minimalista
+              const FooterWidget(),
+            ],
+          ),
+        );
+      },
     );
   }
 }

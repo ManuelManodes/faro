@@ -7,3 +7,5 @@ export 'app_search_field.dart';
 export 'app_shortcuts.dart';
 export 'app_theme.dart';
 export 'figma_grid_system.dart';
+export 'theme_provider.dart';
+export 'platform_brightness_listener.dart';

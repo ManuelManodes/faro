@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'common/common.dart';
 
 /// Widget que muestra el título actual seleccionado en la navegación y un
@@ -10,29 +11,38 @@ class ViewHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final theme = Theme.of(context);
+        final isDarkMode = themeProvider.isDarkMode;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFFAFAFA), // Fondo #FAFAFA
-        border: Border(
-          bottom: BorderSide(
-            color: theme.dividerColor.withAlpha(60),
-            width: 1.0,
+        return Container(
+          decoration: BoxDecoration(
+            color: isDarkMode
+                ? const Color(0xFF1A1A1A)
+                : const Color(0xFFFAFAFA),
+            border: Border(
+              bottom: BorderSide(color: theme.dividerColor, width: 1.0),
+            ),
           ),
-        ),
-      ),
-      height: 80,
-      child: FigmaGridContainer(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(title, style: theme.textTheme.headlineSmall),
-            const Spacer(),
-            _buildViewControls(),
-          ],
-        ),
-      ),
+          height: 80,
+          child: FigmaGridContainer(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+                const Spacer(),
+                _buildViewControls(),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
