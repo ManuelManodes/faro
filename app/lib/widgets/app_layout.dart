@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'header_widget.dart';
-import 'content_container.dart';
-import 'view_header_widget.dart';
-import 'footer_widget.dart';
+
 import 'common/common.dart';
+import 'content_container.dart';
+import 'footer_widget.dart';
+import 'header_widget.dart';
+import 'view_header_widget.dart';
 
 /// Layout general que compone el Header, un título de vista y un contenedor
 /// para el contenido. Mantiene el item seleccionado del navbar para mostrar
@@ -21,11 +22,65 @@ class _AppLayoutState extends State<AppLayout> {
   String _selected = HeaderWidget.navItems.contains('Flags')
       ? 'Flags'
       : HeaderWidget.navItems.first;
+  OverlayEntry? _navigationOverlay;
+
+  @override
+  void initState() {
+    super.initState();
+    // Registrar el callback para mostrar el dropdown de navegación
+    SearchFocusManager().registerNavigationDropdown(_showNavigationDropdown);
+  }
+
+  @override
+  void dispose() {
+    _removeNavigationOverlay();
+    SearchFocusManager().unregisterNavigationDropdown();
+    super.dispose();
+  }
 
   void _onSelect(String label) {
     setState(() {
       _selected = label;
     });
+    _removeNavigationOverlay();
+  }
+
+  void _showNavigationDropdown() {
+    _removeNavigationOverlay();
+
+    final overlay = Overlay.of(context);
+    _showCenteredDropdown(overlay);
+  }
+
+  void _showCenteredDropdown(OverlayState overlay) {
+    _navigationOverlay = OverlayEntry(
+      builder: (context) {
+        return Positioned.fill(
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: _removeNavigationOverlay,
+            child: Container(
+              color: Colors.black.withOpacity(0.4),
+              child: Center(
+                child: NavigationDropdown(
+                  navigationItems: HeaderWidget.navItems,
+                  selectedItem: _selected,
+                  onItemSelected: _onSelect,
+                  onClose: _removeNavigationOverlay,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    overlay.insert(_navigationOverlay!);
+  }
+
+  void _removeNavigationOverlay() {
+    _navigationOverlay?.remove();
+    _navigationOverlay = null;
   }
 
   @override

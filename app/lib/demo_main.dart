@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'widgets/common/common.dart';
 
 void main() {
@@ -29,7 +30,7 @@ class WidgetDemoPage extends StatefulWidget {
   State<WidgetDemoPage> createState() => _WidgetDemoPageState();
 }
 
-class _WidgetDemoPageState extends State<WidgetDemoPage> with SearchFieldMixin {
+class _WidgetDemoPageState extends State<WidgetDemoPage> {
   late TextEditingController _searchController;
 
   @override
@@ -273,7 +274,6 @@ class _WidgetDemoPageState extends State<WidgetDemoPage> with SearchFieldMixin {
                       tabletColumns: 8,
                       child: AppSearchField(
                         controller: _searchController,
-                        focusNode: searchFocusNode,
                         hintText: 'Buscar...',
                         onChanged: (value) {
                           debugPrint('Buscando: $value');

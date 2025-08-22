@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'app_theme.dart';
-import 'app_shortcuts.dart';
 import 'theme_provider.dart';
 
 /// Campo de búsqueda reutilizable
@@ -128,9 +128,6 @@ class AppSearchField extends StatelessWidget {
                   SizedBox(width: isCompact ? 6 : 8),
                   trailing!,
                 ],
-                // Indicador de shortcut "B"
-                SizedBox(width: isCompact ? 6 : 8),
-                const SearchShortcutIndicator(),
               ],
             ),
           ),
