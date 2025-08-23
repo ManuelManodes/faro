@@ -10,6 +10,8 @@ import '../../domain/repositories/user_repository.dart';
 import '../../domain/usecases/get_all_users_usecase.dart';
 import '../../domain/usecases/get_menu_options_usecase.dart';
 import '../../domain/usecases/get_user_usecase.dart';
+import '../../presentation/controllers/attendance_header_controller.dart';
+import '../../presentation/controllers/attendance_list_controller.dart';
 import '../../presentation/controllers/menu_controller.dart';
 // Presentation
 import '../../presentation/controllers/user_controller.dart';
@@ -30,6 +32,12 @@ class DependencyInjection {
       ),
       ChangeNotifierProvider<MainMenuController>(
         create: (context) => MainMenuController(context.read<MenuService>()),
+      ),
+      ChangeNotifierProvider<AttendanceHeaderController>(
+        create: (context) => AttendanceHeaderController(),
+      ),
+      ChangeNotifierProvider<AttendanceListController>(
+        create: (context) => AttendanceListController(),
       ),
     ];
   }

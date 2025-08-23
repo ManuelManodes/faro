@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'common.dart';
 
 /// Botones reutilizables con diseño consistente
 class AppButton extends StatelessWidget {
@@ -79,6 +82,51 @@ class AppButton extends StatelessWidget {
     );
   }
 
+  factory AppButton.green({
+    Key? key,
+    required String text,
+    VoidCallback? onPressed,
+    IconData? icon,
+  }) {
+    return AppButton(
+      key: key,
+      text: text,
+      onPressed: onPressed,
+      icon: icon,
+      style: AppButtonStyle.green,
+    );
+  }
+
+  factory AppButton.surface({
+    Key? key,
+    required String text,
+    VoidCallback? onPressed,
+    IconData? icon,
+  }) {
+    return AppButton(
+      key: key,
+      text: text,
+      onPressed: onPressed,
+      icon: icon,
+      style: AppButtonStyle.surface,
+    );
+  }
+
+  factory AppButton.elegantGreen({
+    Key? key,
+    required String text,
+    VoidCallback? onPressed,
+    IconData? icon,
+  }) {
+    return AppButton(
+      key: key,
+      text: text,
+      onPressed: onPressed,
+      icon: icon,
+      style: AppButtonStyle.elegantGreen,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -92,6 +140,12 @@ class AppButton extends StatelessWidget {
         return _buildOutlinedButton(theme);
       case AppButtonStyle.white:
         return _buildWhiteButton(theme);
+      case AppButtonStyle.green:
+        return _buildGreenButton(theme);
+      case AppButtonStyle.surface:
+        return _buildSurfaceButton(theme);
+      case AppButtonStyle.elegantGreen:
+        return _buildElegantGreenButton(theme);
     }
   }
 
@@ -158,6 +212,89 @@ class AppButton extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildGreenButton(ThemeData theme) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+      label: Text(text),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.green.shade400,
+        foregroundColor: Colors.white,
+        padding:
+            padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius ?? BorderRadius.circular(8),
+        ),
+        elevation: 0,
+      ),
+    );
+  }
+
+  Widget _buildSurfaceButton(ThemeData theme) {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return TextButton.icon(
+          onPressed: onPressed,
+          icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+          label: Text(text),
+          style: TextButton.styleFrom(
+            backgroundColor: AppColors.surface(themeProvider.isDarkMode),
+            foregroundColor: AppColors.textPrimary(themeProvider.isDarkMode),
+            padding:
+                padding ??
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: borderRadius ?? BorderRadius.circular(8),
+              side: BorderSide(
+                color: AppColors.dividerTheme(themeProvider.isDarkMode),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildElegantGreenButton(ThemeData theme) {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.green.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Colors.green.withValues(alpha: 0.3),
+              width: 1,
+            ),
+          ),
+          child: ElevatedButton.icon(
+            onPressed: onPressed,
+            icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+            label: Text(text),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.green.shade600,
+              shadowColor: Colors.transparent,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              elevation: 0,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
-enum AppButtonStyle { primary, secondary, outlined, white }
+enum AppButtonStyle {
+  primary,
+  secondary,
+  outlined,
+  white,
+  green,
+  surface,
+  elegantGreen,
+}

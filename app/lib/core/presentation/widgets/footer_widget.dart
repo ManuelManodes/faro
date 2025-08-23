@@ -6,8 +6,36 @@ import 'package:url_launcher/url_launcher.dart';
 import 'common/common.dart';
 
 /// Footer moderno y minimalista con botón de cambio de tema
-class FooterWidget extends StatelessWidget {
+class FooterWidget extends StatefulWidget {
   const FooterWidget({super.key});
+
+  @override
+  State<FooterWidget> createState() => _FooterWidgetState();
+}
+
+class _FooterWidgetState extends State<FooterWidget>
+    with TickerProviderStateMixin {
+  late AnimationController _blinkController;
+  late Animation<double> _blinkAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _blinkController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    _blinkAnimation = Tween<double>(begin: 0.3, end: 1.0).animate(
+      CurvedAnimation(parent: _blinkController, curve: Curves.easeInOut),
+    );
+    _blinkController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _blinkController.dispose();
+    super.dispose();
+  }
 
   void _toggleTheme(ThemeProvider themeProvider, ThemeType newTheme) {
     themeProvider.setTheme(newTheme);
@@ -261,14 +289,19 @@ class FooterWidget extends StatelessWidget {
   Widget _buildSystemStatus(bool isDarkMode) {
     return Row(
       children: [
-        // Indicador de estado
-        Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            color: Colors.green,
-            shape: BoxShape.circle,
-          ),
+        // Indicador de estado parpadeante
+        AnimatedBuilder(
+          animation: _blinkAnimation,
+          builder: (context, child) {
+            return Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(_blinkAnimation.value),
+                shape: BoxShape.circle,
+              ),
+            );
+          },
         ),
         AppSpacing.smH,
         Column(

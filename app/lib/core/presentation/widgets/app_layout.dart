@@ -75,14 +75,20 @@ class _AppLayoutState extends State<AppLayout> {
                 ),
               ),
 
-              // Espacio debajo del navbar horizontal
-              Container(
-                color: AppColors.backgroundPrimary(isDarkMode),
-                child: ViewHeaderWidget(title: _selected),
-              ),
-
-              // Contenedor flexible para contenido dinámico
-              Expanded(child: ContentContainer(child: widget.child)),
+              // Para Control de Asistencia, usar layout especial
+              if (_selected == 'Control de Asistencia')
+                Expanded(
+                  child: ViewHeaderWidget(title: _selected),
+                )
+              else ...[
+                // Espacio debajo del navbar horizontal para otras vistas
+                Container(
+                  color: AppColors.backgroundPrimary(isDarkMode),
+                  child: ViewHeaderWidget(title: _selected),
+                ),
+                // Contenedor flexible para contenido dinámico
+                Expanded(child: ContentContainer(child: widget.child)),
+              ],
 
               // Footer moderno y minimalista
               const FooterWidget(),
