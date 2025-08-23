@@ -13,6 +13,5 @@
     }
   ],
   "buildCommand": "cd faro/app && flutter build web --release",
-  "outputDirectory": "faro/app/build/web",
-  "framework": "other"
+  "outputDirectory": "faro/app/build/web"
 }
