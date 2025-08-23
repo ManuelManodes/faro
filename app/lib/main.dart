@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'core/infrastructure/di/dependency_injection.dart';
-import 'core/presentation/pages/home_page.dart';
+import 'core/presentation/pages/dashboard_page.dart';
 import 'core/presentation/widgets/common/common.dart';
 
 void main() {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: themeProvider.getTheme(),
           home: const PlatformBrightnessListener(
-            child: AppShortcuts(child: HomePage()),
+            child: AppShortcuts(child: DashboardPage()),
           ),
         );
       },

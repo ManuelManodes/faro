@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'common/common.dart';
 
 /// Widget que muestra el título actual seleccionado en la navegación y un
@@ -18,11 +19,12 @@ class ViewHeaderWidget extends StatelessWidget {
 
         return Container(
           decoration: BoxDecoration(
-            color: isDarkMode
-                ? const Color(0xFF1A1A1A)
-                : const Color(0xFFFAFAFA),
+            color: AppColors.backgroundSecondary(isDarkMode),
             border: Border(
-              bottom: BorderSide(color: theme.dividerColor, width: 1.0),
+              bottom: BorderSide(
+                color: AppColors.dividerTheme(isDarkMode),
+                width: 1.0,
+              ),
             ),
           ),
           height: 80,
@@ -33,7 +35,7 @@ class ViewHeaderWidget extends StatelessWidget {
                 Text(
                   title,
                   style: theme.textTheme.headlineSmall?.copyWith(
-                    color: isDarkMode ? Colors.white : Colors.black87,
+                    color: AppColors.textPrimary(isDarkMode),
                   ),
                 ),
                 const Spacer(),

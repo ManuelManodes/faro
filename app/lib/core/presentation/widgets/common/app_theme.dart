@@ -58,6 +58,45 @@ class AppColors {
 
   static Color get divider => Colors.grey.withValues(alpha: 0.2);
   static Color get shadow => Colors.black.withValues(alpha: 0.1);
+
+  // Métodos estáticos para colores según el tema
+  static Color textPrimary(bool isDarkMode) {
+    return isDarkMode ? Colors.white : Colors.black87;
+  }
+
+  static Color textSecondary(bool isDarkMode) {
+    return isDarkMode ? Colors.white70 : Colors.black54;
+  }
+
+  static Color textTertiary(bool isDarkMode) {
+    return isDarkMode ? Colors.white60 : Colors.black38;
+  }
+
+  static Color iconPrimary(bool isDarkMode) {
+    return isDarkMode ? Colors.white : Colors.black87;
+  }
+
+  static Color iconSecondary(bool isDarkMode) {
+    return isDarkMode ? Colors.white70 : Colors.black54;
+  }
+
+  static Color backgroundPrimary(bool isDarkMode) {
+    return isDarkMode ? const Color(0xFF121212) : Colors.white;
+  }
+
+  static Color backgroundSecondary(bool isDarkMode) {
+    return isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFFAFAFA);
+  }
+
+  static Color surface(bool isDarkMode) {
+    return isDarkMode ? const Color(0xFF1A1A1A) : Colors.white;
+  }
+
+  static Color dividerTheme(bool isDarkMode) {
+    return isDarkMode
+        ? Colors.white.withOpacity(0.2)
+        : Colors.black.withOpacity(0.1);
+  }
 }
 
 /// BorderRadius reutilizables
@@ -101,4 +140,27 @@ class AppContainerStyles {
       ),
     ],
   );
+
+  // Métodos estáticos para estilos según el tema
+  static BoxDecoration cardTheme(bool isDarkMode) {
+    return BoxDecoration(
+      color: AppColors.surface(isDarkMode),
+      borderRadius: AppBorderRadius.md,
+      boxShadow: [
+        BoxShadow(
+          color: isDarkMode ? Colors.black.withOpacity(0.3) : AppColors.shadow,
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    );
+  }
+
+  static BoxDecoration outlinedTheme(bool isDarkMode) {
+    return BoxDecoration(
+      color: AppColors.surface(isDarkMode),
+      borderRadius: AppBorderRadius.md,
+      border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
+    );
+  }
 }

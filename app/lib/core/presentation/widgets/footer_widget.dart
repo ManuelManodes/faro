@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'common/common.dart';
 
 /// Footer moderno y minimalista con botón de cambio de tema
@@ -124,15 +126,15 @@ class FooterWidget extends StatelessWidget {
   Widget _buildLogoAndNavigation(BuildContext context, bool isDarkMode) {
     return Row(
       children: [
-        // Logo triangular
+        // Logo del sistema
         Container(
           width: 16,
           height: 16,
           decoration: BoxDecoration(
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: Colors.orangeAccent,
             borderRadius: BorderRadius.circular(2),
           ),
-          child: const Icon(Icons.play_arrow, size: 12, color: Colors.white),
+          child: const Icon(Icons.location_on, size: 12, color: Colors.white),
         ),
         AppSpacing.mdH,
 
@@ -149,19 +151,29 @@ class FooterWidget extends StatelessWidget {
   }
 
   List<Widget> _buildNavigationLinks(BuildContext context, bool isDarkMode) {
-    final links = ['Home', 'Docs', 'Guides', 'Help', 'Contact'];
+    final footerLinks = [
+      {'text': 'Documentación', 'url': 'https://docs.sistema-faro.com'},
+      {'text': 'Soporte Técnico', 'url': 'https://support.sistema-faro.com'},
+      {'text': 'Centro de Ayuda', 'url': 'https://help.sistema-faro.com'},
+      {'text': 'Contacto', 'url': 'mailto:contacto@sistema-faro.com'},
+      {
+        'text': 'Política de Privacidad',
+        'url': 'https://sistema-faro.com/privacy',
+      },
+      {'text': 'Términos de Uso', 'url': 'https://sistema-faro.com/terms'},
+    ];
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
-    return links.map((link) {
+    return footerLinks.map((link) {
       return MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
           onTap: () {
             HapticFeedback.lightImpact();
-            // Aquí se implementaría la navegación
+            _openExternalLink(context, link['url']!, link['text']!);
           },
           child: Text(
-            link,
+            link['text']!,
             style: TextStyle(
               color: textColor.withOpacity(0.8),
               fontSize: 14,
@@ -173,9 +185,69 @@ class FooterWidget extends StatelessWidget {
     }).toList();
   }
 
+  Future<void> _openExternalLink(
+    BuildContext context,
+    String url,
+    String linkName,
+  ) async {
+    try {
+      final Uri uri = Uri.parse(url);
+
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication, // Abre en nueva pestaña
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.open_in_new, color: Colors.white, size: 16),
+                const SizedBox(width: 8),
+                Expanded(child: Text('$linkName abierto en nueva pestaña')),
+              ],
+            ),
+            duration: const Duration(seconds: 2),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        throw Exception('No se pudo abrir la URL');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.error_outline, color: Colors.white, size: 16),
+              const SizedBox(width: 8),
+              Expanded(child: Text('Error al abrir $linkName')),
+            ],
+          ),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.red,
+          action: SnackBarAction(
+            label: 'Copiar URL',
+            textColor: Colors.white,
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: url));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('URL copiada al portapapeles'),
+                  duration: Duration(seconds: 1),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+    }
+  }
+
   Widget _buildCopyright(bool isDarkMode) {
     return Text(
-      '© 2025, Faro Inc.',
+      '© 2025, Sistema de Gestión Faro',
       style: TextStyle(
         color: isDarkMode
             ? Colors.white.withOpacity(0.6)
@@ -199,15 +271,31 @@ class FooterWidget extends StatelessWidget {
           ),
         ),
         AppSpacing.smH,
-        Text(
-          'All systems normal',
-          style: TextStyle(
-            color: isDarkMode
-                ? Colors.white.withOpacity(0.8)
-                : Colors.black.withOpacity(0.8),
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Sistema operativo',
+              style: TextStyle(
+                color: isDarkMode
+                    ? Colors.white.withOpacity(0.8)
+                    : Colors.black.withOpacity(0.8),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Text(
+              'v1.0.0 - Estable',
+              style: TextStyle(
+                color: isDarkMode
+                    ? Colors.white.withOpacity(0.6)
+                    : Colors.black.withOpacity(0.6),
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
         ),
       ],
     );

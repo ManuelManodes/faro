@@ -17,18 +17,13 @@ class HeaderWidget extends StatefulWidget {
 
   // Lista pública de elementos de navegación (estructura visual solamente)
   static const List<String> navItems = [
-    'Overview',
-    'Integrations',
-    'Deployments',
-    'Activity',
-    'Domains',
-    'Usage',
-    'Observability',
-    'Storage',
-    'Flags',
-    'AI Gateway',
-    'Support',
-    'Settings',
+    'Panel Principal',
+    'Control de Asistencia',
+    'Agenda',
+    'Evaluaciones',
+    'Reportes de Incidencias',
+    'Asistente Virtual',
+    'Estructura Organizacional',
   ];
 
   @override
@@ -101,29 +96,30 @@ class _HeaderWidgetState extends State<HeaderWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
-          Icons.light_mode,
+          Icons.location_on,
           size: isSmallScreen
               ? 24
               : isMediumScreen
               ? 26
               : 28,
-          color: isDarkMode ? Colors.orangeAccent : Colors.orangeAccent,
+          color: Colors.orangeAccent,
         ),
         SizedBox(width: isSmallScreen ? 8 : 12),
         if (!isSmallScreen) // Ocultar texto en pantallas pequeñas
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: isMediumScreen ? 150 : 200),
             child: Text(
-              'manodesdev',
+              'Sistema de Gestión',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: isDarkMode ? Colors.white : Colors.black87,
+                color: AppColors.textPrimary(isDarkMode),
                 fontSize: isMediumScreen ? 14 : 16,
+                fontWeight: FontWeight.bold,
               ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
         SizedBox(width: isSmallScreen ? 4 : 8),
-        AppBadge.primary(text: isSmallScreen ? 'H' : 'Hobby'),
+        AppBadge.primary(text: isSmallScreen ? 'v1' : 'v1.0'),
       ],
     );
   }
@@ -135,15 +131,23 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (!isSmallScreen) // Ocultar botón de feedback en pantallas pequeñas
+        if (!isSmallScreen) // Ocultar botón de ayuda en pantallas pequeñas
           IconButton(
-            onPressed: null,
+            onPressed: () {
+              // Aquí se implementaría la funcionalidad de ayuda
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Centro de ayuda - En desarrollo'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
             icon: Icon(
-              Icons.feedback_outlined,
+              Icons.help_outline,
               size: isSmallScreen ? 20 : 24,
-              color: isDarkMode ? Colors.white : Colors.black87,
+              color: AppColors.iconPrimary(isDarkMode),
             ),
-            tooltip: 'Feedback',
+            tooltip: 'Ayuda',
           ),
         if (!isSmallScreen) SizedBox(width: 8),
         AppAvatar.user(radius: isSmallScreen ? 12 : 14),
@@ -212,8 +216,8 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           onPressed: () => widget.onSelect(label),
           style: TextButton.styleFrom(
             foregroundColor: isActive
-                ? (isDarkMode ? Colors.white : Colors.black)
-                : (isDarkMode ? Colors.white70 : Colors.black87),
+                ? AppColors.textPrimary(isDarkMode)
+                : AppColors.textSecondary(isDarkMode),
             padding: EdgeInsets.symmetric(
               horizontal: isSmallScreen
                   ? 8
@@ -242,7 +246,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 ? 24
                 : 28,
             decoration: BoxDecoration(
-              color: isDarkMode ? Colors.white : Colors.black,
+              color: AppColors.textPrimary(isDarkMode),
               borderRadius: AppBorderRadius.xs,
             ),
           )

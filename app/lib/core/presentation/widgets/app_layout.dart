@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'common/common.dart';
-import 'common/navigation_modal.dart';
 import 'content_container.dart';
 import 'footer_widget.dart';
 import 'header_widget.dart';
@@ -20,9 +19,7 @@ class AppLayout extends StatefulWidget {
 }
 
 class _AppLayoutState extends State<AppLayout> {
-  String _selected = HeaderWidget.navItems.contains('Flags')
-      ? 'Flags'
-      : HeaderWidget.navItems.first;
+  String _selected = 'Panel Principal';
 
   @override
   void initState() {
@@ -59,7 +56,7 @@ class _AppLayoutState extends State<AppLayout> {
         final isDarkMode = themeProvider.isDarkMode;
 
         return Scaffold(
-          backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
+          backgroundColor: AppColors.backgroundPrimary(isDarkMode),
           body: Column(
             children: [
               // Header que llega hasta el tope de la pantalla
@@ -80,7 +77,7 @@ class _AppLayoutState extends State<AppLayout> {
 
               // Espacio debajo del navbar horizontal
               Container(
-                color: isDarkMode ? const Color(0xFF121212) : AppColors.white,
+                color: AppColors.backgroundPrimary(isDarkMode),
                 child: ViewHeaderWidget(title: _selected),
               ),
 
