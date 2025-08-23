@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd app && flutter build web --release",
+  "buildCommand": "echo 'Build already done'",
   "outputDirectory": "app/build/web",
   "rewrites": [
     {
