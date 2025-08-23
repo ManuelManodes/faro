@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd faro/app && flutter build web --release",
-  "outputDirectory": "faro/app/build/web",
+  "buildCommand": "cd app && flutter build web --release",
+  "outputDirectory": "app/build/web",
   "rewrites": [
     {
       "source": "/(.*)",
