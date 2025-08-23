@@ -7,5 +7,6 @@
             "destination": "/index.html"
         }
     ],
-    "installCommand": "echo 'No install needed'"
+    "installCommand": "echo 'No install needed'",
+    "framework": null
 }

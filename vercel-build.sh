@@ -7,14 +7,19 @@ set -e
 
 echo "🚀 Iniciando build de Sistema Faro..."
 
-# Verificar que estamos en el directorio correcto
-if [ ! -f "faro/app/pubspec.yaml" ]; then
-    echo "❌ Error: No se encontró pubspec.yaml en faro/app/"
+# Verificar la estructura del directorio y navegar al directorio correcto
+if [ -f "app/pubspec.yaml" ]; then
+    echo "📁 Encontrado pubspec.yaml en app/"
+    cd app
+elif [ -f "faro/app/pubspec.yaml" ]; then
+    echo "📁 Encontrado pubspec.yaml en faro/app/"
+    cd faro/app
+else
+    echo "❌ Error: No se encontró pubspec.yaml en app/ ni en faro/app/"
+    echo "📂 Contenido del directorio actual:"
+    ls -la
     exit 1
 fi
-
-# Navegar al directorio de la aplicación
-cd faro/app
 
 echo "📦 Instalando dependencias de Flutter..."
 flutter pub get
@@ -29,7 +34,7 @@ echo "🏗️ Construyendo aplicación para web..."
 flutter build web --release --web-renderer html
 
 echo "✅ Build completado exitosamente!"
-echo "📁 Archivos generados en: faro/app/build/web/"
+echo "📁 Archivos generados en: build/web/"
 
 # Verificar que los archivos principales existen
 if [ ! -f "build/web/index.html" ]; then
