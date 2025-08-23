@@ -228,19 +228,25 @@ class _KeyboardNavigationTableState extends State<KeyboardNavigationTable> {
             curve: Curves.easeOut,
             decoration: BoxDecoration(
               color: isSelected
-                  ? AppColors.primary.withValues(alpha: 0.04)
+                  ? (widget.isDarkMode 
+                      ? AppColors.primary.withValues(alpha: 0.08)
+                      : AppColors.primary.withValues(alpha: 0.12))
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6),
               border: isSelected
                   ? Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.15),
+                      color: widget.isDarkMode
+                          ? AppColors.primary.withValues(alpha: 0.2)
+                          : AppColors.primary.withValues(alpha: 0.3),
                       width: 1.0,
                     )
                   : null,
               boxShadow: isSelected
                   ? [
                       BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.05),
+                        color: widget.isDarkMode
+                            ? AppColors.primary.withValues(alpha: 0.08)
+                            : AppColors.primary.withValues(alpha: 0.15),
                         blurRadius: 4,
                         offset: const Offset(0, 1),
                       ),
