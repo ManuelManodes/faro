@@ -1,0 +1,37 @@
+{
+    "name": "sistema-faro",
+    "version": "1.0.0",
+    "description": "Sistema de Gestión Faro - Control de Asistencia Escolar",
+    "main": "index.js",
+    "scripts": {
+        "dev": "cd faro/app && flutter run -d chrome",
+        "build": "cd faro/app && flutter build web --release",
+        "start": "cd faro/app/build/web && python3 -m http.server 8000",
+        "test": "cd faro/app && flutter test",
+        "clean": "cd faro/app && flutter clean",
+        "get": "cd faro/app && flutter pub get"
+    },
+    "keywords": [
+        "flutter",
+        "dart",
+        "web",
+        "asistencia",
+        "escolar",
+        "sistema",
+        "gestion"
+    ],
+    "author": "Sistema Faro Team",
+    "license": "MIT",
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=8.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tu-usuario/sistema-faro.git"
+    },
+    "bugs": {
+        "url": "https://github.com/tu-usuario/sistema-faro/issues"
+    },
+    "homepage": "https://sistema-faro.vercel.app"
+}

@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "faro/app/build/web/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/faro/app/build/web/index.html"
+    }
+  ],
+  "buildCommand": "cd faro/app && flutter build web --release",
+  "outputDirectory": "faro/app/build/web",
+  "framework": "other"
+}
