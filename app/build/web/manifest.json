@@ -1,0 +1,28 @@
+{
+    "name": "Sistema de Gestión Faro",
+    "short_name": "Sistema Faro",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#FF8C00",
+    "theme_color": "#FF8C00",
+    "description": "Sistema de Gestión Empresarial - Control de asistencia, agenda, evaluaciones y reportes.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
