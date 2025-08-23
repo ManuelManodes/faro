@@ -22,3 +22,4 @@ class UserService {
     return await _getAllUsersUseCase.execute();
   }
 }
+

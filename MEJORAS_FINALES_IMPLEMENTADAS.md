@@ -150,3 +150,4 @@ Las mejoras implementadas han resuelto completamente:
 - ✅ **Rendimiento**: Carga optimizada sin recargas innecesarias
 
 El sistema ahora tiene una experiencia de usuario fluida y un diseño visual coherente con el resto del proyecto.
+

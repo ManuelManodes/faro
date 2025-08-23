@@ -95,3 +95,4 @@ class MyPage extends StatelessWidget {
 6. **Crear controlador** en `presentation/controllers/`
 7. **Configurar DI** en `infrastructure/di/dependency_injection.dart`
 8. **Crear páginas/widgets** en `presentation/`
+

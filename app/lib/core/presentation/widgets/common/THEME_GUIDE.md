@@ -119,3 +119,4 @@ Para migrar widgets existentes:
 2. Reemplazar `isDarkMode ? Colors.white70 : Colors.black54` por `AppColors.textSecondary(isDarkMode)`
 3. Reemplazar colores de fondo por los métodos correspondientes
 4. Usar `AppContainerStyles` para estilos de contenedor
+

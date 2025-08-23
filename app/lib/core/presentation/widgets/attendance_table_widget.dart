@@ -219,108 +219,118 @@ class _KeyboardNavigationTableState extends State<KeyboardNavigationTable> {
             height: 1,
             color: AppColors.dividerTheme(widget.isDarkMode),
           ),
-        itemBuilder: (context, index) {
-          final student = widget.controller.students[index];
-          final isSelected = index == _currentIndex;
+          itemBuilder: (context, index) {
+            final student = widget.controller.students[index];
+            final isSelected = index == _currentIndex;
 
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            curve: Curves.easeOut,
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? (widget.isDarkMode 
-                      ? AppColors.primary.withValues(alpha: 0.08)
-                      : AppColors.primary.withValues(alpha: 0.12))
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(6),
-              border: isSelected
-                  ? Border.all(
-                      color: widget.isDarkMode
-                          ? AppColors.primary.withValues(alpha: 0.2)
-                          : AppColors.primary.withValues(alpha: 0.3),
-                      width: 1.0,
-                    )
-                  : null,
-              boxShadow: isSelected
-                  ? [
-                      BoxShadow(
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeOut,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? (widget.isDarkMode
+                          ? AppColors.primary.withValues(alpha: 0.08)
+                          : AppColors.primary.withValues(alpha: 0.12))
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(6),
+                border: isSelected
+                    ? Border.all(
                         color: widget.isDarkMode
-                            ? AppColors.primary.withValues(alpha: 0.08)
-                            : AppColors.primary.withValues(alpha: 0.15),
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
+                            ? AppColors.primary.withValues(alpha: 0.2)
+                            : AppColors.primary.withValues(alpha: 0.3),
+                        width: 1.0,
+                      )
+                    : null,
+                boxShadow: isSelected
+                    ? [
+                        BoxShadow(
+                          color: widget.isDarkMode
+                              ? AppColors.primary.withValues(alpha: 0.08)
+                              : AppColors.primary.withValues(alpha: 0.15),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ]
+                    : null,
+              ),
+              child: Row(
+                children: [
+                  // Indicador de foco en el lado izquierdo
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 150),
+                    width: 3,
+                    height: isSelected ? 50 : 0,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.7),
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(1.5),
+                        bottomRight: Radius.circular(1.5),
                       ),
-                    ]
-                  : null,
-            ),
-            child: Row(
-              children: [
-                // Indicador de foco en el lado izquierdo
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 150),
-                  width: 3,
-                  height: isSelected ? 50 : 0,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.7),
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(1.5),
-                      bottomRight: Radius.circular(1.5),
                     ),
                   ),
-                ),
-                // Contenido de la fila
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                    child: Row(
-                      children: [
-                        // Información del estudiante
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                student.fullName,
-                                style: TextStyle(
-                                  color: AppColors.textPrimary(widget.isDarkMode),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                  // Contenido de la fila
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          // Información del estudiante
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  student.fullName,
+                                  style: TextStyle(
+                                    color: AppColors.textPrimary(
+                                      widget.isDarkMode,
+                                    ),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '${student.level} - ${student.course}',
-                                style: TextStyle(
-                                  color: AppColors.textSecondary(widget.isDarkMode),
-                                  fontSize: 14,
+                                Text(
+                                  '${student.level} - ${student.course}',
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary(
+                                      widget.isDarkMode,
+                                    ),
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Checkbox para ausencia
-                        GestureDetector(
-                          onTap: () => widget.controller.toggleAbsence(student.id),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            child: Icon(
-                              widget.controller.isAbsent(student.id)
-                                  ? Icons.radio_button_checked
-                                  : Icons.radio_button_unchecked,
-                              color: widget.controller.isAbsent(student.id)
-                                  ? Colors.red.shade400
-                                  : AppColors.iconSecondary(widget.isDarkMode),
-                              size: 24,
+                              ],
                             ),
                           ),
-                        ),
-                      ],
+                          // Checkbox para ausencia
+                          GestureDetector(
+                            onTap: () =>
+                                widget.controller.toggleAbsence(student.id),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              child: Icon(
+                                widget.controller.isAbsent(student.id)
+                                    ? Icons.radio_button_checked
+                                    : Icons.radio_button_unchecked,
+                                color: widget.controller.isAbsent(student.id)
+                                    ? Colors.red.shade400
+                                    : AppColors.iconSecondary(
+                                        widget.isDarkMode,
+                                      ),
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

@@ -47,3 +47,4 @@ class MenuOption {
     return 'MenuOption(id: $id, title: $title)';
   }
 }
+

@@ -176,3 +176,4 @@ Tu **Sistema Faro** está completamente configurado para producción. Solo neces
 ¡En 10 minutos tendrás tu aplicación en línea! 🎉✨
 
 **URL Final**: `https://sistema-faro.vercel.app`
+

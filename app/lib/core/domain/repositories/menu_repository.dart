@@ -7,3 +7,4 @@ abstract class MenuRepository {
   /// Obtiene una opción específica por su ID
   Future<MenuOption?> getMenuOptionById(String id);
 }
+

@@ -174,15 +174,23 @@ class _NavigationModalState extends State<NavigationModal>
 
   void _scrollToSelectedItem() {
     if (_filteredItems.isNotEmpty && _scrollController.hasClients) {
-      final itemHeight = 62.0;
-      final containerHeight =
-          MediaQuery.of(context).size.height *
-          0.4; // Altura fija del contenedor
-      final padding = 16.0;
-      final availableHeight =
-          containerHeight - (padding * 2); // Altura disponible para items
-      final visibleItems = (availableHeight / itemHeight)
-          .floor(); // Número de items visibles
+      // Calcular altura real del item incluyendo padding y separador
+      final itemPadding = MediaQuery.of(context).size.height > 800
+          ? 16.0
+          : 12.0;
+      final itemMargin = 1.0;
+      final separatorHeight = 2.0;
+      final itemHeight =
+          (itemPadding * 2) +
+          40 +
+          itemMargin +
+          separatorHeight; // 40 es altura del contenido del item
+
+      // Obtener altura real del contenedor
+      final containerHeight = MediaQuery.of(context).size.height * 0.4;
+      final listPadding = 16.0;
+      final availableHeight = containerHeight - (listPadding * 2);
+      final visibleItems = (availableHeight / itemHeight).floor();
 
       // Calcular la posición para centrar el item seleccionado
       double targetScrollOffset;
@@ -608,6 +616,29 @@ class _NavigationModalState extends State<NavigationModal>
 
   IconData _getIconForItem(String item) {
     final l = item.toLowerCase();
+
+    // Opciones del menú principal en español
+    if (l.contains('panel principal') || l.contains('dashboard'))
+      return Icons.dashboard;
+    if (l.contains('control de asistencia') || l.contains('asistencia'))
+      return Icons.people;
+    if (l.contains('agenda') || l.contains('calendario')) return Icons.event;
+    if (l.contains('evaluaciones') || l.contains('assessment'))
+      return Icons.assessment;
+    if (l.contains('reportes de incidencias') ||
+        l.contains('reportes') ||
+        l.contains('incidencias'))
+      return Icons.report;
+    if (l.contains('asistente virtual') ||
+        l.contains('asistente') ||
+        l.contains('ai'))
+      return Icons.smart_toy;
+    if (l.contains('estructura organizacional') ||
+        l.contains('organizacional') ||
+        l.contains('organigrama'))
+      return Icons.account_tree;
+
+    // Fallbacks para otros casos
     if (l.contains('overview')) return Icons.dashboard_outlined;
     if (l.contains('integrat')) return Icons.extension_outlined;
     if (l.contains('deploy')) return Icons.cloud_upload_outlined;
@@ -617,9 +648,9 @@ class _NavigationModalState extends State<NavigationModal>
     if (l.contains('observ')) return Icons.remove_red_eye_outlined;
     if (l.contains('storage')) return Icons.storage_outlined;
     if (l.contains('flag')) return Icons.flag_outlined;
-    if (l.contains('ai')) return Icons.smart_toy_outlined;
     if (l.contains('support')) return Icons.headset_mic_outlined;
     if (l.contains('setting')) return Icons.settings_outlined;
+
     return Icons.folder_open_outlined;
   }
 }

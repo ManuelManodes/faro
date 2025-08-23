@@ -19,3 +19,4 @@ abstract class UserRepository {
   /// Busca usuarios por nombre
   Future<List<User>> searchUsersByName(String name);
 }
+

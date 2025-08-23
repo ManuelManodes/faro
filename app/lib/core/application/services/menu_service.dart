@@ -12,3 +12,4 @@ class MenuService {
     return await _getMenuOptionsUseCase.execute();
   }
 }
+

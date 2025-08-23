@@ -173,3 +173,4 @@ El sistema ahora tiene:
 - **Rendimiento optimizado**: Sin errores de layout
 
 La aplicación está lista para la siguiente fase de desarrollo con persistencia de datos.
+

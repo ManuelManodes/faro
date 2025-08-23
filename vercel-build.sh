@@ -43,3 +43,4 @@ if [ ! -f "build/web/main.dart.js" ]; then
 fi
 
 echo "🎉 ¡Sistema Faro listo para producción!"
+

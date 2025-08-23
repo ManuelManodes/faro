@@ -113,3 +113,4 @@ El favicon personalizado ha sido implementado exitosamente:
 - ✅ **Rendimiento optimizado** para favicons
 
 El sistema ahora usa tu favicon personalizado tanto en la pestaña del navegador como en la aplicación, proporcionando una identidad visual única y profesional.
+

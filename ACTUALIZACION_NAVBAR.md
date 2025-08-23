@@ -154,3 +154,4 @@ El navbar ha sido completamente actualizado para reflejar las nuevas funcionalid
 - ✅ **Preparado para navegación real** con GoRouter
 
 El sistema ahora tiene una interfaz de navegación coherente y funcional que refleja correctamente las capacidades del sistema de gestión empresarial.
+
