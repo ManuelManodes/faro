@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🚀 Iniciando build de Sistema Faro..."
+echo "🚀 Iniciando build de Sistema Faro (v2)..."
 
 # Verificar la estructura del directorio y navegar al directorio correcto
 if [ -f "app/pubspec.yaml" ]; then
