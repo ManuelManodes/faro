@@ -527,16 +527,8 @@ class _NavigationModalState extends State<NavigationModal>
   Widget _buildDropdownItem(String item, bool isSelected, bool isDarkMode) {
     final isCurrentItem = item == widget.selectedItem;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 1),
-      decoration: BoxDecoration(
-        color: isSelected
-            ? (isDarkMode
-                  ? Colors.white.withOpacity(0.08)
-                  : Colors.blue.withOpacity(0.08))
-            : Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-      ),
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: () {
           widget.onItemSelected(item);
@@ -544,9 +536,18 @@ class _NavigationModalState extends State<NavigationModal>
         },
         borderRadius: BorderRadius.circular(8),
         child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 1),
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width > 600 ? 16 : 12,
             vertical: MediaQuery.of(context).size.height > 800 ? 16 : 12,
+          ),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? (isDarkMode
+                      ? Colors.white.withOpacity(0.08)
+                      : Colors.blue.withOpacity(0.08))
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             children: [
