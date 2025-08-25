@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../controllers/attendance_header_controller.dart';
 import '../controllers/attendance_list_controller.dart';
+import '../controllers/assistant_header_controller.dart';
+import '../controllers/assistant_chat_controller.dart';
 import 'attendance_table_widget.dart';
+import 'assistant_chat_widget.dart';
 import 'common/common.dart';
 
 /// Widget que muestra el título actual seleccionado en la navegación y un
@@ -44,6 +47,11 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
     // Si el título es "Control de Asistencia", mostrar controles específicos
     if (widget.title == 'Control de Asistencia') {
       return _buildAttendanceControls();
+    }
+
+    // Si el título es "Asistente Virtual", mostrar controles específicos
+    if (widget.title == 'Asistente Virtual') {
+      return _buildAssistantControls();
     }
 
     return Row(
@@ -133,6 +141,9 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
                 ),
               ),
             ),
+            // Contenido expandido para Asistente Virtual
+            if (widget.title == 'Asistente Virtual')
+              Expanded(child: _buildAssistantContent(context, isDarkMode)),
           ],
         );
       },
@@ -706,6 +717,419 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
         duration: const Duration(seconds: 4),
         elevation: 8,
       ),
+    );
+  }
+
+  // ===== MÉTODOS PARA ASISTENTE VIRTUAL =====
+
+  Widget _buildAssistantControls() {
+    return Consumer2<ThemeProvider, AssistantHeaderController>(
+      builder: (context, themeProvider, assistantController, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+
+        return Row(
+          children: [
+            // Indicador de documento activo o botón para seleccionar
+            if (assistantController.hasDocumentSelected) ...[
+              GestureDetector(
+                onTap: () => _showDocumentPicker(
+                  context,
+                  isDarkMode,
+                  assistantController,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.green.withValues(alpha: 0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.description,
+                        size: 12,
+                        color: Colors.green.shade600,
+                      ),
+                      AppSpacing.xsH,
+                      Text(
+                        assistantController.documentName,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.green.shade600,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      AppSpacing.xsH,
+                      Icon(Icons.edit, size: 10, color: Colors.green.shade600),
+                    ],
+                  ),
+                ),
+              ),
+              AppSpacing.mdH,
+            ] else ...[
+              // Botón para seleccionar documento
+              GestureDetector(
+                onTap: () => _showDocumentPicker(
+                  context,
+                  isDarkMode,
+                  assistantController,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface(isDarkMode),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppColors.dividerTheme(isDarkMode),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.description,
+                        size: 16,
+                        color: AppColors.iconSecondary(isDarkMode),
+                      ),
+                      AppSpacing.xsH,
+                      Text(
+                        'Seleccionar documento',
+                        style: TextStyle(
+                          color: AppColors.textPrimary(isDarkMode),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      AppSpacing.xsH,
+                      Icon(
+                        Icons.arrow_drop_down,
+                        size: 16,
+                        color: AppColors.iconSecondary(isDarkMode),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              AppSpacing.mdH,
+            ],
+
+            // Selector de Modelo de IA
+            _buildModelSelector(context, isDarkMode, assistantController),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildModelSelector(
+    BuildContext context,
+    bool isDarkMode,
+    AssistantHeaderController controller,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        _showModelPicker(context, isDarkMode, controller);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.surface(isDarkMode),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.psychology,
+              size: 16,
+              color: AppColors.iconSecondary(isDarkMode),
+            ),
+            AppSpacing.xsH,
+            Text(
+              controller.selectedModel,
+              style: TextStyle(
+                color: AppColors.textPrimary(isDarkMode),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            AppSpacing.xsH,
+            Icon(
+              Icons.arrow_drop_down,
+              size: 16,
+              color: AppColors.iconSecondary(isDarkMode),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDocumentPicker(
+    BuildContext context,
+    bool isDarkMode,
+    AssistantHeaderController controller,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            width: 320,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.surface(isDarkMode),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Título
+                Row(
+                  children: [
+                    Icon(
+                      Icons.description,
+                      size: 20,
+                      color: AppColors.iconPrimary(isDarkMode),
+                    ),
+                    AppSpacing.smH,
+                    Text(
+                      'Seleccionar Documento',
+                      style: TextStyle(
+                        color: AppColors.textPrimary(isDarkMode),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.close,
+                        size: 20,
+                        color: AppColors.iconSecondary(isDarkMode),
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                AppSpacing.mdV,
+                // Lista de documentos
+                ...AssistantHeaderController.availableDocuments.map((document) {
+                  final isSelected = document == controller.selectedDocument;
+                  return GestureDetector(
+                    onTap: () {
+                      controller.setDocument(document);
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColors.primary.withValues(alpha: 0.1)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        border: isSelected
+                            ? Border.all(color: AppColors.primary, width: 1)
+                            : null,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.description,
+                            size: 16,
+                            color: isSelected
+                                ? AppColors.primary
+                                : AppColors.iconSecondary(isDarkMode),
+                          ),
+                          AppSpacing.smH,
+                          Expanded(
+                            child: Text(
+                              document,
+                              style: TextStyle(
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.textPrimary(isDarkMode),
+                                fontSize: 14,
+                                fontWeight: isSelected
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          if (isSelected)
+                            Icon(
+                              Icons.check,
+                              size: 16,
+                              color: AppColors.primary,
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showModelPicker(
+    BuildContext context,
+    bool isDarkMode,
+    AssistantHeaderController controller,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            width: 280,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.surface(isDarkMode),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Título
+                Row(
+                  children: [
+                    Icon(
+                      Icons.psychology,
+                      size: 20,
+                      color: AppColors.iconPrimary(isDarkMode),
+                    ),
+                    AppSpacing.smH,
+                    Text(
+                      'Modelo de IA',
+                      style: TextStyle(
+                        color: AppColors.textPrimary(isDarkMode),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.close,
+                        size: 20,
+                        color: AppColors.iconSecondary(isDarkMode),
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                AppSpacing.mdV,
+                // Lista de modelos
+                ...AssistantHeaderController.availableModels.map((model) {
+                  final isSelected = model == controller.selectedModel;
+                  return GestureDetector(
+                    onTap: () {
+                      controller.setModel(model);
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColors.primary.withValues(alpha: 0.1)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        border: isSelected
+                            ? Border.all(color: AppColors.primary, width: 1)
+                            : null,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.psychology,
+                            size: 16,
+                            color: isSelected
+                                ? AppColors.primary
+                                : AppColors.iconSecondary(isDarkMode),
+                          ),
+                          AppSpacing.smH,
+                          Expanded(
+                            child: Text(
+                              model,
+                              style: TextStyle(
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.textPrimary(isDarkMode),
+                                fontSize: 14,
+                                fontWeight: isSelected
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          if (isSelected)
+                            Icon(
+                              Icons.check,
+                              size: 16,
+                              color: AppColors.primary,
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAssistantContent(BuildContext context, bool isDarkMode) {
+    return Consumer2<AssistantHeaderController, AssistantChatController>(
+      builder: (context, headerController, chatController, child) {
+        return Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: AssistantChatWidget(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

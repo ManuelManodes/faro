@@ -142,7 +142,7 @@ class AppSearchField extends StatelessWidget {
       borderRadius: BorderRadius.circular(6),
       border: Border.all(
         color: isDarkMode
-            ? Colors.white.withOpacity(0.2)
+            ? Colors.white.withValues(alpha: 0.2)
             : theme.dividerColor.withAlpha(120),
       ),
     );
@@ -153,11 +153,11 @@ class AppSearchField extends StatelessWidget {
       color: isDarkMode ? const Color(0xFF2A2A2A) : AppColors.white,
       borderRadius: AppBorderRadius.md,
       border: Border.all(
-        color: isDarkMode ? Colors.white.withOpacity(0.2) : AppColors.divider,
+        color: isDarkMode ? Colors.white.withValues(alpha: 0.2) : AppColors.divider,
       ),
       boxShadow: [
         BoxShadow(
-          color: isDarkMode ? Colors.black.withOpacity(0.3) : AppColors.shadow,
+          color: isDarkMode ? Colors.black.withValues(alpha: 0.3) : AppColors.shadow,
           blurRadius: 8,
           offset: const Offset(0, 2),
         ),

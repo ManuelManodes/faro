@@ -61,7 +61,7 @@ class ThemeProvider extends ChangeNotifier {
       brightness: Brightness.light,
     ),
     scaffoldBackgroundColor: Colors.white,
-    dividerColor: Colors.black.withOpacity(0.1),
+    dividerColor: Colors.black.withValues(alpha: 0.1),
     cardColor: Colors.white,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.white,
@@ -92,7 +92,7 @@ class ThemeProvider extends ChangeNotifier {
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: const Color(0xFF121212),
-    dividerColor: Colors.white.withOpacity(0.1),
+    dividerColor: Colors.white.withValues(alpha: 0.1),
     cardColor: const Color(0xFF1E1E1E),
     appBarTheme: AppBarTheme(
       backgroundColor: const Color(0xFF121212),

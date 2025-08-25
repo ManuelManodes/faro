@@ -30,11 +30,11 @@ class AppCard extends StatelessWidget {
   }) {
     return AppCard(
       key: key,
-      child: child,
       padding: padding,
       elevation: elevation,
       borderRadius: borderRadius ?? BorderRadius.circular(12),
       backgroundColor: Colors.white,
+      child: child,
     );
   }
 
@@ -47,7 +47,6 @@ class AppCard extends StatelessWidget {
   }) {
     return AppCard(
       key: key,
-      child: child,
       padding: padding,
       borderRadius: borderRadius ?? BorderRadius.circular(12),
       backgroundColor: Colors.white,
@@ -55,6 +54,7 @@ class AppCard extends StatelessWidget {
         color: borderColor ?? Colors.grey.withAlpha(90),
         width: 1,
       ),
+      child: child,
     );
   }
 

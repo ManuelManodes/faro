@@ -26,23 +26,6 @@ class AppSpacing {
   static const Widget xlV = SizedBox(height: xl);
   static const Widget xxlV = SizedBox(height: xxl);
   static const Widget xxxlV = SizedBox(height: xxxl);
-
-  // Compatibility getters for old naming
-  static Widget get xs_h => xsH;
-  static Widget get sm_h => smH;
-  static Widget get md_h => mdH;
-  static Widget get lg_h => lgH;
-  static Widget get xl_h => xlH;
-  static Widget get xxl_h => xxlH;
-  static Widget get xxxl_h => xxxlH;
-
-  static Widget get xs_v => xsV;
-  static Widget get sm_v => smV;
-  static Widget get md_v => mdV;
-  static Widget get lg_v => lgV;
-  static Widget get xl_v => xlV;
-  static Widget get xxl_v => xxlV;
-  static Widget get xxxl_v => xxxlV;
 }
 
 /// Colores de la aplicación
@@ -94,8 +77,8 @@ class AppColors {
 
   static Color dividerTheme(bool isDarkMode) {
     return isDarkMode
-        ? Colors.white.withOpacity(0.2)
-        : Colors.black.withOpacity(0.1);
+        ? Colors.white.withValues(alpha: 0.2)
+        : Colors.black.withValues(alpha: 0.1);
   }
 }
 
@@ -148,7 +131,9 @@ class AppContainerStyles {
       borderRadius: AppBorderRadius.md,
       boxShadow: [
         BoxShadow(
-          color: isDarkMode ? Colors.black.withOpacity(0.3) : AppColors.shadow,
+          color: isDarkMode
+              ? Colors.black.withValues(alpha: 0.3)
+              : AppColors.shadow,
           blurRadius: 8,
           offset: const Offset(0, 2),
         ),

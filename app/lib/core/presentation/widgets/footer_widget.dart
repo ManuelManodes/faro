@@ -56,8 +56,8 @@ class _FooterWidgetState extends State<FooterWidget>
             border: Border(
               top: BorderSide(
                 color: isDarkMode
-                    ? Colors.white.withOpacity(0.1)
-                    : Colors.black.withOpacity(0.1),
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.black.withValues(alpha: 0.1),
                 width: 1.0,
               ),
             ),
@@ -203,7 +203,7 @@ class _FooterWidgetState extends State<FooterWidget>
           child: Text(
             link['text']!,
             style: TextStyle(
-              color: textColor.withOpacity(0.8),
+              color: textColor.withValues(alpha: 0.8),
               fontSize: 14,
               fontWeight: FontWeight.w400,
             ),
@@ -227,49 +227,55 @@ class _FooterWidgetState extends State<FooterWidget>
           mode: LaunchMode.externalApplication, // Abre en nueva pestaña
         );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.open_in_new, color: Colors.white, size: 16),
-                const SizedBox(width: 8),
-                Expanded(child: Text('$linkName abierto en nueva pestaña')),
-              ],
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.open_in_new, color: Colors.white, size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text('$linkName abierto en nueva pestaña')),
+                ],
+              ),
+              duration: const Duration(seconds: 2),
+              backgroundColor: Colors.green,
             ),
-            duration: const Duration(seconds: 2),
-            backgroundColor: Colors.green,
-          ),
-        );
+          );
+        }
       } else {
         throw Exception('No se pudo abrir la URL');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              const Icon(Icons.error_outline, color: Colors.white, size: 16),
-              const SizedBox(width: 8),
-              Expanded(child: Text('Error al abrir $linkName')),
-            ],
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white, size: 16),
+                const SizedBox(width: 8),
+                Expanded(child: Text('Error al abrir $linkName')),
+              ],
+            ),
+            duration: const Duration(seconds: 3),
+            backgroundColor: Colors.red,
+            action: SnackBarAction(
+              label: 'Copiar URL',
+              textColor: Colors.white,
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: url));
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('URL copiada al portapapeles'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.red,
-          action: SnackBarAction(
-            label: 'Copiar URL',
-            textColor: Colors.white,
-            onPressed: () async {
-              await Clipboard.setData(ClipboardData(text: url));
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('URL copiada al portapapeles'),
-                  duration: Duration(seconds: 1),
-                ),
-              );
-            },
-          ),
-        ),
-      );
+        );
+      }
     }
   }
 
@@ -278,8 +284,8 @@ class _FooterWidgetState extends State<FooterWidget>
       '© 2025, Sistema de Gestión Faro',
       style: TextStyle(
         color: isDarkMode
-            ? Colors.white.withOpacity(0.6)
-            : Colors.black.withOpacity(0.6),
+            ? Colors.white.withValues(alpha: 0.6)
+            : Colors.black.withValues(alpha: 0.6),
         fontSize: 12,
         fontWeight: FontWeight.w400,
       ),
@@ -297,7 +303,7 @@ class _FooterWidgetState extends State<FooterWidget>
               width: 8,
               height: 8,
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(_blinkAnimation.value),
+                color: Colors.green.withValues(alpha: _blinkAnimation.value),
                 shape: BoxShape.circle,
               ),
             );
@@ -312,8 +318,8 @@ class _FooterWidgetState extends State<FooterWidget>
               'Sistema operativo',
               style: TextStyle(
                 color: isDarkMode
-                    ? Colors.white.withOpacity(0.8)
-                    : Colors.black.withOpacity(0.8),
+                    ? Colors.white.withValues(alpha: 0.8)
+                    : Colors.black.withValues(alpha: 0.8),
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
@@ -322,8 +328,8 @@ class _FooterWidgetState extends State<FooterWidget>
               'v1.0.0 - Estable',
               style: TextStyle(
                 color: isDarkMode
-                    ? Colors.white.withOpacity(0.6)
-                    : Colors.black.withOpacity(0.6),
+                    ? Colors.white.withValues(alpha: 0.6)
+                    : Colors.black.withValues(alpha: 0.6),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
@@ -342,13 +348,13 @@ class _FooterWidgetState extends State<FooterWidget>
     return Container(
       decoration: BoxDecoration(
         color: isDarkMode
-            ? Colors.white.withOpacity(0.1)
-            : Colors.black.withOpacity(0.05),
+            ? Colors.white.withValues(alpha: 0.1)
+            : Colors.black.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: isDarkMode
-              ? Colors.white.withOpacity(0.2)
-              : Colors.black.withOpacity(0.1),
+              ? Colors.white.withValues(alpha: 0.2)
+              : Colors.black.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -408,15 +414,15 @@ class _FooterWidgetState extends State<FooterWidget>
           decoration: BoxDecoration(
             color: isActive
                 ? (isDarkMode
-                      ? Colors.white.withOpacity(0.2)
-                      : Colors.black.withOpacity(0.1))
+                      ? Colors.white.withValues(alpha: 0.2)
+                      : Colors.black.withValues(alpha: 0.1))
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(6),
             border: isActive
                 ? Border.all(
                     color: isDarkMode
-                        ? Colors.white.withOpacity(0.3)
-                        : Colors.black.withOpacity(0.2),
+                        ? Colors.white.withValues(alpha: 0.3)
+                        : Colors.black.withValues(alpha: 0.2),
                     width: 1,
                   )
                 : null,
@@ -424,7 +430,7 @@ class _FooterWidgetState extends State<FooterWidget>
           child: Icon(
             icon,
             size: 16,
-            color: isActive ? textColor : textColor.withOpacity(0.5),
+            color: isActive ? textColor : textColor.withValues(alpha: 0.5),
           ),
         ),
       ),

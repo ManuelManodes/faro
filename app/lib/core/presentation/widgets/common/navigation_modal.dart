@@ -27,7 +27,7 @@ class NavigationModal extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withOpacity(0.4),
+      barrierColor: Colors.black.withValues(alpha: 0.4),
       isDismissible: true,
       enableDrag: true,
       builder: (context) => NavigationModal(
@@ -286,8 +286,8 @@ class _NavigationModalState extends State<NavigationModal>
                               boxShadow: [
                                 BoxShadow(
                                   color: isDarkMode
-                                      ? Colors.black.withOpacity(0.4)
-                                      : Colors.black.withOpacity(0.1),
+                                      ? Colors.black.withValues(alpha: 0.4)
+                                      : Colors.black.withValues(alpha: 0.1),
                                   blurRadius: 20,
                                   spreadRadius: 0,
                                   offset: const Offset(0, 10),
@@ -320,8 +320,8 @@ class _NavigationModalState extends State<NavigationModal>
                                   ),
                                   decoration: BoxDecoration(
                                     color: isDarkMode
-                                        ? Colors.white.withOpacity(0.05)
-                                        : Colors.grey.withOpacity(0.05),
+                                        ? Colors.white.withValues(alpha: 0.05)
+                                        : Colors.grey.withValues(alpha: 0.05),
                                     borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(16),
                                     ),
@@ -358,11 +358,11 @@ class _NavigationModalState extends State<NavigationModal>
                                             ),
                                             decoration: BoxDecoration(
                                               color: isDarkMode
-                                                  ? Colors.white.withOpacity(
-                                                      0.1,
+                                                  ? Colors.white.withValues(
+                                                      alpha: 0.1,
                                                     )
-                                                  : Colors.grey.withOpacity(
-                                                      0.1,
+                                                  : Colors.grey.withValues(
+                                                      alpha: 0.1,
                                                     ),
                                               borderRadius:
                                                   BorderRadius.circular(6),
@@ -405,11 +405,11 @@ class _NavigationModalState extends State<NavigationModal>
                                             ),
                                             borderSide: BorderSide(
                                               color: isDarkMode
-                                                  ? Colors.white.withOpacity(
-                                                      0.2,
+                                                  ? Colors.white.withValues(
+                                                      alpha: 0.2,
                                                     )
-                                                  : Colors.grey.withOpacity(
-                                                      0.3,
+                                                  : Colors.grey.withValues(
+                                                      alpha: 0.3,
                                                     ),
                                             ),
                                           ),
@@ -419,11 +419,11 @@ class _NavigationModalState extends State<NavigationModal>
                                             ),
                                             borderSide: BorderSide(
                                               color: isDarkMode
-                                                  ? Colors.white.withOpacity(
-                                                      0.2,
+                                                  ? Colors.white.withValues(
+                                                      alpha: 0.2,
                                                     )
-                                                  : Colors.grey.withOpacity(
-                                                      0.3,
+                                                  : Colors.grey.withValues(
+                                                      alpha: 0.3,
                                                     ),
                                             ),
                                           ),
@@ -433,18 +433,22 @@ class _NavigationModalState extends State<NavigationModal>
                                             ),
                                             borderSide: BorderSide(
                                               color: isDarkMode
-                                                  ? Colors.white.withOpacity(
-                                                      0.4,
+                                                  ? Colors.white.withValues(
+                                                      alpha: 0.4,
                                                     )
-                                                  : Colors.blue.withOpacity(
-                                                      0.6,
+                                                  : Colors.blue.withValues(
+                                                      alpha: 0.6,
                                                     ),
                                             ),
                                           ),
                                           filled: true,
                                           fillColor: isDarkMode
-                                              ? Colors.white.withOpacity(0.05)
-                                              : Colors.grey.withOpacity(0.05),
+                                              ? Colors.white.withValues(
+                                                  alpha: 0.05,
+                                                )
+                                              : Colors.grey.withValues(
+                                                  alpha: 0.05,
+                                                ),
                                           contentPadding: EdgeInsets.symmetric(
                                             horizontal:
                                                 MediaQuery.of(
@@ -532,8 +536,8 @@ class _NavigationModalState extends State<NavigationModal>
       decoration: BoxDecoration(
         color: isSelected
             ? (isDarkMode
-                  ? Colors.white.withOpacity(0.08)
-                  : Colors.blue.withOpacity(0.08))
+                  ? Colors.white.withValues(alpha: 0.08)
+                  : Colors.blue.withValues(alpha: 0.08))
             : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
       ),
@@ -556,8 +560,8 @@ class _NavigationModalState extends State<NavigationModal>
                 height: MediaQuery.of(context).size.width > 600 ? 40 : 36,
                 decoration: BoxDecoration(
                   color: isDarkMode
-                      ? Colors.white.withOpacity(0.1)
-                      : Colors.grey.withOpacity(0.1),
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.grey.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -618,25 +622,33 @@ class _NavigationModalState extends State<NavigationModal>
     final l = item.toLowerCase();
 
     // Opciones del menú principal en español
-    if (l.contains('panel principal') || l.contains('dashboard'))
+    if (l.contains('panel principal') || l.contains('dashboard')) {
       return Icons.dashboard;
-    if (l.contains('control de asistencia') || l.contains('asistencia'))
+    }
+    if (l.contains('control de asistencia') || l.contains('asistencia')) {
       return Icons.people;
-    if (l.contains('agenda') || l.contains('calendario')) return Icons.event;
-    if (l.contains('evaluaciones') || l.contains('assessment'))
+    }
+    if (l.contains('agenda') || l.contains('calendario')) {
+      return Icons.event;
+    }
+    if (l.contains('evaluaciones') || l.contains('assessment')) {
       return Icons.assessment;
+    }
     if (l.contains('reportes de incidencias') ||
         l.contains('reportes') ||
-        l.contains('incidencias'))
+        l.contains('incidencias')) {
       return Icons.report;
+    }
     if (l.contains('asistente virtual') ||
         l.contains('asistente') ||
-        l.contains('ai'))
+        l.contains('ai')) {
       return Icons.smart_toy;
+    }
     if (l.contains('estructura organizacional') ||
         l.contains('organizacional') ||
-        l.contains('organigrama'))
+        l.contains('organigrama')) {
       return Icons.account_tree;
+    }
 
     // Fallbacks para otros casos
     if (l.contains('overview')) return Icons.dashboard_outlined;

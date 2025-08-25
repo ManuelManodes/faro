@@ -11,19 +11,19 @@ class SearchFocusManager {
 
   /// Registra el callback para mostrar el modal de navegación
   void registerNavigationModal(VoidCallback callback) {
-    print('🔍 Registrando modal de navegación');
+    // 🔍 Registrando modal de navegación
     _showNavigationModal = callback;
   }
 
   /// Desregistra el callback del modal de navegación
   void unregisterNavigationModal() {
-    print('🔍 Desregistrando modal de navegación');
+    // 🔍 Desregistrando modal de navegación
     _showNavigationModal = null;
   }
 
   /// Muestra el modal de navegación
   void showNavigationModal() {
-    print('🔍 Mostrando modal de navegación');
+    // 🔍 Mostrando modal de navegación
     _showNavigationModal?.call();
   }
 
@@ -42,7 +42,7 @@ class AppShortcuts extends StatelessWidget {
     return CallbackShortcuts(
       bindings: <ShortcutActivator, VoidCallback>{
         const SingleActivator(LogicalKeyboardKey.keyB): () {
-          print('🔍 Callback shortcut B activado!');
+          // 🔍 Callback shortcut B activado!
           SearchFocusManager().showNavigationModal();
         },
       },

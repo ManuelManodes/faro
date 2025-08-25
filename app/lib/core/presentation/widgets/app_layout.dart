@@ -75,11 +75,10 @@ class _AppLayoutState extends State<AppLayout> {
                 ),
               ),
 
-              // Para Control de Asistencia, usar layout especial
-              if (_selected == 'Control de Asistencia')
-                Expanded(
-                  child: ViewHeaderWidget(title: _selected),
-                )
+              // Para Control de Asistencia y Asistente Virtual, usar layout especial
+              if (_selected == 'Control de Asistencia' ||
+                  _selected == 'Asistente Virtual')
+                Expanded(child: ViewHeaderWidget(title: _selected))
               else ...[
                 // Espacio debajo del navbar horizontal para otras vistas
                 Container(
