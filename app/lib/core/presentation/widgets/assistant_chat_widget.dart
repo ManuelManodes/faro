@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/assistant_chat_controller.dart';
 import 'common/common.dart';
+import 'common/pressable_icon_button.dart';
+import 'common/confirmation_dialog.dart';
 
 /// Widget principal del chat del asistente virtual
 class AssistantChatWidget extends StatefulWidget {
@@ -243,28 +244,30 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
 
           // Mensaje
           Flexible(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 280),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.surface(isDarkMode),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message.content,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textPrimary(isDarkMode),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  constraints: const BoxConstraints(maxWidth: 280),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface(isDarkMode),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColors.dividerTheme(isDarkMode),
                     ),
                   ),
-                  AppSpacing.xsV,
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        message.content,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textPrimary(isDarkMode),
+                        ),
+                      ),
+                      AppSpacing.xsV,
                       Text(
                         _formatTime(message.timestamp),
                         style: TextStyle(
@@ -272,34 +275,16 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
                           color: AppColors.textSecondary(isDarkMode),
                         ),
                       ),
-                      if (!message.isUser) ...[
-                        AppSpacing.smH,
-                        GestureDetector(
-                          onTap: () {
-                            _copyToClipboard(context, message.content);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.green.withValues(alpha: 0.15),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                color: Colors.green.withValues(alpha: 0.3),
-                                width: 1,
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.copy,
-                              size: 12,
-                              color: Colors.green.shade600,
-                            ),
-                          ),
-                        ),
-                      ],
                     ],
                   ),
+                ),
+
+                // Icono de copiar sutil (debajo de la tarjeta)
+                if (!message.isUser) ...[
+                  AppSpacing.xsV,
+                  CopyButton(textToCopy: message.content, size: 14),
                 ],
-              ),
+              ],
             ),
           ),
 
@@ -472,34 +457,10 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
   void _showClearChatDialog(BuildContext context, bool isDarkMode) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(Icons.clear_all, color: AppColors.primary),
-            AppSpacing.smH,
-            Text(
-              'Limpiar chat',
-              style: TextStyle(color: AppColors.textPrimary(isDarkMode)),
-            ),
-          ],
-        ),
-        content: Text(
-          '¿Estás seguro de que quieres limpiar todo el historial del chat? Esta acción no se puede deshacer.',
-          style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
-        ),
-        actions: [
-          AppButton.outlined(
-            text: 'Cancelar',
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          AppButton.primary(
-            text: 'Limpiar',
-            onPressed: () {
-              context.read<AssistantChatController>().clearChat();
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+      builder: (context) => ClearChatDialog(
+        onConfirm: () {
+          context.read<AssistantChatController>().clearChat();
+        },
       ),
     );
   }
@@ -517,26 +478,5 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
     } else {
       return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
     }
-  }
-
-  void _copyToClipboard(BuildContext context, String text) {
-    Clipboard.setData(ClipboardData(text: text));
-    
-    // Mostrar snackbar de confirmación
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.white, size: 16),
-            AppSpacing.smH,
-            Text('Respuesta copiada al portapapeles'),
-          ],
-        ),
-        backgroundColor: Colors.green.shade600,
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-    );
   }
 }

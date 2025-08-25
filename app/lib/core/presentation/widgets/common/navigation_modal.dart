@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
 import 'theme_provider.dart';
 
 /// Modal de navegación que se abre desde el centro de la pantalla
 class NavigationModal extends StatefulWidget {
+  /// Obtiene el shortcut correcto según la plataforma
+  static String getShortcutText() {
+    // Detectar macOS usando defaultTargetPlatform
+    if (defaultTargetPlatform == TargetPlatform.macOS) {
+      return '⌘ + b';
+    } else {
+      return 'Ctrl + b';
+    }
+  }
+
   final List<String> navigationItems;
   final String selectedItem;
   final ValueChanged<String> onItemSelected;
@@ -368,7 +379,7 @@ class _NavigationModalState extends State<NavigationModal>
                                                   BorderRadius.circular(6),
                                             ),
                                             child: Text(
-                                              'B',
+                                              NavigationModal.getShortcutText(),
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w600,

@@ -41,8 +41,14 @@ class AppShortcuts extends StatelessWidget {
   Widget build(BuildContext context) {
     return CallbackShortcuts(
       bindings: <ShortcutActivator, VoidCallback>{
-        const SingleActivator(LogicalKeyboardKey.keyB): () {
-          // 🔍 Callback shortcut B activado!
+        const SingleActivator(
+          LogicalKeyboardKey.keyB,
+          control: false,
+          alt: false,
+          shift: false,
+          meta: true,
+        ): () {
+          // 🔍 Callback shortcut Cmd+B activado!
           SearchFocusManager().showNavigationModal();
         },
       },
