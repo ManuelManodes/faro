@@ -7,6 +7,20 @@ set -e
 
 echo "🚀 Iniciando build de Sistema Faro (v2)..."
 
+# Instalar Flutter si no está disponible
+if ! command -v flutter &> /dev/null; then
+    echo "📥 Flutter no encontrado, instalando..."
+    
+    # Descargar Flutter
+    git clone https://github.com/flutter/flutter.git -b stable --depth 1
+    export PATH="$PATH:$PWD/flutter/bin"
+    
+    # Verificar instalación
+    flutter doctor
+else
+    echo "✅ Flutter ya está instalado"
+fi
+
 # Verificar la estructura del directorio y navegar al directorio correcto
 if [ -f "app/pubspec.yaml" ]; then
     echo "📁 Encontrado pubspec.yaml en app/"

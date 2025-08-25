@@ -1,5 +1,5 @@
 {
-    "buildCommand": "cd app && flutter build web",
+    "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh",
     "outputDirectory": "app/build/web",
     "rewrites": [
         {
@@ -7,6 +7,6 @@
             "destination": "/index.html"
         }
     ],
-    "installCommand": "cd app && flutter pub get",
+    "installCommand": "echo 'Flutter will be installed in build step'",
     "framework": null
 }
