@@ -1,5 +1,5 @@
 {
-    "buildCommand": "echo 'Build already done locally'",
+    "buildCommand": "cd app && flutter build web",
     "outputDirectory": "app/build/web",
     "rewrites": [
         {
@@ -7,6 +7,6 @@
             "destination": "/index.html"
         }
     ],
-    "installCommand": "echo 'No install needed'",
+    "installCommand": "cd app && flutter pub get",
     "framework": null
 }
