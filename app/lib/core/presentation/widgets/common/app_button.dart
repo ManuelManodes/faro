@@ -127,6 +127,21 @@ class AppButton extends StatelessWidget {
     );
   }
 
+  factory AppButton.elegantRed({
+    Key? key,
+    required String text,
+    VoidCallback? onPressed,
+    IconData? icon,
+  }) {
+    return AppButton(
+      key: key,
+      text: text,
+      onPressed: onPressed,
+      icon: icon,
+      style: AppButtonStyle.elegantRed,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -146,6 +161,8 @@ class AppButton extends StatelessWidget {
         return _buildSurfaceButton(theme);
       case AppButtonStyle.elegantGreen:
         return _buildElegantGreenButton(theme);
+      case AppButtonStyle.elegantRed:
+        return _buildElegantRedButton(theme);
     }
   }
 
@@ -234,24 +251,44 @@ class AppButton extends StatelessWidget {
   Widget _buildSurfaceButton(ThemeData theme) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
-        return TextButton.icon(
-          onPressed: onPressed,
-          icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
-          label: Text(text),
-          style: TextButton.styleFrom(
-            backgroundColor: AppColors.surface(themeProvider.isDarkMode),
-            foregroundColor: AppColors.textPrimary(themeProvider.isDarkMode),
-            padding:
-                padding ??
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: borderRadius ?? BorderRadius.circular(8),
-              side: BorderSide(
-                color: AppColors.dividerTheme(themeProvider.isDarkMode),
+        if (icon != null) {
+          return TextButton.icon(
+            onPressed: onPressed,
+            icon: Icon(icon),
+            label: Text(text),
+            style: TextButton.styleFrom(
+              backgroundColor: AppColors.surface(themeProvider.isDarkMode),
+              foregroundColor: AppColors.textPrimary(themeProvider.isDarkMode),
+              padding:
+                  padding ??
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: borderRadius ?? BorderRadius.circular(8),
+                side: BorderSide(
+                  color: AppColors.dividerTheme(themeProvider.isDarkMode),
+                ),
               ),
             ),
-          ),
-        );
+          );
+        } else {
+          return TextButton(
+            onPressed: onPressed,
+            style: TextButton.styleFrom(
+              backgroundColor: AppColors.surface(themeProvider.isDarkMode),
+              foregroundColor: AppColors.textPrimary(themeProvider.isDarkMode),
+              padding:
+                  padding ??
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: borderRadius ?? BorderRadius.circular(8),
+                side: BorderSide(
+                  color: AppColors.dividerTheme(themeProvider.isDarkMode),
+                ),
+              ),
+            ),
+            child: Text(text),
+          );
+        }
       },
     );
   }
@@ -287,6 +324,38 @@ class AppButton extends StatelessWidget {
       },
     );
   }
+
+  Widget _buildElegantRedButton(ThemeData theme) {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.red.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Colors.red.withValues(alpha: 0.3),
+              width: 1,
+            ),
+          ),
+          child: ElevatedButton.icon(
+            onPressed: onPressed,
+            icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+            label: Text(text),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.red.shade600,
+              shadowColor: Colors.transparent,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              elevation: 0,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 enum AppButtonStyle {
@@ -297,4 +366,5 @@ enum AppButtonStyle {
   green,
   surface,
   elegantGreen,
+  elegantRed,
 }

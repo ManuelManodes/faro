@@ -5,6 +5,7 @@ import '../controllers/assistant_chat_controller.dart';
 import 'common/common.dart';
 import 'common/pressable_icon_button.dart';
 import 'common/confirmation_dialog.dart';
+import 'chat_sessions_sidebar.dart';
 
 /// Widget principal del chat del asistente virtual
 class AssistantChatWidget extends StatefulWidget {
@@ -38,16 +39,37 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
             color: AppColors.backgroundPrimary(isDarkMode),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Column(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Header del chat
-              _buildChatHeader(context, isDarkMode),
+              // Barra lateral de sesiones
+              const ChatSessionsSidebar(),
 
-              // Área de mensajes
-              Expanded(child: _buildMessagesArea(context, isDarkMode)),
+              // Separador vertical
+              Container(width: 1, color: AppColors.dividerTheme(isDarkMode)),
 
-              // Área de entrada de mensaje
-              _buildMessageInput(context, isDarkMode),
+              // Área principal del chat
+              Expanded(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: Column(
+                      children: [
+                        // Header del chat
+                        _buildChatHeader(context, isDarkMode),
+
+                        // Área de mensajes
+                        Expanded(
+                          child: _buildMessagesArea(context, isDarkMode),
+                        ),
+
+                        // Área de entrada de mensaje
+                        _buildMessageInput(context, isDarkMode),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         );
@@ -92,7 +114,7 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
 
         return ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           itemCount: chatController.messages.length,
           itemBuilder: (context, index) {
             final message = chatController.messages[index];
@@ -104,105 +126,50 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
   }
 
   Widget _buildEmptyState(BuildContext context, bool isDarkMode) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: Colors.green.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(40),
-              border: Border.all(
-                color: Colors.green.withValues(alpha: 0.3),
-                width: 1,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: Colors.green.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(
+                  color: Colors.green.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                Icons.chat_bubble_outline,
+                size: 40,
+                color: Colors.green.shade600,
               ),
             ),
-            child: Icon(
-              Icons.chat_bubble_outline,
-              size: 40,
-              color: Colors.green.shade600,
+            AppSpacing.lgV,
+            Text(
+              '¡Hola! Soy tu asistente virtual',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary(isDarkMode),
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
-          AppSpacing.lgV,
-          Text(
-            '¡Hola! Soy tu asistente virtual',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary(isDarkMode),
+            AppSpacing.smV,
+            Text(
+              'Selecciona un documento y comienza a hacer preguntas',
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.textSecondary(isDarkMode),
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-          AppSpacing.smV,
-          Text(
-            'Selecciona un documento y comienza a hacer preguntas',
-            style: TextStyle(
-              fontSize: 14,
-              color: AppColors.textSecondary(isDarkMode),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          AppSpacing.lgV,
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Puedo ayudarte con:',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
-                ),
-                AppSpacing.smV,
-                _buildSuggestionChip(
-                  context,
-                  isDarkMode,
-                  'Buscar información específica',
-                ),
-                _buildSuggestionChip(context, isDarkMode, 'Explicar conceptos'),
-                _buildSuggestionChip(context, isDarkMode, 'Resumir secciones'),
-                _buildSuggestionChip(
-                  context,
-                  isDarkMode,
-                  'Responder preguntas',
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSuggestionChip(
-    BuildContext context,
-    bool isDarkMode,
-    String text,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        children: [
-          Icon(Icons.check_circle, size: 16, color: Colors.green.shade600),
-          AppSpacing.xsH,
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary(isDarkMode),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -359,7 +326,7 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
 
   Widget _buildMessageInput(BuildContext context, bool isDarkMode) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       child: Row(
         children: [
           // Campo de texto

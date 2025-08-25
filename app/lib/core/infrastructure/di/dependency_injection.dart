@@ -12,6 +12,7 @@ import '../../domain/usecases/get_menu_options_usecase.dart';
 import '../../domain/usecases/get_user_usecase.dart';
 import '../../presentation/controllers/assistant_chat_controller.dart';
 import '../../presentation/controllers/assistant_header_controller.dart';
+import '../../presentation/controllers/chat_sessions_controller.dart';
 import '../../presentation/controllers/attendance_header_controller.dart';
 import '../../presentation/controllers/attendance_list_controller.dart';
 import '../../presentation/controllers/menu_controller.dart';
@@ -46,6 +47,12 @@ class DependencyInjection {
       ),
       ChangeNotifierProvider<AssistantChatController>(
         create: (context) => AssistantChatController(),
+      ),
+      ChangeNotifierProvider<ChatSessionsController>(
+        create: (context) {
+          final chatController = context.read<AssistantChatController>();
+          return ChatSessionsController(chatController);
+        },
       ),
     ];
   }

@@ -729,100 +729,50 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
 
         return Row(
           children: [
-            // Indicador de documento activo o botón para seleccionar
-            if (assistantController.hasDocumentSelected) ...[
-              GestureDetector(
-                onTap: () => _showDocumentPicker(
-                  context,
-                  isDarkMode,
-                  assistantController,
+            // Botón para seleccionar documento (estilo minimalista consistente)
+            GestureDetector(
+              onTap: () =>
+                  _showDocumentPicker(context, isDarkMode, assistantController),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
                 ),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.green.withValues(alpha: 0.3),
-                      width: 1,
+                decoration: BoxDecoration(
+                  color: AppColors.surface(isDarkMode),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.description,
+                      size: 16,
+                      color: AppColors.iconSecondary(isDarkMode),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.description,
-                        size: 12,
-                        color: Colors.green.shade600,
+                    AppSpacing.xsH,
+                    Text(
+                      assistantController.hasDocumentSelected
+                          ? assistantController.documentName
+                          : 'Seleccionar documento',
+                      style: TextStyle(
+                        color: AppColors.textPrimary(isDarkMode),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                      AppSpacing.xsH,
-                      Text(
-                        assistantController.documentName,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.green.shade600,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      AppSpacing.xsH,
-                      Icon(Icons.edit, size: 10, color: Colors.green.shade600),
-                    ],
-                  ),
+                    ),
+                    AppSpacing.xsH,
+                    Icon(
+                      Icons.arrow_drop_down,
+                      size: 16,
+                      color: AppColors.iconSecondary(isDarkMode),
+                    ),
+                  ],
                 ),
               ),
-              AppSpacing.mdH,
-            ] else ...[
-              // Botón para seleccionar documento
-              GestureDetector(
-                onTap: () => _showDocumentPicker(
-                  context,
-                  isDarkMode,
-                  assistantController,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface(isDarkMode),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: AppColors.dividerTheme(isDarkMode),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.description,
-                        size: 16,
-                        color: AppColors.iconSecondary(isDarkMode),
-                      ),
-                      AppSpacing.xsH,
-                      Text(
-                        'Seleccionar documento',
-                        style: TextStyle(
-                          color: AppColors.textPrimary(isDarkMode),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      AppSpacing.xsH,
-                      Icon(
-                        Icons.arrow_drop_down,
-                        size: 16,
-                        color: AppColors.iconSecondary(isDarkMode),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              AppSpacing.mdH,
-            ],
+            ),
+            AppSpacing.mdH,
 
             // Selector de Modelo de IA
             _buildModelSelector(context, isDarkMode, assistantController),
@@ -1120,14 +1070,10 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
   Widget _buildAssistantContent(BuildContext context, bool isDarkMode) {
     return Consumer2<AssistantHeaderController, AssistantChatController>(
       builder: (context, headerController, chatController, child) {
-        return Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 800),
-              child: AssistantChatWidget(),
-            ),
-          ),
+        return Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: AssistantChatWidget(),
         );
       },
     );

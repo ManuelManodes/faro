@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'chat_sessions_controller.dart';
 
 /// Modelo para representar un mensaje en el chat
 class ChatMessage {
@@ -62,9 +63,17 @@ class AssistantChatController extends ChangeNotifier {
   bool _isTyping = false;
   static const String _storageKey = 'assistant_chat_messages';
 
+  // Referencia al controlador de sesiones (se establecerá después de la inicialización)
+  ChatSessionsController? _sessionsController;
+
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
   bool get isTyping => _isTyping;
+
+  /// Establece la referencia al controlador de sesiones
+  void setSessionsController(ChatSessionsController controller) {
+    _sessionsController = controller;
+  }
 
   /// Constructor que carga el historial al inicializar
   AssistantChatController() {
@@ -84,6 +93,10 @@ class AssistantChatController extends ChangeNotifier {
 
     _messages.add(message);
     _saveMessages(); // Guardar automáticamente
+
+    // Guardar en la sesión activa si existe
+    _sessionsController?.addMessageToActiveSession(message);
+
     notifyListeners();
 
     // Simular respuesta de IA
@@ -127,6 +140,10 @@ class AssistantChatController extends ChangeNotifier {
 
       _messages.add(responseMessage);
       _saveMessages(); // Guardar automáticamente
+
+      // Guardar en la sesión activa si existe
+      _sessionsController?.addMessageToActiveSession(responseMessage);
+
       notifyListeners();
     });
   }
@@ -210,5 +227,13 @@ class AssistantChatController extends ChangeNotifier {
       // Silenciar errores de carga para no interrumpir la experiencia
       debugPrint('Error cargando mensajes: $e');
     }
+  }
+
+  /// Carga mensajes específicos (para sesiones)
+  void loadMessages(List<ChatMessage> messages) {
+    _messages.clear();
+    _messages.addAll(messages);
+    _isTyping = false;
+    notifyListeners();
   }
 }
