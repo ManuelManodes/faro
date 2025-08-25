@@ -45,7 +45,7 @@ echo "🔧 Verificando Flutter..."
 flutter doctor
 
 echo "🏗️ Construyendo aplicación para web..."
-flutter build web --release --web-renderer html
+flutter build web --release
 
 echo "✅ Build completado exitosamente!"
 echo "📁 Archivos generados en: build/web/"
