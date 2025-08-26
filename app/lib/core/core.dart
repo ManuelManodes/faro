@@ -16,6 +16,5 @@ export 'infrastructure/repositories/user_repository_impl.dart';
 export 'presentation/controllers/menu_controller.dart';
 // Presentation
 export 'presentation/controllers/user_controller.dart';
-export 'presentation/pages/dashboard_page.dart';
-export 'presentation/pages/home_page.dart';
+export 'presentation/pages/flexible_dashboard_page.dart';
 export 'presentation/widgets/common/common.dart';

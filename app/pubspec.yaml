@@ -44,6 +44,11 @@ dependencies:
   # SharedPreferences para persistencia local
   shared_preferences: ^2.2.2
 
+  # Localización para español
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

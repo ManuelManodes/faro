@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'common/common.dart';
-import 'content_container.dart';
+
 import 'footer_widget.dart';
 import 'header_widget.dart';
-import 'view_header_widget.dart';
+import 'ultra_simplified_view_widget.dart';
 
 /// Layout general que compone el Header, un título de vista y un contenedor
 /// para el contenido. Mantiene el item seleccionado del navbar para mostrar
@@ -75,19 +75,8 @@ class _AppLayoutState extends State<AppLayout> {
                 ),
               ),
 
-              // Para Control de Asistencia y Asistente Virtual, usar layout especial
-              if (_selected == 'Control de Asistencia' ||
-                  _selected == 'Asistente Virtual')
-                Expanded(child: ViewHeaderWidget(title: _selected))
-              else ...[
-                // Espacio debajo del navbar horizontal para otras vistas
-                Container(
-                  color: AppColors.backgroundPrimary(isDarkMode),
-                  child: ViewHeaderWidget(title: _selected),
-                ),
-                // Contenedor flexible para contenido dinámico
-                Expanded(child: ContentContainer(child: widget.child)),
-              ],
+              // Usar el sistema ultra-simplificado para máxima velocidad
+              Expanded(child: UltraSimplifiedViewWidget(title: _selected)),
 
               // Footer moderno y minimalista
               const FooterWidget(),

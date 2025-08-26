@@ -37,13 +37,6 @@ class MenuRepositoryImpl implements MenuRepository {
         route: '/evaluations',
       ),
       MenuOption(
-        id: 'reports',
-        title: 'Reportes de Incidencias',
-        description: 'Generar y consultar reportes de incidencias',
-        icon: 'report',
-        route: '/reports',
-      ),
-      MenuOption(
         id: 'assistant',
         title: 'Asistente Virtual',
         description: 'Chatbot y asistencia inteligente',
@@ -56,6 +49,20 @@ class MenuRepositoryImpl implements MenuRepository {
         description: 'Organigrama y estructura de la empresa',
         icon: 'account_tree',
         route: '/organization',
+      ),
+      MenuOption(
+        id: 'independent-view',
+        title: 'Vista Independiente',
+        description: 'Ejemplo de vista flexible y auto-gestionada',
+        icon: 'widgets',
+        route: '/independent-view',
+      ),
+      MenuOption(
+        id: 'incident-form',
+        title: 'Formulario de Incidencias',
+        description: 'Reportar incidencias educacionales de manera detallada',
+        icon: 'report_problem',
+        route: '/incident-form',
       ),
     ];
   }
@@ -73,4 +80,3 @@ class MenuRepositoryImpl implements MenuRepository {
     }
   }
 }
-

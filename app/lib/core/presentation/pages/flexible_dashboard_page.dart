@@ -5,15 +5,19 @@ import '../../domain/entities/menu_option.dart';
 import '../controllers/menu_controller.dart' as menu;
 import '../widgets/app_layout.dart';
 import '../widgets/common/common.dart';
+import '../widgets/simplified_view_header_widget.dart';
 
-class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+class FlexibleDashboardPage extends StatefulWidget {
+  const FlexibleDashboardPage({super.key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  State<FlexibleDashboardPage> createState() => _FlexibleDashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _FlexibleDashboardPageState extends State<FlexibleDashboardPage> {
+  String? _selectedViewType;
+  String? _selectedViewTitle;
+
   @override
   void initState() {
     super.initState();
@@ -27,44 +31,17 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
-        final isDarkMode = themeProvider.isDarkMode;
-
         return AppLayout(
-          child: FigmaRow(
-            children: [
-              FigmaColumn(
-                columns: 12,
-                mobileColumns: 12,
-                tabletColumns: 12,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sistema de Gestión',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary(isDarkMode),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Selecciona una opción para comenzar',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: AppColors.textSecondary(isDarkMode),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    _buildMenuGrid(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          child: _selectedViewType != null
+              ? _buildSelectedView()
+              : _buildMenuGrid(),
         );
       },
     );
+  }
+
+  Widget _buildSelectedView() {
+    return SimplifiedViewHeaderWidget(title: _selectedViewTitle!);
   }
 
   Widget _buildMenuGrid() {
@@ -121,20 +98,46 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         }
 
-        return GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 1.2,
-          ),
-          itemCount: menuController.menuOptions.length,
-          itemBuilder: (context, index) {
-            final option = menuController.menuOptions[index];
-            return _buildMenuCard(option);
-          },
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Sistema de Gestión',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary(
+                  context.read<ThemeProvider>().isDarkMode,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Selecciona una opción para comenzar',
+              style: TextStyle(
+                fontSize: 16,
+                color: AppColors.textSecondary(
+                  context.read<ThemeProvider>().isDarkMode,
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 1.2,
+              ),
+              itemCount: menuController.menuOptions.length,
+              itemBuilder: (context, index) {
+                final option = menuController.menuOptions[index];
+                return _buildMenuCard(option);
+              },
+            ),
+          ],
         );
       },
     );
@@ -143,10 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildMenuCard(MenuOption option) {
     return AppCard.elevated(
       child: InkWell(
-        onTap: () {
-          context.read<menu.MainMenuController>().selectOption(option);
-          _showOptionDetails(option);
-        },
+        onTap: () => _selectView(option),
         borderRadius: AppBorderRadius.md,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -183,6 +183,24 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  void _selectView(MenuOption option) {
+    setState(() {
+      _selectedViewType = _getViewType(option.id);
+      _selectedViewTitle = option.title;
+    });
+  }
+
+  String _getViewType(String optionId) {
+    switch (optionId) {
+      case 'attendance':
+        return 'attendance';
+      case 'assistant':
+        return 'assistant';
+      default:
+        return 'flexible';
+    }
+  }
+
   IconData _getIconData(String iconName) {
     switch (iconName) {
       case 'dashboard':
@@ -199,59 +217,12 @@ class _DashboardPageState extends State<DashboardPage> {
         return Icons.smart_toy;
       case 'account_tree':
         return Icons.account_tree;
+      case 'widgets':
+        return Icons.widgets;
+      case 'report_problem':
+        return Icons.report_problem;
       default:
         return Icons.apps;
     }
-  }
-
-  void _showOptionDetails(MenuOption option) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(_getIconData(option.icon), color: AppColors.primary),
-            const SizedBox(width: 8),
-            Expanded(child: Text(option.title)),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              option.description,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Ruta: ${option.route}',
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
-            ),
-          ],
-        ),
-        actions: [
-          AppButton.outlined(
-            text: 'Cerrar',
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          AppButton.primary(
-            text: 'Abrir',
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Aquí se implementaría la navegación real
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Abriendo: ${option.title}'),
-                  backgroundColor: AppColors.primary,
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
   }
 }

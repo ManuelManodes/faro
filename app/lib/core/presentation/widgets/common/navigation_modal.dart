@@ -645,11 +645,6 @@ class _NavigationModalState extends State<NavigationModal>
     if (l.contains('evaluaciones') || l.contains('assessment')) {
       return Icons.assessment;
     }
-    if (l.contains('reportes de incidencias') ||
-        l.contains('reportes') ||
-        l.contains('incidencias')) {
-      return Icons.report;
-    }
     if (l.contains('asistente virtual') ||
         l.contains('asistente') ||
         l.contains('ai')) {

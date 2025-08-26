@@ -21,9 +21,9 @@ class HeaderWidget extends StatefulWidget {
     'Control de Asistencia',
     'Agenda',
     'Evaluaciones',
-    'Reportes de Incidencias',
     'Asistente Virtual',
     'Estructura Organizacional',
+    'Formulario de Incidencias',
   ];
 
   @override

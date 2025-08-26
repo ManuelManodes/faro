@@ -54,6 +54,16 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
       return _buildAssistantControls();
     }
 
+    // Si el título es "Vista Independiente", mostrar controles específicos
+    if (widget.title == 'Vista Independiente') {
+      return _buildIndependentViewControls();
+    }
+
+    // Si el título es "Formulario de Incidencias", mostrar controles específicos
+    if (widget.title == 'Formulario de Incidencias') {
+      return _buildIncidentFormControls();
+    }
+
     return Row(
       children: [
         // Ejemplo: botones de acciones de la vista
@@ -110,6 +120,56 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
           );
         }
 
+        // Para Formulario de Incidencias, usar layout especializado
+        if (widget.title == 'Formulario de Incidencias') {
+          return Container(
+            color: AppColors.backgroundPrimary(isDarkMode),
+            child: Column(
+              children: [
+                // Header con controles
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundSecondary(isDarkMode),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: AppColors.dividerTheme(isDarkMode),
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                  height: 80,
+                  child: FigmaGridContainer(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.title,
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            color: AppColors.textPrimary(isDarkMode),
+                          ),
+                        ),
+                        const Spacer(),
+                        _buildViewControls(),
+                      ],
+                    ),
+                  ),
+                ),
+                // Contenido del formulario expandido
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Formulario de incidencias - Vista no disponible',
+                      style: TextStyle(
+                        color: AppColors.textSecondary(isDarkMode),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
         // Layout normal para otras vistas
         return Column(
           children: [
@@ -143,7 +203,51 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
             ),
             // Contenido expandido para Asistente Virtual
             if (widget.title == 'Asistente Virtual')
-              Expanded(child: _buildAssistantContent(context, isDarkMode)),
+              Expanded(child: _buildAssistantContent(context, isDarkMode))
+            // Contenido expandido para Vista Independiente
+            else if (widget.title == 'Vista Independiente')
+              Expanded(
+                child: Center(
+                  child: Text(
+                    'Vista independiente - No disponible',
+                    style: TextStyle(
+                      color: AppColors.textSecondary(isDarkMode),
+                    ),
+                  ),
+                ),
+              )
+            // Contenido para otras vistas
+            else
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.dashboard,
+                        size: 64,
+                        color: AppColors.textSecondary(isDarkMode),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        widget.title,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: AppColors.textSecondary(isDarkMode),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Vista en desarrollo',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textSecondary(isDarkMode),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         );
       },
@@ -287,6 +391,63 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
           initialDate: controller.selectedDate,
           firstDate: DateTime(2020),
           lastDate: DateTime(2030),
+          cancelText: 'Cancelar',
+          confirmText: 'Aceptar',
+          builder: (context, child) {
+            return Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: isDarkMode
+                    ? ColorScheme.dark(
+                        primary: AppColors.white.withValues(
+                          alpha: 0.9,
+                        ), // Color principal más suave
+                        onPrimary:
+                            AppColors.black, // Texto sobre el color principal
+                        surface: AppColors.surface(
+                          isDarkMode,
+                        ), // Fondo del calendario
+                        onSurface: AppColors.textSecondary(
+                          isDarkMode,
+                        ), // Texto del calendario más suave
+                        onSurfaceVariant: AppColors.textTertiary(
+                          isDarkMode,
+                        ), // Texto secundario más suave
+                        outline: AppColors.dividerTheme(isDarkMode), // Bordes
+                        outlineVariant: AppColors.dividerTheme(
+                          isDarkMode,
+                        ), // Bordes secundarios
+                      )
+                    : ColorScheme.light(
+                        primary: AppColors
+                            .black, // Color principal (fecha seleccionada)
+                        onPrimary:
+                            AppColors.white, // Texto sobre el color principal
+                        surface: AppColors.surface(
+                          isDarkMode,
+                        ), // Fondo del calendario
+                        onSurface: AppColors.textPrimary(
+                          isDarkMode,
+                        ), // Texto del calendario
+                        onSurfaceVariant: AppColors.textSecondary(
+                          isDarkMode,
+                        ), // Texto secundario
+                        outline: AppColors.dividerTheme(isDarkMode), // Bordes
+                        outlineVariant: AppColors.dividerTheme(
+                          isDarkMode,
+                        ), // Bordes secundarios
+                      ),
+                dialogTheme: DialogThemeData(
+                  backgroundColor: AppColors.surface(isDarkMode),
+                ),
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.textPrimary(isDarkMode),
+                  ),
+                ),
+              ),
+              child: child!,
+            );
+          },
         );
         if (picked != null) {
           controller.setDate(picked);
@@ -1074,6 +1235,84 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
           width: double.infinity,
           height: double.infinity,
           child: AssistantChatWidget(),
+        );
+      },
+    );
+  }
+
+  // Métodos para Vista Independiente
+  Widget _buildIndependentViewControls() {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+
+        return Row(
+          children: [
+            // Botón de información
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.surface(isDarkMode),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Esta es una vista independiente que se auto-gestiona',
+                      ),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.info_outline,
+                  color: AppColors.iconPrimary(isDarkMode),
+                  size: 20,
+                ),
+                tooltip: 'Información',
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Métodos para Formulario de Incidencias
+  Widget _buildIncidentFormControls() {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+
+        return Row(
+          children: [
+            // Botón de información
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.surface(isDarkMode),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Formulario de incidencias educacionales'),
+                      backgroundColor: Colors.orange,
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.info_outline,
+                  color: AppColors.iconPrimary(isDarkMode),
+                  size: 20,
+                ),
+                tooltip: 'Información',
+              ),
+            ),
+          ],
         );
       },
     );
