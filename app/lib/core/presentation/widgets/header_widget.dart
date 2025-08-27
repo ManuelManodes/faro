@@ -22,7 +22,6 @@ class HeaderWidget extends StatefulWidget {
     'Agenda',
     'Evaluaciones',
     'Asistente Virtual',
-    'Estructura Organizacional',
     'Formulario de Incidencias',
   ];
 

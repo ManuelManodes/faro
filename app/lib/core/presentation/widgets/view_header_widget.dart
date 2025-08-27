@@ -398,36 +398,47 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
               data: Theme.of(context).copyWith(
                 colorScheme: isDarkMode
                     ? ColorScheme.dark(
-                        primary: AppColors.white.withValues(
+                        primary: const Color(
+                          0xFF2A2A2A,
+                        ), // Fondo de fecha seleccionada más suave
+                        onPrimary: Colors.white.withValues(
                           alpha: 0.9,
-                        ), // Color principal más suave
-                        onPrimary:
-                            AppColors.black, // Texto sobre el color principal
-                        surface: AppColors.surface(
-                          isDarkMode,
-                        ), // Fondo del calendario
-                        onSurface: AppColors.textSecondary(
-                          isDarkMode,
-                        ), // Texto del calendario más suave
-                        onSurfaceVariant: AppColors.textTertiary(
-                          isDarkMode,
+                        ), // Texto sobre fecha seleccionada más suave
+                        surface: const Color(
+                          0xFF1E1E1E,
+                        ), // Fondo del calendario más suave
+                        onSurface: Colors.white.withValues(
+                          alpha: 0.87,
+                        ), // Texto principal más suave
+                        onSurfaceVariant: Colors.white.withValues(
+                          alpha: 0.6,
                         ), // Texto secundario más suave
-                        outline: AppColors.dividerTheme(isDarkMode), // Bordes
-                        outlineVariant: AppColors.dividerTheme(
-                          isDarkMode,
-                        ), // Bordes secundarios
+                        outline: Colors.white.withValues(
+                          alpha: 0.12,
+                        ), // Bordes más suaves
+                        outlineVariant: Colors.white.withValues(
+                          alpha: 0.08,
+                        ), // Bordes secundarios más suaves
+                        secondary: const Color(
+                          0xFF2A2A2A,
+                        ), // Color secundario más suave
+                        onSecondary: Colors.white.withValues(
+                          alpha: 0.9,
+                        ), // Texto sobre secundario más suave
                       )
                     : ColorScheme.light(
-                        primary: AppColors
-                            .black, // Color principal (fecha seleccionada)
-                        onPrimary:
-                            AppColors.white, // Texto sobre el color principal
-                        surface: AppColors.surface(
+                        primary: AppColors.surface(
+                          isDarkMode,
+                        ), // Fondo de fecha seleccionada
+                        onPrimary: AppColors.textPrimary(
+                          isDarkMode,
+                        ), // Texto sobre fecha seleccionada
+                        surface: AppColors.backgroundPrimary(
                           isDarkMode,
                         ), // Fondo del calendario
                         onSurface: AppColors.textPrimary(
                           isDarkMode,
-                        ), // Texto del calendario
+                        ), // Texto principal del calendario
                         onSurfaceVariant: AppColors.textSecondary(
                           isDarkMode,
                         ), // Texto secundario
@@ -435,9 +446,20 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
                         outlineVariant: AppColors.dividerTheme(
                           isDarkMode,
                         ), // Bordes secundarios
+                        secondary: AppColors.surface(
+                          isDarkMode,
+                        ), // Color secundario
+                        onSecondary: AppColors.textPrimary(
+                          isDarkMode,
+                        ), // Texto sobre secundario
                       ),
                 dialogTheme: DialogThemeData(
-                  backgroundColor: AppColors.surface(isDarkMode),
+                  backgroundColor: isDarkMode
+                      ? const Color(0xFF1E1E1E)
+                      : AppColors.backgroundPrimary(isDarkMode),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 textButtonTheme: TextButtonThemeData(
                   style: TextButton.styleFrom(

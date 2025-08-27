@@ -650,11 +650,6 @@ class _NavigationModalState extends State<NavigationModal>
         l.contains('ai')) {
       return Icons.smart_toy;
     }
-    if (l.contains('estructura organizacional') ||
-        l.contains('organizacional') ||
-        l.contains('organigrama')) {
-      return Icons.account_tree;
-    }
 
     // Fallbacks para otros casos
     if (l.contains('overview')) return Icons.dashboard_outlined;

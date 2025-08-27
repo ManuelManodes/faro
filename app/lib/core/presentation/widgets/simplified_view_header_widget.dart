@@ -14,10 +14,12 @@ class SimplifiedViewHeaderWidget extends StatefulWidget {
   const SimplifiedViewHeaderWidget({super.key, required this.title});
 
   @override
-  State<SimplifiedViewHeaderWidget> createState() => _SimplifiedViewHeaderWidgetState();
+  State<SimplifiedViewHeaderWidget> createState() =>
+      _SimplifiedViewHeaderWidgetState();
 }
 
-class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget> {
+class _SimplifiedViewHeaderWidgetState
+    extends State<SimplifiedViewHeaderWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
@@ -128,9 +130,7 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
             ),
           ),
           // Contenido del chat
-          const Expanded(
-            child: AssistantChatWidget(),
-          ),
+          const Expanded(child: AssistantChatWidget()),
         ],
       ),
     );
@@ -141,7 +141,7 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
       color: AppColors.backgroundPrimary(isDarkMode),
       child: Column(
         children: [
-          // Header simple
+          // Header con el mismo estilo que las otras vistas
           Container(
             decoration: BoxDecoration(
               color: AppColors.backgroundSecondary(isDarkMode),
@@ -152,15 +152,23 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
                 ),
               ),
             ),
+            height: 80,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                widget.title,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary(isDarkMode),
-                ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.title,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary(isDarkMode),
+                    ),
+                  ),
+                  const Spacer(),
+                  // Espacio para futuros controles si se necesitan
+                ],
               ),
             ),
           ),
@@ -212,7 +220,10 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
                   onTap: () => _showDatePicker(context, controller),
                   borderRadius: AppBorderRadius.md,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     child: Row(
                       children: [
                         const Icon(Icons.calendar_today, size: 16),
@@ -227,7 +238,7 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
               ),
             ),
             const SizedBox(width: 12),
-            
+
             // Selector de año
             Expanded(
               child: AppCard.outlined(
@@ -235,7 +246,10 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
                   onTap: () => _showYearSelector(context, controller),
                   borderRadius: AppBorderRadius.md,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     child: Row(
                       children: [
                         const Icon(Icons.school, size: 16),
@@ -250,7 +264,7 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
               ),
             ),
             const SizedBox(width: 12),
-            
+
             // Selector de curso
             Expanded(
               child: AppCard.outlined(
@@ -258,7 +272,10 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
                   onTap: () => _showCourseSelector(context, controller),
                   borderRadius: AppBorderRadius.md,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     child: Row(
                       children: [
                         const Icon(Icons.class_, size: 16),
@@ -290,7 +307,10 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
                   onTap: () => _showDocumentSelector(context, controller),
                   borderRadius: AppBorderRadius.md,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     child: Row(
                       children: [
                         const Icon(Icons.description, size: 16),
@@ -305,7 +325,7 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
               ),
             ),
             const SizedBox(width: 12),
-            
+
             // Selector de modelo
             Expanded(
               child: AppCard.outlined(
@@ -313,7 +333,10 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
                   onTap: () => _showModelSelector(context, controller),
                   borderRadius: AppBorderRadius.md,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     child: Row(
                       children: [
                         const Icon(Icons.psychology, size: 16),
@@ -333,12 +356,96 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
     );
   }
 
-  void _showDatePicker(BuildContext context, AttendanceHeaderController controller) {
+  void _showDatePicker(
+    BuildContext context,
+    AttendanceHeaderController controller,
+  ) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     showDatePicker(
       context: context,
       initialDate: controller.selectedDate,
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
+      cancelText: 'Cancelar',
+      confirmText: 'Aceptar',
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: isDarkMode
+                ? ColorScheme.dark(
+                    primary: const Color(
+                      0xFF2A2A2A,
+                    ), // Fondo de fecha seleccionada más suave
+                    onPrimary: Colors.white.withValues(
+                      alpha: 0.9,
+                    ), // Texto sobre fecha seleccionada más suave
+                    surface: const Color(
+                      0xFF1E1E1E,
+                    ), // Fondo del calendario más suave
+                    onSurface: Colors.white.withValues(
+                      alpha: 0.87,
+                    ), // Texto principal más suave
+                    onSurfaceVariant: Colors.white.withValues(
+                      alpha: 0.6,
+                    ), // Texto secundario más suave
+                    outline: Colors.white.withValues(
+                      alpha: 0.12,
+                    ), // Bordes más suaves
+                    outlineVariant: Colors.white.withValues(
+                      alpha: 0.08,
+                    ), // Bordes secundarios más suaves
+                    secondary: const Color(
+                      0xFF2A2A2A,
+                    ), // Color secundario más suave
+                    onSecondary: Colors.white.withValues(
+                      alpha: 0.9,
+                    ), // Texto sobre secundario más suave
+                  )
+                : ColorScheme.light(
+                    primary: AppColors.surface(
+                      isDarkMode,
+                    ), // Fondo de fecha seleccionada
+                    onPrimary: AppColors.textPrimary(
+                      isDarkMode,
+                    ), // Texto sobre fecha seleccionada
+                    surface: AppColors.backgroundPrimary(
+                      isDarkMode,
+                    ), // Fondo del calendario
+                    onSurface: AppColors.textPrimary(
+                      isDarkMode,
+                    ), // Texto principal del calendario
+                    onSurfaceVariant: AppColors.textSecondary(
+                      isDarkMode,
+                    ), // Texto secundario
+                    outline: AppColors.dividerTheme(isDarkMode), // Bordes
+                    outlineVariant: AppColors.dividerTheme(
+                      isDarkMode,
+                    ), // Bordes secundarios
+                    secondary: AppColors.surface(
+                      isDarkMode,
+                    ), // Color secundario
+                    onSecondary: AppColors.textPrimary(
+                      isDarkMode,
+                    ), // Texto sobre secundario
+                  ),
+            dialogTheme: DialogThemeData(
+              backgroundColor: isDarkMode
+                  ? const Color(0xFF1E1E1E)
+                  : AppColors.backgroundPrimary(isDarkMode),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.textPrimary(isDarkMode),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     ).then((date) {
       if (date != null) {
         controller.setDate(date);
@@ -346,7 +453,10 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
     });
   }
 
-  void _showYearSelector(BuildContext context, AttendanceHeaderController controller) {
+  void _showYearSelector(
+    BuildContext context,
+    AttendanceHeaderController controller,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -367,7 +477,10 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
     );
   }
 
-  void _showCourseSelector(BuildContext context, AttendanceHeaderController controller) {
+  void _showCourseSelector(
+    BuildContext context,
+    AttendanceHeaderController controller,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -388,14 +501,19 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
     );
   }
 
-  void _showDocumentSelector(BuildContext context, AssistantHeaderController controller) {
+  void _showDocumentSelector(
+    BuildContext context,
+    AssistantHeaderController controller,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Seleccionar Documento'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: AssistantHeaderController.availableDocuments.map((document) {
+          children: AssistantHeaderController.availableDocuments.map((
+            document,
+          ) {
             return ListTile(
               title: Text(document),
               onTap: () {
@@ -409,7 +527,10 @@ class _SimplifiedViewHeaderWidgetState extends State<SimplifiedViewHeaderWidget>
     );
   }
 
-  void _showModelSelector(BuildContext context, AssistantHeaderController controller) {
+  void _showModelSelector(
+    BuildContext context,
+    AssistantHeaderController controller,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

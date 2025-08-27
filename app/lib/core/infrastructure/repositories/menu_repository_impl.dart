@@ -44,13 +44,6 @@ class MenuRepositoryImpl implements MenuRepository {
         route: '/assistant',
       ),
       MenuOption(
-        id: 'organization',
-        title: 'Estructura Organizacional',
-        description: 'Organigrama y estructura de la empresa',
-        icon: 'account_tree',
-        route: '/organization',
-      ),
-      MenuOption(
         id: 'independent-view',
         title: 'Vista Independiente',
         description: 'Ejemplo de vista flexible y auto-gestionada',
