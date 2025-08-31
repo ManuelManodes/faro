@@ -42,6 +42,12 @@ class AppColors {
   static Color get divider => Colors.grey.withValues(alpha: 0.2);
   static Color get shadow => Colors.black.withValues(alpha: 0.1);
 
+  // Colores de estado
+  static const Color error = Colors.red;
+  static const Color success = Colors.green;
+  static const Color warning = Colors.orange;
+  static const Color info = Colors.blue;
+
   // Métodos estáticos para colores según el tema
   static Color textPrimary(bool isDarkMode) {
     return isDarkMode ? Colors.white : Colors.black87;

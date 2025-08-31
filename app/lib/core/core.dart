@@ -1,5 +1,6 @@
 // Domain
 export 'application/services/menu_service.dart';
+export 'domain/entities/incident.dart';
 // Application
 export 'application/services/user_service.dart';
 export 'domain/entities/menu_option.dart';
@@ -13,8 +14,10 @@ export 'infrastructure/di/dependency_injection.dart';
 export 'infrastructure/repositories/menu_repository_impl.dart';
 // Infrastructure
 export 'infrastructure/repositories/user_repository_impl.dart';
+export 'presentation/controllers/incident_form_controller.dart';
 export 'presentation/controllers/menu_controller.dart';
 // Presentation
 export 'presentation/controllers/user_controller.dart';
 export 'presentation/pages/flexible_dashboard_page.dart';
 export 'presentation/widgets/common/common.dart';
+export 'presentation/widgets/incident_form_widget.dart';

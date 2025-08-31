@@ -4,9 +4,12 @@ import 'package:provider/provider.dart';
 import '../controllers/attendance_header_controller.dart';
 import '../controllers/attendance_list_controller.dart';
 import '../controllers/assistant_header_controller.dart';
+import '../controllers/incident_form_controller.dart';
 import 'attendance_table_widget.dart';
 import 'assistant_chat_widget.dart';
+import 'incident_form_widget.dart';
 import 'common/common.dart';
+import '../../domain/entities/incident.dart';
 
 /// Widget ultra-simplificado para máxima velocidad
 class UltraSimplifiedViewWidget extends StatelessWidget {
@@ -148,54 +151,60 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
   }
 
   Widget _buildIncidentFormView(bool isDarkMode) {
-    return Container(
-      color: AppColors.backgroundPrimary(isDarkMode),
-      child: Column(
-        children: [
-          // Header con controles
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.backgroundSecondary(isDarkMode),
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.dividerTheme(isDarkMode),
-                  width: 1.0,
-                ),
-              ),
-            ),
-            height: 80,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
+    return ChangeNotifierProvider(
+      create: (context) => IncidentFormController(),
+      child: Container(
+        color: AppColors.backgroundPrimary(isDarkMode),
+        child: Column(
+          children: [
+            // Header con controles
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.backgroundSecondary(isDarkMode),
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppColors.dividerTheme(isDarkMode),
+                    width: 1.0,
                   ),
-                  const Spacer(),
-                  _buildIncidentFormControls(),
-                ],
+                ),
               ),
-            ),
-          ),
-          // Contenido del formulario
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 600),
-                  child: _buildIncidentForm(),
+              height: 80,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary(isDarkMode),
+                      ),
+                    ),
+                    const Spacer(),
+                    _buildIncidentFormControls(),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+            // Contenido del formulario
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: const IncidentFormWidget(),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -538,195 +547,233 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
   }
 
   Widget _buildIncidentFormControls() {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        final isDarkMode = themeProvider.isDarkMode;
-        return Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface(isDarkMode),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
-          ),
-          child: IconButton(
-            onPressed: () {
-              AppSnackBar.showWarning(
-                context,
-                'Formulario de incidencias educacionales',
-              );
-            },
-            icon: Icon(
-              Icons.info_outline,
-              color: AppColors.iconSecondary(isDarkMode),
-              size: 20,
-            ),
-            tooltip: 'Información',
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildIncidentForm() {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        final isDarkMode = themeProvider.isDarkMode;
-
-        return Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface(isDarkMode),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: AppColors.dividerTheme(isDarkMode),
-              width: 1,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Título del formulario
-                Text(
-                  'Reportar Incidencia',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary(isDarkMode),
+    return Consumer<IncidentFormController>(
+      builder: (context, controller, child) {
+        return Row(
+          children: [
+            _buildIncidentDateSelector(context, controller),
+            const SizedBox(width: 12),
+            _buildIncidentSeveritySelector(context, controller),
+            const SizedBox(width: 12),
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.surface(
+                  Theme.of(context).brightness == Brightness.dark,
+                ),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppColors.dividerTheme(
+                    Theme.of(context).brightness == Brightness.dark,
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // Campo: Tipo de Incidencia
-                _buildFormField(
-                  label: 'Tipo de Incidencia',
-                  icon: Icons.category,
-                  isDarkMode: isDarkMode,
+              ),
+              child: IconButton(
+                onPressed: () {
+                  AppSnackBar.showInfo(
+                    context,
+                    'Formulario de incidencias educacionales mejorado',
+                  );
+                },
+                icon: Icon(
+                  Icons.info_outline,
+                  color: AppColors.iconSecondary(
+                    Theme.of(context).brightness == Brightness.dark,
+                  ),
+                  size: 20,
                 ),
-                const SizedBox(height: 16),
-
-                // Campo: Estudiante
-                _buildFormField(
-                  label: 'Estudiante',
-                  icon: Icons.person,
-                  isDarkMode: isDarkMode,
-                ),
-                const SizedBox(height: 16),
-
-                // Campo: Fecha
-                _buildFormField(
-                  label: 'Fecha',
-                  icon: Icons.calendar_today,
-                  isDarkMode: isDarkMode,
-                ),
-                const SizedBox(height: 16),
-
-                // Campo: Descripción
-                _buildFormField(
-                  label: 'Descripción',
-                  icon: Icons.description,
-                  isDarkMode: isDarkMode,
-                  isMultiline: true,
-                ),
-                const SizedBox(height: 24),
-
-                // Botones de acción
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    AppButton.surface(
-                      text: 'Cancelar',
-                      onPressed: () {
-                        AppSnackBar.showInfo(context, 'Formulario cancelado');
-                      },
-                    ),
-                    AppSpacing.lgH,
-                    AppButton.elegantGreen(
-                      text: 'Enviar Reporte',
-                      onPressed: () {
-                        AppSnackBar.showSuccess(
-                          context,
-                          'Incidencia reportada exitosamente',
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                tooltip: 'Información',
+              ),
             ),
-          ),
+          ],
         );
       },
     );
   }
 
-  Widget _buildFormField({
-    required String label,
-    required IconData icon,
-    required bool isDarkMode,
-    bool isMultiline = false,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface(isDarkMode),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
-          ),
-          child: Padding(
+  Widget _buildIncidentDateSelector(
+    BuildContext context,
+    IncidentFormController controller,
+  ) {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+        return GestureDetector(
+          onTap: () => _showIncidentDatePicker(context, controller),
+          child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.surface(isDarkMode),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: controller.shouldShowFieldError('incidentDate')
+                    ? AppColors.error
+                    : AppColors.dividerTheme(isDarkMode),
+              ),
+            ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  icon,
+                  Icons.calendar_today,
                   size: 16,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: isMultiline
-                      ? TextField(
-                          maxLines: 3,
-                          decoration: InputDecoration(
-                            hintText: 'Describe la incidencia...',
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              color: AppColors.textSecondary(isDarkMode),
-                            ),
-                          ),
-                          style: TextStyle(
-                            color: AppColors.textPrimary(isDarkMode),
-                          ),
-                        )
-                      : TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Ingresa $label',
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              color: AppColors.textSecondary(isDarkMode),
-                            ),
-                          ),
-                          style: TextStyle(
-                            color: AppColors.textPrimary(isDarkMode),
-                          ),
-                        ),
+                AppSpacing.xsH,
+                Text(
+                  '${controller.incidentDate.day}/${controller.incidentDate.month}/${controller.incidentDate.year}',
+                  style: TextStyle(
+                    color: AppColors.textPrimary(isDarkMode),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                AppSpacing.xsH,
+                Icon(
+                  Icons.arrow_drop_down,
+                  size: 16,
+                  color: AppColors.iconSecondary(isDarkMode),
                 ),
               ],
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
+  }
+
+  Widget _buildIncidentSeveritySelector(
+    BuildContext context,
+    IncidentFormController controller,
+  ) {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+        return GestureDetector(
+          onTap: () => _showIncidentSeveritySelector(context, controller),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.surface(isDarkMode),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: controller.shouldShowFieldError('severity')
+                    ? AppColors.error
+                    : AppColors.dividerTheme(isDarkMode),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.priority_high,
+                  size: 16,
+                  color: AppColors.iconSecondary(isDarkMode),
+                ),
+                AppSpacing.xsH,
+                Text(
+                  controller.severity?.displayName ?? 'Severidad',
+                  style: TextStyle(
+                    color: controller.severity != null
+                        ? AppColors.textPrimary(isDarkMode)
+                        : AppColors.textSecondary(isDarkMode),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                AppSpacing.xsH,
+                Icon(
+                  Icons.arrow_drop_down,
+                  size: 16,
+                  color: AppColors.iconSecondary(isDarkMode),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showIncidentDatePicker(
+    BuildContext context,
+    IncidentFormController controller,
+  ) async {
+    final date = await AppDatePicker.show(
+      context: context,
+      initialDate: controller.incidentDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      cancelText: 'Cancelar',
+      confirmText: 'Aceptar',
+    );
+
+    if (date != null) {
+      controller.setIncidentDate(date);
+    }
+  }
+
+  void _showIncidentSeveritySelector(
+    BuildContext context,
+    IncidentFormController controller,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+        return AlertDialog(
+          title: Text(
+            'Seleccionar Severidad',
+            style: TextStyle(
+              color: AppColors.textPrimary(isDarkMode),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: AppColors.surface(isDarkMode),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: IncidentSeverity.values.map((severity) {
+              return ListTile(
+                leading: _getSeverityIcon(severity),
+                title: Text(
+                  severity.displayName,
+                  style: TextStyle(
+                    color: AppColors.textPrimary(isDarkMode),
+                    fontSize: 16,
+                  ),
+                ),
+                onTap: () {
+                  controller.setSeverity(severity);
+                  Navigator.of(context).pop();
+                },
+              );
+            }).toList(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancelar',
+                style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _getSeverityIcon(IncidentSeverity severity) {
+    switch (severity) {
+      case IncidentSeverity.low:
+        return Icon(Icons.circle, size: 16, color: Colors.green);
+      case IncidentSeverity.medium:
+        return Icon(Icons.circle, size: 16, color: Colors.orange);
+      case IncidentSeverity.high:
+        return Icon(Icons.circle, size: 16, color: Colors.red);
+      case IncidentSeverity.critical:
+        return Icon(Icons.warning, size: 16, color: Colors.red);
+    }
   }
 
   void _showDatePicker(
