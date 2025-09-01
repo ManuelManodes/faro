@@ -47,6 +47,7 @@ class _IncidentFormContent extends StatelessWidget {
                 // Campos del formulario
                 Expanded(
                   child: SingleChildScrollView(
+                    padding: const EdgeInsets.only(right: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
