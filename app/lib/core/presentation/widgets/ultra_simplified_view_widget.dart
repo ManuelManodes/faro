@@ -363,11 +363,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.school,
-                  size: 16,
-                  color: AppColors.iconSecondary(isDarkMode),
-                ),
+                _getLevelIcon(controller.selectedLevel, context),
                 AppSpacing.xsH,
                 Text(
                   controller.selectedLevel,
@@ -410,11 +406,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.class_,
-                  size: 16,
-                  color: AppColors.iconSecondary(isDarkMode),
-                ),
+                _getCourseIcon(controller.selectedCourse, context),
                 AppSpacing.xsH,
                 Text(
                   controller.selectedCourse,
@@ -776,6 +768,49 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
     }
   }
 
+  Widget _getLevelIcon(String level, BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDarkMode ? Colors.white : Colors.black87;
+
+    // Iconos apropiados para cada nivel educativo
+    if (level.contains('Básico')) {
+      if (level.contains('1ero') ||
+          level.contains('2do') ||
+          level.contains('3ero') ||
+          level.contains('4to')) {
+        return Icon(
+          Icons.school,
+          size: 16,
+          color: iconColor,
+        ); // Educación básica inicial
+      } else {
+        return Icon(
+          Icons.auto_stories,
+          size: 16,
+          color: iconColor,
+        ); // Educación básica superior
+      }
+    } else if (level.contains('Medio')) {
+      return Icon(
+        Icons.psychology,
+        size: 16,
+        color: iconColor,
+      ); // Educación media
+    }
+
+    // Icono por defecto
+    return Icon(Icons.grade, size: 16, color: iconColor);
+  }
+
+  Widget _getCourseIcon(String course, BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDarkMode ? Colors.white : Colors.black87;
+
+    // Icono consistente para todos los cursos
+    // Usamos un icono que represente secciones o grupos de clase
+    return Icon(Icons.class_, size: 16, color: iconColor);
+  }
+
   void _showDatePicker(
     BuildContext context,
     AttendanceHeaderController controller,
@@ -879,21 +914,48 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
   ) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleccionar Nivel'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: AttendanceHeaderController.availableLevels.map((level) {
-            return ListTile(
-              title: Text(level),
-              onTap: () {
-                controller.setLevel(level);
-                Navigator.of(context).pop();
-              },
-            );
-          }).toList(),
-        ),
-      ),
+      builder: (BuildContext context) {
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+        return AlertDialog(
+          title: Text(
+            'Seleccionar Nivel',
+            style: TextStyle(
+              color: AppColors.textPrimary(isDarkMode),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: AppColors.surface(isDarkMode),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: AttendanceHeaderController.availableLevels.map((level) {
+              return ListTile(
+                leading: _getLevelIcon(level, context),
+                title: Text(
+                  level,
+                  style: TextStyle(
+                    color: AppColors.textPrimary(isDarkMode),
+                    fontSize: 16,
+                  ),
+                ),
+                onTap: () {
+                  controller.setLevel(level);
+                  Navigator.of(context).pop();
+                },
+              );
+            }).toList(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancelar',
+                style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -903,21 +965,48 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
   ) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleccionar Curso'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: AttendanceHeaderController.availableCourses.map((course) {
-            return ListTile(
-              title: Text(course),
-              onTap: () {
-                controller.setCourse(course);
-                Navigator.of(context).pop();
-              },
-            );
-          }).toList(),
-        ),
-      ),
+      builder: (BuildContext context) {
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+        return AlertDialog(
+          title: Text(
+            'Seleccionar Curso',
+            style: TextStyle(
+              color: AppColors.textPrimary(isDarkMode),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: AppColors.surface(isDarkMode),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: AttendanceHeaderController.availableCourses.map((course) {
+              return ListTile(
+                leading: _getCourseIcon(course, context),
+                title: Text(
+                  course,
+                  style: TextStyle(
+                    color: AppColors.textPrimary(isDarkMode),
+                    fontSize: 16,
+                  ),
+                ),
+                onTap: () {
+                  controller.setCourse(course);
+                  Navigator.of(context).pop();
+                },
+              );
+            }).toList(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancelar',
+                style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

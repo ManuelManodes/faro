@@ -14,6 +14,7 @@ class Incident {
   final List<String> witnesses;
   final List<String> attachments;
   final String? resolution;
+
   final DateTime? resolvedDate;
   final String? resolvedBy;
   final String? notes;
