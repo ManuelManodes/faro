@@ -9,6 +9,7 @@ import 'attendance_table_widget.dart';
 import 'assistant_chat_widget.dart';
 import 'incident_form_widget.dart';
 import 'holland_test_widget.dart';
+import 'scheduling_widget.dart';
 import 'common/common.dart';
 import '../../domain/entities/incident.dart';
 
@@ -42,6 +43,11 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         // Evaluaciones - Test de Holland
         if (title == 'Evaluaciones') {
           return _buildEvaluationsView(isDarkMode);
+        }
+
+        // Agenda
+        if (title == 'Agenda') {
+          return _buildSchedulingView(isDarkMode);
         }
 
         // Otras vistas - ultra simple
@@ -1177,6 +1183,84 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                   AppSpacing.xsH,
                   Text(
                     'Test de Holland',
+                    style: TextStyle(
+                      color: AppColors.textPrimary(isDarkMode),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildSchedulingView(bool isDarkMode) {
+    return Container(
+      color: AppColors.backgroundPrimary(isDarkMode),
+      child: Column(
+        children: [
+          // Header con controles
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.backgroundSecondary(isDarkMode),
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.dividerTheme(isDarkMode),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            height: 80,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary(isDarkMode),
+                    ),
+                  ),
+                  const Spacer(),
+                  _buildSchedulingControls(),
+                ],
+              ),
+            ),
+          ),
+          // Contenido del agendamiento
+          Expanded(child: SchedulingWidget()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSchedulingControls() {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+        return Row(
+          children: [
+            AppContainer.surface(
+              isDarkMode: isDarkMode,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.calendar_month,
+                    size: 16,
+                    color: AppColors.iconSecondary(isDarkMode),
+                  ),
+                  AppSpacing.xsH,
+                  Text(
+                    'Sistema de Agenda',
                     style: TextStyle(
                       color: AppColors.textPrimary(isDarkMode),
                       fontSize: 14,

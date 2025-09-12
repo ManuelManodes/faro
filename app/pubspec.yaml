@@ -55,6 +55,9 @@ dependencies:
   # Confetti para efectos de celebración
   confetti: ^0.7.0
 
+  # Syncfusion Calendar para agendamiento
+  syncfusion_flutter_calendar: ^31.1.19
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
