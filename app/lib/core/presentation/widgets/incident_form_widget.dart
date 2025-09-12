@@ -267,89 +267,6 @@ class _IncidentFormContent extends StatelessWidget {
     );
   }
 
-  Widget _buildSeverityField(
-    IncidentFormController controller,
-    bool isDarkMode,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Severidad *',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface(isDarkMode),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: controller.shouldShowFieldError('severity')
-                  ? AppColors.error
-                  : AppColors.dividerTheme(isDarkMode),
-            ),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<IncidentSeverity>(
-              value: controller.severity,
-              hint: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.priority_high,
-                      size: 16,
-                      color: AppColors.iconSecondary(isDarkMode),
-                    ),
-                    AppSpacing.xsH,
-                    Text(
-                      'Seleccionar severidad',
-                      style: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              items: IncidentSeverity.values.map((severity) {
-                return DropdownMenuItem(
-                  value: severity,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Row(
-                      children: [
-                        _getSeverityIcon(severity),
-                        AppSpacing.xsH,
-                        Text(
-                          severity.displayName,
-                          style: TextStyle(
-                            color: AppColors.textPrimary(isDarkMode),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
-              onChanged: controller.setSeverity,
-              dropdownColor: AppColors.surface(isDarkMode),
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: AppColors.iconSecondary(isDarkMode),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildStudentField(
     IncidentFormController controller,
     bool isDarkMode,
@@ -456,67 +373,6 @@ class _IncidentFormContent extends StatelessWidget {
                 Icons.arrow_drop_down,
                 color: AppColors.iconSecondary(isDarkMode),
               ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDateField(
-    BuildContext context,
-    IncidentFormController controller,
-    bool isDarkMode,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Fecha del Incidente *',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: () => _showDatePicker(context, controller),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            decoration: BoxDecoration(
-              color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: controller.shouldShowFieldError('incidentDate')
-                    ? AppColors.error
-                    : AppColors.dividerTheme(isDarkMode),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.calendar_today,
-                  size: 16,
-                  color: AppColors.iconSecondary(isDarkMode),
-                ),
-                AppSpacing.xsH,
-                Text(
-                  controller.getFormattedIncidentDate(),
-                  style: TextStyle(
-                    color: controller.incidentDate == null
-                        ? AppColors.textSecondary(isDarkMode)
-                        : AppColors.textPrimary(isDarkMode),
-                    fontSize: 14,
-                  ),
-                ),
-                const Spacer(),
-                Icon(
-                  Icons.arrow_drop_down,
-                  size: 16,
-                  color: AppColors.iconSecondary(isDarkMode),
-                ),
-              ],
             ),
           ),
         ),
@@ -817,37 +673,6 @@ class _IncidentFormContent extends StatelessWidget {
         ],
       ],
     );
-  }
-
-  Widget _getSeverityIcon(IncidentSeverity severity) {
-    switch (severity) {
-      case IncidentSeverity.low:
-        return Icon(Icons.circle, size: 12, color: Colors.green);
-      case IncidentSeverity.medium:
-        return Icon(Icons.circle, size: 12, color: Colors.orange);
-      case IncidentSeverity.high:
-        return Icon(Icons.circle, size: 12, color: Colors.red);
-      case IncidentSeverity.critical:
-        return Icon(Icons.warning, size: 12, color: Colors.red);
-    }
-  }
-
-  void _showDatePicker(
-    BuildContext context,
-    IncidentFormController controller,
-  ) async {
-    final date = await AppDatePicker.show(
-      context: context,
-      initialDate: controller.incidentDate ?? DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime.now().add(const Duration(days: 1)),
-      cancelText: 'Cancelar',
-      confirmText: 'Aceptar',
-    );
-
-    if (date != null) {
-      controller.setIncidentDate(date);
-    }
   }
 
   Widget _buildCategoryField(

@@ -163,11 +163,11 @@ class AppContainer extends StatelessWidget {
   }) {
     return AppContainer(
       key: key,
-      child: child,
       padding: padding,
       margin: margin,
       backgroundColor: AppColors.surface(isDarkMode),
       borderRadius: borderRadius ?? AppBorderRadius.md,
+      child: child,
     );
   }
 
@@ -182,7 +182,6 @@ class AppContainer extends StatelessWidget {
   }) {
     return AppContainer(
       key: key,
-      child: child,
       padding: padding,
       margin: margin,
       backgroundColor: AppColors.surface(isDarkMode),
@@ -191,6 +190,7 @@ class AppContainer extends StatelessWidget {
         color: borderColor ?? AppColors.dividerTheme(isDarkMode),
         width: 1,
       ),
+      child: child,
     );
   }
 
@@ -205,7 +205,6 @@ class AppContainer extends StatelessWidget {
   }) {
     return AppContainer(
       key: key,
-      child: child,
       padding: padding,
       margin: margin,
       backgroundColor: AppColors.surface(isDarkMode),
@@ -217,6 +216,7 @@ class AppContainer extends StatelessWidget {
           offset: Offset(0, elevation / 2),
         ),
       ],
+      child: child,
     );
   }
 

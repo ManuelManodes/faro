@@ -8,6 +8,7 @@ import '../controllers/incident_form_controller.dart';
 import 'attendance_table_widget.dart';
 import 'assistant_chat_widget.dart';
 import 'incident_form_widget.dart';
+import 'holland_test_widget.dart';
 import 'common/common.dart';
 import '../../domain/entities/incident.dart';
 
@@ -36,6 +37,11 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         // Formulario de Incidencias
         if (title == 'Formulario de Incidencias') {
           return _buildIncidentFormView(isDarkMode);
+        }
+
+        // Evaluaciones - Test de Holland
+        if (title == 'Evaluaciones') {
+          return _buildEvaluationsView(isDarkMode);
         }
 
         // Otras vistas - ultra simple
@@ -197,7 +203,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(24.0),
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 800),
+                    constraints: const BoxConstraints(maxWidth: 700),
                     child: const IncidentFormWidget(),
                   ),
                 ),
@@ -546,36 +552,6 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
             _buildIncidentDateSelector(context, controller),
             const SizedBox(width: 12),
             _buildIncidentSeveritySelector(context, controller),
-            const SizedBox(width: 12),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface(
-                  Theme.of(context).brightness == Brightness.dark,
-                ),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: AppColors.dividerTheme(
-                    Theme.of(context).brightness == Brightness.dark,
-                  ),
-                ),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  AppSnackBar.showInfo(
-                    context,
-                    'Formulario de incidencias educacionales mejorado',
-                  );
-                },
-                icon: Icon(
-                  Icons.info_outline,
-                  color: AppColors.iconSecondary(
-                    Theme.of(context).brightness == Brightness.dark,
-                  ),
-                  size: 20,
-                ),
-                tooltip: 'Información',
-              ),
-            ),
           ],
         );
       },
@@ -656,11 +632,13 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.priority_high,
-                  size: 16,
-                  color: AppColors.iconSecondary(isDarkMode),
-                ),
+                controller.severity != null
+                    ? _getSeverityIcon(controller.severity!)
+                    : Icon(
+                        Icons.priority_high,
+                        size: 16,
+                        color: AppColors.iconSecondary(isDarkMode),
+                      ),
                 AppSpacing.xsH,
                 Text(
                   controller.severity?.displayName ?? 'Severidad',
@@ -1131,6 +1109,84 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildEvaluationsView(bool isDarkMode) {
+    return Container(
+      color: AppColors.backgroundPrimary(isDarkMode),
+      child: Column(
+        children: [
+          // Header con controles
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.backgroundSecondary(isDarkMode),
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.dividerTheme(isDarkMode),
+                  width: 1.0,
+                ),
+              ),
+            ),
+            height: 80,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary(isDarkMode),
+                    ),
+                  ),
+                  const Spacer(),
+                  _buildEvaluationsControls(),
+                ],
+              ),
+            ),
+          ),
+          // Contenido del test
+          const Expanded(child: HollandTestWidget()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEvaluationsControls() {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+        return Row(
+          children: [
+            AppContainer.surface(
+              isDarkMode: isDarkMode,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.psychology,
+                    size: 16,
+                    color: AppColors.iconSecondary(isDarkMode),
+                  ),
+                  AppSpacing.xsH,
+                  Text(
+                    'Test de Holland',
+                    style: TextStyle(
+                      color: AppColors.textPrimary(isDarkMode),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         );
       },
     );

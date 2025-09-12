@@ -52,6 +52,9 @@ dependencies:
   # UUID para generación de IDs únicos
   uuid: ^4.5.1
 
+  # Confetti para efectos de celebración
+  confetti: ^0.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

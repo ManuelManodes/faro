@@ -37,7 +37,6 @@ class FlexibleLayout extends StatelessWidget {
           case LayoutType.centered:
             return _buildCenteredLayout(context, isDarkMode);
           case LayoutType.standard:
-          default:
             return _buildStandardLayout(context, isDarkMode);
         }
       },
@@ -177,8 +176,8 @@ class FlexibleLayout extends StatelessWidget {
 
 /// Tipos de layout disponibles
 enum LayoutType {
-  standard,   // Layout estándar con grid
-  centered,   // Layout centrado para formularios
+  standard, // Layout estándar con grid
+  centered, // Layout centrado para formularios
   fullscreen, // Layout fullscreen para dashboards
 }
 
@@ -206,22 +205,21 @@ class AutoGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    
+
     // Determinar columnas efectivas
     int effectiveColumns = columns;
-    if (screenWidth < FigmaGridSystem.tabletBreakpoint && mobileColumns != null) {
+    if (screenWidth < FigmaGridSystem.tabletBreakpoint &&
+        mobileColumns != null) {
       effectiveColumns = mobileColumns!;
-    } else if (screenWidth < FigmaGridSystem.desktopBreakpoint && tabletColumns != null) {
+    } else if (screenWidth < FigmaGridSystem.desktopBreakpoint &&
+        tabletColumns != null) {
       effectiveColumns = tabletColumns!;
     }
 
     // Si es mobile o tablet, usar Wrap
-    if (effectiveColumns == 1 || screenWidth < FigmaGridSystem.tabletBreakpoint) {
-      return Wrap(
-        spacing: spacing,
-        runSpacing: spacing,
-        children: children,
-      );
+    if (effectiveColumns == 1 ||
+        screenWidth < FigmaGridSystem.tabletBreakpoint) {
+      return Wrap(spacing: spacing, runSpacing: spacing, children: children);
     }
 
     // Para desktop, usar GridView
@@ -258,18 +256,18 @@ class SimpleContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget content = child;
-    
+
     if (maxWidth != null) {
       content = ConstrainedBox(
         constraints: BoxConstraints(maxWidth: maxWidth!),
         child: content,
       );
     }
-    
+
     if (centerContent) {
       content = Center(child: content);
     }
-    
+
     return Padding(
       padding: padding ?? const EdgeInsets.all(24.0),
       child: content,

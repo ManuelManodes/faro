@@ -1,6 +1,7 @@
 // Domain
 export 'application/services/menu_service.dart';
 export 'domain/entities/incident.dart';
+export 'domain/entities/holland_test.dart';
 // Application
 export 'application/services/user_service.dart';
 export 'domain/entities/menu_option.dart';
@@ -14,10 +15,13 @@ export 'infrastructure/di/dependency_injection.dart';
 export 'infrastructure/repositories/menu_repository_impl.dart';
 // Infrastructure
 export 'infrastructure/repositories/user_repository_impl.dart';
+export 'presentation/controllers/holland_test_controller.dart';
 export 'presentation/controllers/incident_form_controller.dart';
 export 'presentation/controllers/menu_controller.dart';
 // Presentation
 export 'presentation/controllers/user_controller.dart';
 export 'presentation/pages/flexible_dashboard_page.dart';
 export 'presentation/widgets/common/common.dart';
+export 'presentation/widgets/holland_sticky_headers.dart';
+export 'presentation/widgets/holland_test_widget.dart';
 export 'presentation/widgets/incident_form_widget.dart';
