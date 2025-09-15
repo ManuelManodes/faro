@@ -49,7 +49,7 @@ class _FocusableStudentRowState extends State<FocusableStudentRow> {
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
         color: widget.isAbsent
-            ? Colors.red.withValues(alpha: 0.05)
+            ? AppColors.error.withValues(alpha: 0.05)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
       ),
@@ -114,12 +114,12 @@ class _FocusableStudentRowState extends State<FocusableStudentRow> {
                   height: 24,
                   decoration: BoxDecoration(
                     color: widget.isAbsent
-                        ? Colors.red
+                        ? AppColors.error
                         : AppColors.surface(widget.isDarkMode),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: widget.isAbsent
-                          ? Colors.red
+                          ? AppColors.error
                           : AppColors.dividerTheme(widget.isDarkMode),
                       width: 2,
                     ),
@@ -315,7 +315,7 @@ class _KeyboardNavigationTableState extends State<KeyboardNavigationTable> {
                                     ? Icons.radio_button_checked
                                     : Icons.radio_button_unchecked,
                                 color: widget.controller.isAbsent(student.id)
-                                    ? Colors.red.shade400
+                                    ? AppColors.error
                                     : AppColors.iconSecondary(
                                         widget.isDarkMode,
                                       ),
@@ -415,7 +415,7 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 48, color: Colors.red),
+            Icon(Icons.error_outline, size: 48, color: AppColors.error),
             AppSpacing.mdV,
             Text(
               'Error al cargar estudiantes',

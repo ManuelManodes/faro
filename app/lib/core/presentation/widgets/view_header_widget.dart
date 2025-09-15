@@ -8,6 +8,7 @@ import '../controllers/assistant_chat_controller.dart';
 import 'attendance_table_widget.dart';
 import 'assistant_chat_widget.dart';
 import 'common/common.dart';
+import 'common/app_snackbar.dart';
 
 /// Widget que muestra el título actual seleccionado en la navegación y un
 /// espacio para controlar elementos específicos de la vista (placeholders).
@@ -1279,13 +1280,9 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
               ),
               child: IconButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Esta es una vista independiente que se auto-gestiona',
-                      ),
-                      backgroundColor: Colors.green,
-                    ),
+                  AppSnackBar.showInfo(
+                    context,
+                    'Esta es una vista independiente que se auto-gestiona',
                   );
                 },
                 icon: Icon(
@@ -1319,11 +1316,9 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
               ),
               child: IconButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Formulario de incidencias educacionales'),
-                      backgroundColor: Colors.orange,
-                    ),
+                  AppSnackBar.showInfo(
+                    context,
+                    'Formulario de incidencias educacionales',
                   );
                 },
                 icon: Icon(

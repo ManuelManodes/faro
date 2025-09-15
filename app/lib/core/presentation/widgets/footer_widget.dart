@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'common/common.dart';
+import 'common/app_snackbar.dart';
 
 /// Footer moderno y minimalista con botón de cambio de tema
 class FooterWidget extends StatefulWidget {
@@ -228,18 +229,9 @@ class _FooterWidgetState extends State<FooterWidget>
         );
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  const Icon(Icons.open_in_new, color: Colors.white, size: 16),
-                  const SizedBox(width: 8),
-                  Expanded(child: Text('$linkName abierto en nueva pestaña')),
-                ],
-              ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Colors.green,
-            ),
+          AppSnackBar.showSuccess(
+            context,
+            '$linkName abierto en nueva pestaña',
           );
         }
       } else {
@@ -247,34 +239,7 @@ class _FooterWidgetState extends State<FooterWidget>
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.error_outline, color: Colors.white, size: 16),
-                const SizedBox(width: 8),
-                Expanded(child: Text('Error al abrir $linkName')),
-              ],
-            ),
-            duration: const Duration(seconds: 3),
-            backgroundColor: Colors.red,
-            action: SnackBarAction(
-              label: 'Copiar URL',
-              textColor: Colors.white,
-              onPressed: () async {
-                await Clipboard.setData(ClipboardData(text: url));
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('URL copiada al portapapeles'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-        );
+        AppSnackBar.showError(context, 'Error al abrir $linkName');
       }
     }
   }

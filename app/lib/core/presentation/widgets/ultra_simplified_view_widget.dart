@@ -5,11 +5,14 @@ import '../controllers/attendance_header_controller.dart';
 import '../controllers/attendance_list_controller.dart';
 import '../controllers/assistant_header_controller.dart';
 import '../controllers/incident_form_controller.dart';
+import '../controllers/scheduling_controller.dart';
 import 'attendance_table_widget.dart';
 import 'assistant_chat_widget.dart';
 import 'incident_form_widget.dart';
 import 'holland_test_widget.dart';
 import 'scheduling_widget.dart';
+import 'appointment_form_widget.dart';
+import 'school_schedule_form_widget.dart';
 import 'common/common.dart';
 import '../../domain/entities/incident.dart';
 
@@ -1245,34 +1248,142 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         final isDarkMode = themeProvider.isDarkMode;
-        return Row(
+        return Consumer<SchedulingController>(
+          builder: (context, controller, child) {
+            return Row(
+              children: [
+                // Botón nueva cita
+                AppButton.primary(
+                  text: 'Nueva Cita',
+                  onPressed: () =>
+                      _showCreateAppointmentDialog(controller, context),
+                  icon: Icons.add,
+                ),
+                AppSpacing.mdH,
+
+                // Botón nuevo horario escolar
+                AppButton.secondary(
+                  text: 'Horario Escolar',
+                  onPressed: () =>
+                      _showCreateSchoolScheduleDialog(controller, context),
+                  icon: Icons.schedule,
+                ),
+                AppSpacing.mdH,
+
+                // Toggle para mostrar/ocultar horarios escolares
+                _buildToggleButton(
+                  'Mostrar Horarios Escolares',
+                  Icons.school,
+                  controller.showSchoolSchedules,
+                  (value) => controller.toggleSchoolSchedules(),
+                  isDarkMode,
+                ),
+
+                AppSpacing.lgH,
+
+                // Información
+                Text(
+                  '${controller.appointments.length} citas • ${controller.schoolSchedules.length} horarios',
+                  style: TextStyle(
+                    color: AppColors.textSecondary(isDarkMode),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildToggleButton(
+    String label,
+    IconData icon,
+    bool value,
+    ValueChanged<bool> onChanged,
+    bool isDarkMode,
+  ) {
+    return GestureDetector(
+      onTap: () => onChanged(!value),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.surface(isDarkMode),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: value
+                ? (isDarkMode ? AppColors.primary : Colors.black87)
+                : AppColors.dividerTheme(isDarkMode),
+            width: value ? 2.0 : 1.0,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            AppContainer.surface(
-              isDarkMode: isDarkMode,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.calendar_month,
-                    size: 16,
-                    color: AppColors.iconSecondary(isDarkMode),
-                  ),
-                  AppSpacing.xsH,
-                  Text(
-                    'Sistema de Agenda',
-                    style: TextStyle(
-                      color: AppColors.textPrimary(isDarkMode),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+            Icon(
+              icon,
+              size: 16,
+              color: value
+                  ? (isDarkMode ? AppColors.primary : Colors.black87)
+                  : AppColors.iconSecondary(isDarkMode),
+            ),
+            AppSpacing.xsH,
+            Text(
+              label,
+              style: TextStyle(
+                color: value
+                    ? (isDarkMode ? AppColors.primary : Colors.black87)
+                    : AppColors.textPrimary(isDarkMode),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
-        );
-      },
+        ),
+      ),
+    );
+  }
+
+  void _showCreateAppointmentDialog(
+    SchedulingController controller,
+    BuildContext context,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: AppointmentFormWidget(
+            controller: controller,
+            onSaved: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showCreateSchoolScheduleDialog(
+    SchedulingController controller,
+    BuildContext context,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: SchoolScheduleFormWidget(
+            controller: controller,
+            onSaved: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+      ),
     );
   }
 }

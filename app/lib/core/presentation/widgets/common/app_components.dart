@@ -266,7 +266,7 @@ class AppCheckbox extends StatelessWidget {
       key: key,
       value: value,
       onChanged: onChanged,
-      activeColor: Colors.red,
+      activeColor: AppColors.error,
       checkColor: Colors.white,
       size: size,
       borderRadius: BorderRadius.circular(6),
@@ -296,10 +296,14 @@ class AppCheckbox extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: value ? (activeColor ?? Colors.blue) : Colors.transparent,
+          color: value
+              ? (activeColor ?? AppColors.primary)
+              : Colors.transparent,
           borderRadius: borderRadius ?? BorderRadius.circular(4),
           border: Border.all(
-            color: value ? (activeColor ?? Colors.blue) : Colors.grey.shade400,
+            color: value
+                ? (activeColor ?? AppColors.primary)
+                : AppColors.dividerTheme(false),
             width: 2,
           ),
         ),

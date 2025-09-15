@@ -12,6 +12,7 @@ class AppointmentFormWidget extends StatefulWidget {
   final DateTime? selectedDate;
   final VoidCallback? onSaved;
   final VoidCallback? onCancelled;
+  final SchedulingController? controller;
 
   const AppointmentFormWidget({
     super.key,
@@ -19,6 +20,7 @@ class AppointmentFormWidget extends StatefulWidget {
     this.selectedDate,
     this.onSaved,
     this.onCancelled,
+    this.controller,
   });
 
   @override
@@ -103,44 +105,63 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
       builder: (context, themeProvider, child) {
         final isDarkMode = themeProvider.isDarkMode;
 
-        return AppContainer.elevated(
-          isDarkMode: isDarkMode,
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface(isDarkMode),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppColors.dividerTheme(isDarkMode),
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Header del formulario
                   _buildHeader(isDarkMode),
-                  AppSpacing.lgV,
+                  const SizedBox(height: 24),
 
-                  // Información básica
-                  _buildBasicInfoSection(isDarkMode),
-                  AppSpacing.lgV,
+                  // Campos del formulario
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Información básica
+                          _buildBasicInfoSection(isDarkMode),
+                          const SizedBox(height: 16),
 
-                  // Fecha y hora
-                  _buildDateTimeSection(isDarkMode),
-                  AppSpacing.lgV,
+                          // Fecha y hora
+                          _buildDateTimeSection(isDarkMode),
+                          const SizedBox(height: 16),
 
-                  // Tipo y prioridad
-                  _buildTypePrioritySection(isDarkMode),
-                  AppSpacing.lgV,
+                          // Tipo y prioridad
+                          _buildTypePrioritySection(isDarkMode),
+                          const SizedBox(height: 16),
 
-                  // Profesor asignado
-                  _buildTeacherSection(isDarkMode),
-                  AppSpacing.lgV,
+                          // Profesor asignado
+                          _buildTeacherSection(isDarkMode),
+                          const SizedBox(height: 16),
 
-                  // Ubicación y notas
-                  _buildLocationNotesSection(isDarkMode),
-                  AppSpacing.lgV,
+                          // Ubicación y notas
+                          _buildLocationNotesSection(isDarkMode),
+                          const SizedBox(height: 16),
 
-                  // Recurrencia
-                  _buildRecurrenceSection(isDarkMode),
-                  AppSpacing.lgV,
+                          // Recurrencia
+                          _buildRecurrenceSection(isDarkMode),
+                          const SizedBox(height: 24),
 
-                  // Botones de acción
-                  _buildActionButtons(isDarkMode),
+                          // Botones de acción
+                          _buildActionButtons(isDarkMode),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -858,8 +879,10 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
   }
 
   void _showTeacherSelector(bool isDarkMode) {
-    final teachers = Provider.of<SchedulingController>(context, listen: false)
-        .workSchedules
+    final controller =
+        widget.controller ??
+        Provider.of<SchedulingController>(context, listen: false);
+    final teachers = controller.workSchedules
         .map(
           (schedule) => {
             'id': schedule.teacherId,
@@ -989,12 +1012,13 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
     });
 
     try {
+      final controller =
+          widget.controller ??
+          Provider.of<SchedulingController>(context, listen: false);
+
       if (widget.appointment != null) {
         // Actualizar cita existente
-        await Provider.of<SchedulingController>(
-          context,
-          listen: false,
-        ).updateAppointment(
+        await controller.updateAppointment(
           widget.appointment!.id,
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
@@ -1013,10 +1037,7 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
         );
       } else {
         // Crear nueva cita
-        await Provider.of<SchedulingController>(
-          context,
-          listen: false,
-        ).createAppointment(
+        await controller.createAppointment(
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
           startTime: _selectedStartTime!,

@@ -16,6 +16,7 @@ import '../../presentation/controllers/chat_sessions_controller.dart';
 import '../../presentation/controllers/attendance_header_controller.dart';
 import '../../presentation/controllers/attendance_list_controller.dart';
 import '../../presentation/controllers/menu_controller.dart';
+import '../../presentation/controllers/scheduling_controller.dart';
 // Presentation
 import '../../presentation/controllers/user_controller.dart';
 import '../../presentation/widgets/common/theme_provider.dart';
@@ -53,6 +54,9 @@ class DependencyInjection {
           final chatController = context.read<AssistantChatController>();
           return ChatSessionsController(chatController);
         },
+      ),
+      ChangeNotifierProvider<SchedulingController>(
+        create: (context) => SchedulingController()..loadSampleData(),
       ),
     ];
   }

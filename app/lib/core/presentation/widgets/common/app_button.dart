@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'common.dart';
+import 'theme_provider.dart';
 
 /// Botones reutilizables con diseño consistente
 class AppButton extends StatelessWidget {
@@ -167,84 +168,118 @@ class AppButton extends StatelessWidget {
   }
 
   Widget _buildPrimaryButton(ThemeData theme) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
-      label: Text(text),
-      style: ElevatedButton.styleFrom(
-        padding:
-            padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(8),
-        ),
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+        return ElevatedButton.icon(
+          onPressed: onPressed,
+          icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+          label: Text(text),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.backgroundSecondary(isDarkMode),
+            foregroundColor: AppColors.textPrimary(isDarkMode),
+            padding:
+                padding ??
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: borderRadius ?? BorderRadius.circular(8),
+            ),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildSecondaryButton(ThemeData theme) {
-    return TextButton.icon(
-      onPressed: onPressed,
-      icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
-      label: Text(text),
-      style: TextButton.styleFrom(
-        padding:
-            padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(8),
-        ),
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+        return TextButton.icon(
+          onPressed: onPressed,
+          icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+          label: Text(text),
+          style: TextButton.styleFrom(
+            foregroundColor: AppColors.textPrimary(isDarkMode),
+            backgroundColor: AppColors.backgroundSecondary(isDarkMode),
+            padding:
+                padding ??
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: borderRadius ?? BorderRadius.circular(8),
+            ),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildOutlinedButton(ThemeData theme) {
-    return OutlinedButton.icon(
-      onPressed: onPressed,
-      icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
-      label: Text(text),
-      style: OutlinedButton.styleFrom(
-        padding:
-            padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(8),
-        ),
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return OutlinedButton.icon(
+          onPressed: onPressed,
+          icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+          label: Text(text),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.primary,
+            side: BorderSide(color: AppColors.primary),
+            padding:
+                padding ??
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: borderRadius ?? BorderRadius.circular(8),
+            ),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildWhiteButton(ThemeData theme) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
-      label: Text(text),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        padding:
-            padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(8),
-          side: BorderSide(color: Colors.grey.shade300),
-        ),
-        elevation: 1,
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+        return ElevatedButton.icon(
+          onPressed: onPressed,
+          icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+          label: Text(text),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.surface(isDarkMode),
+            foregroundColor: AppColors.textPrimary(isDarkMode),
+            padding:
+                padding ??
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: borderRadius ?? BorderRadius.circular(8),
+              side: BorderSide(color: AppColors.dividerTheme(isDarkMode)),
+            ),
+            elevation: 1,
+          ),
+        );
+      },
     );
   }
 
   Widget _buildGreenButton(ThemeData theme) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
-      label: Text(text),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green.shade400,
-        foregroundColor: Colors.white,
-        padding:
-            padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: borderRadius ?? BorderRadius.circular(8),
-        ),
-        elevation: 0,
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return ElevatedButton.icon(
+          onPressed: onPressed,
+          icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
+          label: Text(text),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.success,
+            foregroundColor: Colors.white,
+            padding:
+                padding ??
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: borderRadius ?? BorderRadius.circular(8),
+            ),
+            elevation: 0,
+          ),
+        );
+      },
     );
   }
 
@@ -311,7 +346,7 @@ class AppButton extends StatelessWidget {
             label: Text(text),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
-              foregroundColor: Colors.green.shade600,
+              foregroundColor: AppColors.success,
               shadowColor: Colors.transparent,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               shape: RoundedRectangleBorder(
@@ -343,7 +378,7 @@ class AppButton extends StatelessWidget {
             label: Text(text),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
-              foregroundColor: Colors.red.shade600,
+              foregroundColor: AppColors.error,
               shadowColor: Colors.transparent,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               shape: RoundedRectangleBorder(

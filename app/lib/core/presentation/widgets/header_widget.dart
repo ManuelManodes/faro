@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'common/common.dart';
+import 'common/app_snackbar.dart';
 
 /// Header en dos niveles: top bar con logo/acciones y una barra de navegación
 /// horizontal justo debajo. Stateful para manejar el modo búsqueda (UI-only).
@@ -134,12 +135,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           IconButton(
             onPressed: () {
               // Aquí se implementaría la funcionalidad de ayuda
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Centro de ayuda - En desarrollo'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
+              AppSnackBar.showInfo(context, 'Centro de ayuda - En desarrollo');
             },
             icon: Icon(
               Icons.help_outline,

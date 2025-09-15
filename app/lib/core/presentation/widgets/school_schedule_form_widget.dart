@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../domain/entities/school_schedule.dart';
 import '../controllers/scheduling_controller.dart';
 import 'common/common.dart';
+import 'common/app_snackbar.dart';
 
 /// Widget para crear y editar horarios escolares
 class SchoolScheduleFormWidget extends StatefulWidget {
@@ -94,314 +95,346 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
       builder: (context, themeProvider, child) {
         final isDarkMode = themeProvider.isDarkMode;
 
-        return Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Título
-                Text(
-                  widget.schedule == null
-                      ? 'Nuevo Horario Escolar'
-                      : 'Editar Horario Escolar',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary(isDarkMode),
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface(isDarkMode),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppColors.dividerTheme(isDarkMode),
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header del formulario
+                  Text(
+                    widget.schedule == null
+                        ? 'Nuevo Horario Escolar'
+                        : 'Editar Horario Escolar',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary(isDarkMode),
+                    ),
                   ),
-                ),
-                AppSpacing.lgV,
+                  const SizedBox(height: 24),
 
-                // Información básica
-                _buildSectionTitle('Información Básica', isDarkMode),
-                AppSpacing.mdV,
+                  // Campos del formulario
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Información básica
+                          _buildSectionTitle('Información Básica', isDarkMode),
+                          AppSpacing.mdV,
 
-                // Asignatura
-                _buildTextField(
-                  controller: _subjectController,
-                  label: 'Asignatura',
-                  hint: 'Ej: Matemáticas, Lengua, Ciencias...',
-                  isDarkMode: isDarkMode,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'La asignatura es obligatoria';
-                    }
-                    return null;
-                  },
-                ),
-                AppSpacing.mdV,
+                          // Asignatura
+                          _buildTextField(
+                            controller: _subjectController,
+                            label: 'Asignatura',
+                            hint: 'Ej: Matemáticas, Lengua, Ciencias...',
+                            isDarkMode: isDarkMode,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'La asignatura es obligatoria';
+                              }
+                              return null;
+                            },
+                          ),
+                          AppSpacing.mdV,
 
-                // Profesor
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildTextField(
-                        controller: _teacherNameController,
-                        label: 'Nombre del Profesor',
-                        hint: 'Ej: Prof. Ana García',
-                        isDarkMode: isDarkMode,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'El nombre del profesor es obligatorio';
-                          }
-                          return null;
-                        },
+                          // Profesor
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _teacherNameController,
+                                  label: 'Nombre del Profesor',
+                                  hint: 'Ej: Prof. Ana García',
+                                  isDarkMode: isDarkMode,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'El nombre del profesor es obligatorio';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              AppSpacing.mdH,
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _teacherIdController,
+                                  label: 'ID del Profesor',
+                                  hint: 'Ej: teacher_001',
+                                  isDarkMode: isDarkMode,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'El ID del profesor es obligatorio';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          AppSpacing.mdV,
+
+                          // Aula y Grado
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _classroomController,
+                                  label: 'Aula',
+                                  hint: 'Ej: Aula 101, Laboratorio 1...',
+                                  isDarkMode: isDarkMode,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'El aula es obligatoria';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              AppSpacing.mdH,
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _gradeController,
+                                  label: 'Grado',
+                                  hint: 'Ej: 5to, 6to, 1ro...',
+                                  isDarkMode: isDarkMode,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'El grado es obligatorio';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              AppSpacing.mdH,
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _sectionController,
+                                  label: 'Sección',
+                                  hint: 'Ej: A, B, C...',
+                                  isDarkMode: isDarkMode,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'La sección es obligatoria';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          AppSpacing.lgV,
+
+                          // Horario
+                          _buildSectionTitle('Horario', isDarkMode),
+                          AppSpacing.mdV,
+
+                          // Días de la semana
+                          Text(
+                            'Días de la semana',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary(isDarkMode),
+                            ),
+                          ),
+                          AppSpacing.smV,
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: DayOfWeek.values.map((day) {
+                              final isSelected = _selectedDays.contains(day);
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (isSelected) {
+                                      _selectedDays.remove(day);
+                                    } else {
+                                      _selectedDays.add(day);
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? AppColors.primary
+                                        : AppColors.backgroundSecondary(
+                                            isDarkMode,
+                                          ),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? AppColors.primary
+                                          : AppColors.dividerTheme(isDarkMode),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    day.shortName,
+                                    style: TextStyle(
+                                      color: isSelected
+                                          ? Colors.white
+                                          : AppColors.textPrimary(isDarkMode),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          AppSpacing.mdV,
+
+                          // Horas
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildTimeSelector(
+                                  'Hora de inicio',
+                                  _startTime,
+                                  (time) => setState(() => _startTime = time),
+                                  isDarkMode,
+                                ),
+                              ),
+                              AppSpacing.mdH,
+                              Expanded(
+                                child: _buildTimeSelector(
+                                  'Hora de fin',
+                                  _endTime,
+                                  (time) => setState(() => _endTime = time),
+                                  isDarkMode,
+                                ),
+                              ),
+                            ],
+                          ),
+                          AppSpacing.lgV,
+
+                          // Apariencia
+                          _buildSectionTitle('Apariencia', isDarkMode),
+                          AppSpacing.mdV,
+
+                          // Color
+                          Text(
+                            'Color del horario',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary(isDarkMode),
+                            ),
+                          ),
+                          AppSpacing.smV,
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: _availableColors.map((color) {
+                              final isSelected = _selectedColor == color;
+                              return GestureDetector(
+                                onTap: () =>
+                                    setState(() => _selectedColor = color),
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Color(
+                                      int.parse(
+                                        color.replaceFirst('#', '0xFF'),
+                                      ),
+                                    ),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? AppColors.textPrimary(isDarkMode)
+                                          : Colors.transparent,
+                                      width: 3,
+                                    ),
+                                  ),
+                                  child: isSelected
+                                      ? Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size: 20,
+                                        )
+                                      : null,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          AppSpacing.lgV,
+
+                          // Descripción
+                          _buildTextField(
+                            controller: _descriptionController,
+                            label: 'Descripción (opcional)',
+                            hint: 'Información adicional sobre el horario...',
+                            isDarkMode: isDarkMode,
+                            maxLines: 3,
+                          ),
+                          AppSpacing.lgV,
+
+                          // Estado activo
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _isActive,
+                                onChanged: (value) =>
+                                    setState(() => _isActive = value ?? true),
+                                activeColor: AppColors.primary,
+                              ),
+                              AppSpacing.smH,
+                              Text(
+                                'Horario activo',
+                                style: TextStyle(
+                                  color: AppColors.textPrimary(isDarkMode),
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                          AppSpacing.xlV,
+
+                          // Botones de acción
+                          Row(
+                            children: [
+                              Expanded(
+                                child: AppButton.secondary(
+                                  text: 'Cancelar',
+                                  onPressed: () => Navigator.of(context).pop(),
+                                ),
+                              ),
+                              AppSpacing.mdH,
+                              Expanded(
+                                child: AppButton.primary(
+                                  text: widget.schedule == null
+                                      ? 'Crear Horario'
+                                      : 'Actualizar Horario',
+                                  onPressed: _saveSchedule,
+                                  icon: widget.schedule == null
+                                      ? Icons.add
+                                      : Icons.save,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    AppSpacing.mdH,
-                    Expanded(
-                      child: _buildTextField(
-                        controller: _teacherIdController,
-                        label: 'ID del Profesor',
-                        hint: 'Ej: teacher_001',
-                        isDarkMode: isDarkMode,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'El ID del profesor es obligatorio';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                AppSpacing.mdV,
-
-                // Aula y Grado
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildTextField(
-                        controller: _classroomController,
-                        label: 'Aula',
-                        hint: 'Ej: Aula 101, Laboratorio 1...',
-                        isDarkMode: isDarkMode,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'El aula es obligatoria';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    AppSpacing.mdH,
-                    Expanded(
-                      child: _buildTextField(
-                        controller: _gradeController,
-                        label: 'Grado',
-                        hint: 'Ej: 5to, 6to, 1ro...',
-                        isDarkMode: isDarkMode,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'El grado es obligatorio';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    AppSpacing.mdH,
-                    Expanded(
-                      child: _buildTextField(
-                        controller: _sectionController,
-                        label: 'Sección',
-                        hint: 'Ej: A, B, C...',
-                        isDarkMode: isDarkMode,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'La sección es obligatoria';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                AppSpacing.lgV,
-
-                // Horario
-                _buildSectionTitle('Horario', isDarkMode),
-                AppSpacing.mdV,
-
-                // Días de la semana
-                Text(
-                  'Días de la semana',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary(isDarkMode),
                   ),
-                ),
-                AppSpacing.smV,
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: DayOfWeek.values.map((day) {
-                    final isSelected = _selectedDays.contains(day);
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (isSelected) {
-                            _selectedDays.remove(day);
-                          } else {
-                            _selectedDays.add(day);
-                          }
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? AppColors.primary
-                              : AppColors.backgroundSecondary(isDarkMode),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: isSelected
-                                ? AppColors.primary
-                                : AppColors.dividerTheme(isDarkMode),
-                          ),
-                        ),
-                        child: Text(
-                          day.shortName,
-                          style: TextStyle(
-                            color: isSelected
-                                ? Colors.white
-                                : AppColors.textPrimary(isDarkMode),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-                AppSpacing.mdV,
-
-                // Horas
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildTimeSelector(
-                        'Hora de inicio',
-                        _startTime,
-                        (time) => setState(() => _startTime = time),
-                        isDarkMode,
-                      ),
-                    ),
-                    AppSpacing.mdH,
-                    Expanded(
-                      child: _buildTimeSelector(
-                        'Hora de fin',
-                        _endTime,
-                        (time) => setState(() => _endTime = time),
-                        isDarkMode,
-                      ),
-                    ),
-                  ],
-                ),
-                AppSpacing.lgV,
-
-                // Apariencia
-                _buildSectionTitle('Apariencia', isDarkMode),
-                AppSpacing.mdV,
-
-                // Color
-                Text(
-                  'Color del horario',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
-                ),
-                AppSpacing.smV,
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: _availableColors.map((color) {
-                    final isSelected = _selectedColor == color;
-                    return GestureDetector(
-                      onTap: () => setState(() => _selectedColor = color),
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Color(
-                            int.parse(color.replaceFirst('#', '0xFF')),
-                          ),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: isSelected
-                                ? AppColors.textPrimary(isDarkMode)
-                                : Colors.transparent,
-                            width: 3,
-                          ),
-                        ),
-                        child: isSelected
-                            ? Icon(Icons.check, color: Colors.white, size: 20)
-                            : null,
-                      ),
-                    );
-                  }).toList(),
-                ),
-                AppSpacing.lgV,
-
-                // Descripción
-                _buildTextField(
-                  controller: _descriptionController,
-                  label: 'Descripción (opcional)',
-                  hint: 'Información adicional sobre el horario...',
-                  isDarkMode: isDarkMode,
-                  maxLines: 3,
-                ),
-                AppSpacing.lgV,
-
-                // Estado activo
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _isActive,
-                      onChanged: (value) =>
-                          setState(() => _isActive = value ?? true),
-                      activeColor: AppColors.primary,
-                    ),
-                    AppSpacing.smH,
-                    Text(
-                      'Horario activo',
-                      style: TextStyle(
-                        color: AppColors.textPrimary(isDarkMode),
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-                AppSpacing.xlV,
-
-                // Botones
-                Row(
-                  children: [
-                    Expanded(
-                      child: AppButton.secondary(
-                        text: 'Cancelar',
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ),
-                    AppSpacing.mdH,
-                    Expanded(
-                      child: AppButton.primary(
-                        text: widget.schedule == null
-                            ? 'Crear Horario'
-                            : 'Actualizar Horario',
-                        onPressed: _saveSchedule,
-                        icon: widget.schedule == null ? Icons.add : Icons.save,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -537,13 +570,9 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
 
   void _saveSchedule() {
     if (!_formKey.currentState!.validate()) return;
+
     if (_selectedDays.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Selecciona al menos un día de la semana'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      AppSnackBar.showError(context, 'Selecciona al menos un día de la semana');
       return;
     }
 
@@ -551,39 +580,35 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
         widget.controller ??
         Provider.of<SchedulingController>(context, listen: false);
 
-    final schedule = SchoolSchedule.create(
-      subject: _subjectController.text.trim(),
-      teacherName: _teacherNameController.text.trim(),
-      teacherId: _teacherIdController.text.trim(),
-      classroom: _classroomController.text.trim(),
-      grade: _gradeController.text.trim(),
-      section: _sectionController.text.trim(),
-      startTime: DateTime(2024, 1, 1, _startTime.hour, _startTime.minute),
-      endTime: DateTime(2024, 1, 1, _endTime.hour, _endTime.minute),
-      daysOfWeek: _selectedDays,
-      color: _selectedColor,
-      description: _descriptionController.text.trim(),
-    );
+    try {
+      final schedule = SchoolSchedule.create(
+        subject: _subjectController.text.trim(),
+        teacherName: _teacherNameController.text.trim(),
+        teacherId: _teacherIdController.text.trim(),
+        classroom: _classroomController.text.trim(),
+        grade: _gradeController.text.trim(),
+        section: _sectionController.text.trim(),
+        startTime: DateTime(2024, 1, 1, _startTime.hour, _startTime.minute),
+        endTime: DateTime(2024, 1, 1, _endTime.hour, _endTime.minute),
+        daysOfWeek: _selectedDays,
+        color: _selectedColor,
+        description: _descriptionController.text.trim(),
+      );
 
-    if (widget.schedule == null) {
-      controller.addSchoolSchedule(schedule);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Horario escolar creado exitosamente'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } else {
-      controller.updateSchoolSchedule(widget.schedule!.id, schedule);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Horario escolar actualizado exitosamente'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      if (widget.schedule == null) {
+        controller.addSchoolSchedule(schedule);
+        AppSnackBar.showSuccess(context, 'Horario escolar creado exitosamente');
+      } else {
+        controller.updateSchoolSchedule(widget.schedule!.id, schedule);
+        AppSnackBar.showSuccess(
+          context,
+          'Horario escolar actualizado exitosamente',
+        );
+      }
+
+      widget.onSaved?.call();
+    } catch (e) {
+      AppSnackBar.showError(context, 'Error al guardar el horario: $e');
     }
-
-    widget.onSaved?.call();
-    Navigator.of(context).pop();
   }
 }
