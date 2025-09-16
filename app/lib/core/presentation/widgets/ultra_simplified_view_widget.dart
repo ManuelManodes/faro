@@ -68,23 +68,17 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: AppColors.backgroundSecondary(isDarkMode),
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.dividerTheme(isDarkMode),
-                  width: 1.0,
-                ),
-              ),
             ),
-            height: 80,
+            height: 50,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary(isDarkMode),
                     ),
@@ -131,23 +125,17 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: AppColors.backgroundSecondary(isDarkMode),
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.dividerTheme(isDarkMode),
-                  width: 1.0,
-                ),
-              ),
             ),
-            height: 80,
+            height: 50,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary(isDarkMode),
                     ),
@@ -176,18 +164,12 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: AppColors.backgroundSecondary(isDarkMode),
-                border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.dividerTheme(isDarkMode),
-                    width: 1.0,
-                  ),
-                ),
               ),
-              height: 80,
+              height: 50,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
-                  vertical: 16,
+                  vertical: 6,
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,7 +177,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary(isDarkMode),
                       ),
@@ -240,7 +222,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 ),
               ),
             ),
-            height: 80,
+            height: 50,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Row(
@@ -322,10 +304,10 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => _showDatePicker(context, controller),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
             ),
             child: Row(
@@ -333,7 +315,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               children: [
                 Icon(
                   Icons.calendar_today,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
                 AppSpacing.xsH,
@@ -341,14 +323,14 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                   controller.getFormattedDate(),
                   style: TextStyle(
                     color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 AppSpacing.xsH,
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
               ],
@@ -369,10 +351,10 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => _showLevelSelector(context, controller),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
             ),
             child: Row(
@@ -384,14 +366,14 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                   controller.selectedLevel,
                   style: TextStyle(
                     color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 AppSpacing.xsH,
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
               ],
@@ -412,10 +394,10 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => _showCourseSelector(context, controller),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
             ),
             child: Row(
@@ -427,14 +409,14 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                   controller.selectedCourse,
                   style: TextStyle(
                     color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 AppSpacing.xsH,
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
               ],
@@ -469,10 +451,10 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => _showDocumentSelector(context, controller),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
             ),
             child: Row(
@@ -480,7 +462,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               children: [
                 Icon(
                   Icons.description,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
                 AppSpacing.xsH,
@@ -488,14 +470,14 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                   controller.selectedDocument,
                   style: TextStyle(
                     color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 AppSpacing.xsH,
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
               ],
@@ -516,10 +498,10 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => _showModelSelector(context, controller),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
             ),
             child: Row(
@@ -527,7 +509,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               children: [
                 Icon(
                   Icons.psychology,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
                 AppSpacing.xsH,
@@ -535,14 +517,14 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                   controller.selectedModel,
                   style: TextStyle(
                     color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 AppSpacing.xsH,
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
               ],
@@ -577,10 +559,10 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => _showIncidentDatePicker(context, controller),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               border: Border.all(
                 color: controller.shouldShowFieldError('incidentDate')
                     ? AppColors.error
@@ -592,7 +574,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               children: [
                 Icon(
                   Icons.calendar_today,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
                 AppSpacing.xsH,
@@ -600,14 +582,14 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                   '${controller.incidentDate.day}/${controller.incidentDate.month}/${controller.incidentDate.year}',
                   style: TextStyle(
                     color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 AppSpacing.xsH,
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
               ],
@@ -628,10 +610,10 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () => _showIncidentSeveritySelector(context, controller),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               border: Border.all(
                 color: controller.shouldShowFieldError('severity')
                     ? AppColors.error
@@ -645,7 +627,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                     ? _getSeverityIcon(controller.severity!)
                     : Icon(
                         Icons.priority_high,
-                        size: 16,
+                        size: 14,
                         color: AppColors.iconSecondary(isDarkMode),
                       ),
                 AppSpacing.xsH,
@@ -655,14 +637,14 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                     color: controller.severity != null
                         ? AppColors.textPrimary(isDarkMode)
                         : AppColors.textSecondary(isDarkMode),
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 AppSpacing.xsH,
                 Icon(
                   Icons.arrow_drop_down,
-                  size: 16,
+                  size: 14,
                   color: AppColors.iconSecondary(isDarkMode),
                 ),
               ],
@@ -1132,23 +1114,17 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: AppColors.backgroundSecondary(isDarkMode),
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.dividerTheme(isDarkMode),
-                  width: 1.0,
-                ),
-              ),
             ),
-            height: 80,
+            height: 50,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary(isDarkMode),
                     ),
@@ -1174,13 +1150,13 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           children: [
             AppContainer.surface(
               isDarkMode: isDarkMode,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     Icons.psychology,
-                    size: 16,
+                    size: 14,
                     color: AppColors.iconSecondary(isDarkMode),
                   ),
                   AppSpacing.xsH,
@@ -1188,7 +1164,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                     'Test de Holland',
                     style: TextStyle(
                       color: AppColors.textPrimary(isDarkMode),
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -1210,23 +1186,17 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: AppColors.backgroundSecondary(isDarkMode),
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.dividerTheme(isDarkMode),
-                  width: 1.0,
-                ),
-              ),
             ),
-            height: 80,
+            height: 50,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary(isDarkMode),
                     ),
@@ -1307,35 +1277,30 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => onChanged(!value),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: AppColors.surface(isDarkMode),
-          borderRadius: BorderRadius.circular(8),
+          color: value
+              ? (isDarkMode ? const Color(0xFF2A2A2A) : const Color(0xFFF5F5F5))
+              : AppColors.surface(isDarkMode),
+          borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: value
-                ? (isDarkMode ? AppColors.primary : Colors.black87)
+                ? (isDarkMode
+                      ? const Color(0xFF404040)
+                      : const Color(0xFFE0E0E0))
                 : AppColors.dividerTheme(isDarkMode),
-            width: value ? 2.0 : 1.0,
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 16,
-              color: value
-                  ? (isDarkMode ? AppColors.primary : Colors.black87)
-                  : AppColors.iconSecondary(isDarkMode),
-            ),
+            Icon(icon, size: 14, color: AppColors.iconSecondary(isDarkMode)),
             AppSpacing.xsH,
             Text(
               label,
               style: TextStyle(
-                color: value
-                    ? (isDarkMode ? AppColors.primary : Colors.black87)
-                    : AppColors.textPrimary(isDarkMode),
-                fontSize: 14,
+                color: AppColors.textPrimary(isDarkMode),
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
             ),

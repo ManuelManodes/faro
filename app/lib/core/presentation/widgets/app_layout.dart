@@ -60,19 +60,9 @@ class _AppLayoutState extends State<AppLayout> {
           body: Column(
             children: [
               // Header que llega hasta el tope de la pantalla
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                      width: 1.0,
-                    ),
-                  ),
-                ),
-                child: SafeArea(
-                  bottom: false,
-                  child: HeaderWidget(selected: _selected, onSelect: _onSelect),
-                ),
+              SafeArea(
+                bottom: false,
+                child: HeaderWidget(selected: _selected, onSelect: _onSelect),
               ),
 
               // Usar el sistema ultra-simplificado para máxima velocidad

@@ -53,7 +53,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           children: [
             // Top bar
             Container(
-              height: MediaQuery.of(context).size.height > 800 ? 64 : 56,
+              height: MediaQuery.of(context).size.height > 800 ? 50 : 44,
               alignment: Alignment.centerLeft,
               color: isDarkMode
                   ? const Color(0xFF1E1E1E)
@@ -156,7 +156,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     final isMediumScreen = screenWidth < 1024;
 
     return Container(
-      height: isSmallScreen ? 44 : 48,
+      height: isSmallScreen ? 36 : 40,
       color: isDarkMode ? const Color(0xFF1E1E1E) : AppColors.primaryDark,
       width: double.infinity, // Asegurar que vaya de borde a borde
       child: Center(

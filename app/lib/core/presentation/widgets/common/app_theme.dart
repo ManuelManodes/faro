@@ -70,11 +70,11 @@ class AppColors {
   }
 
   static Color backgroundPrimary(bool isDarkMode) {
-    return isDarkMode ? const Color(0xFF121212) : Colors.white;
+    return isDarkMode ? const Color(0xFF121212) : const Color(0xFFFAFAFA);
   }
 
   static Color backgroundSecondary(bool isDarkMode) {
-    return isDarkMode ? const Color(0xFF1E1E1E) : const Color(0xFFFAFAFA);
+    return isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
   }
 
   static Color surface(bool isDarkMode) {

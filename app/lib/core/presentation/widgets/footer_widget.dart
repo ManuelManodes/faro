@@ -65,7 +65,7 @@ class _FooterWidgetState extends State<FooterWidget>
           ),
           padding: EdgeInsets.symmetric(
             horizontal: FigmaGridSystem.getMargin(context),
-            vertical: AppSpacing.lg,
+            vertical: AppSpacing.sm,
           ),
           child: FigmaGridContainer(
             centerContent: false,
@@ -374,8 +374,8 @@ class _FooterWidgetState extends State<FooterWidget>
         onTap: () => _toggleTheme(themeProvider, themeType),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          width: 32,
-          height: 32,
+          width: 28,
+          height: 28,
           decoration: BoxDecoration(
             color: isActive
                 ? (isDarkMode
@@ -394,7 +394,7 @@ class _FooterWidgetState extends State<FooterWidget>
           ),
           child: Icon(
             icon,
-            size: 16,
+            size: 14,
             color: isActive ? textColor : textColor.withValues(alpha: 0.5),
           ),
         ),
