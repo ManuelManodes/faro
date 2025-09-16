@@ -28,10 +28,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/tu-usuario/sistema-faro.git"
+        "url": "https://github.com/ManuelManodes/faro.git"
     },
     "bugs": {
-        "url": "https://github.com/tu-usuario/sistema-faro/issues"
+        "url": "https://github.com/ManuelManodes/faro/issues"
     },
     "homepage": "https://sistema-faro.vercel.app"
 }
