@@ -917,7 +917,8 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 children: [
                   AppButton.surface(
                     text: 'Limpiar Todo',
-                    onPressed: controller.clearAbsences,
+                    onPressed: () =>
+                        _showClearAllConfirmationDialog(context, controller),
                   ),
                   AppSpacing.lgH,
                   AppButton.elegantGreen(
@@ -1164,5 +1165,68 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _showClearAllConfirmationDialog(
+    BuildContext context,
+    AttendanceListController controller,
+  ) async {
+    final isDarkMode = context.read<ThemeProvider>().isDarkMode;
+
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface(isDarkMode),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 24),
+              const SizedBox(width: 12),
+              Text(
+                'Confirmar Limpieza',
+                style: AppTextStyles.titlePrimary(isDarkMode),
+              ),
+            ],
+          ),
+          content: Text(
+            '¿Estás seguro de que quieres limpiar todas las ausencias marcadas? Esta acción no se puede deshacer.',
+            style: AppTextStyles.controlText(isDarkMode),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'No, mantener',
+                style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('Sí, limpiar todo'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      // Limpiar todas las ausencias
+      controller.clearAbsences();
+
+      if (context.mounted) {
+        AppSnackBar.showInfo(context, 'Todas las ausencias han sido limpiadas');
+      }
+    }
   }
 }

@@ -205,6 +205,10 @@ class _TestStartScreen extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     controller: nameController,
+                    textDirection: TextDirection.ltr,
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
                     decoration: InputDecoration(
                       hintText: 'Ingresa el nombre completo',
                       border: InputBorder.none,
@@ -242,6 +246,9 @@ class _TestStartScreen extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     controller: idController,
+                    textDirection: TextDirection.ltr,
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       hintText: 'Ingresa el ID o número de estudiante',
                       border: InputBorder.none,

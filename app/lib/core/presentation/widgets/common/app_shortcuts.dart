@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 
 /// Singleton para manejar el modal de navegación globalmente
 class SearchFocusManager {
@@ -39,18 +40,35 @@ class AppShortcuts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Detectar la plataforma para usar el shortcut correcto
+    final isMacOS = defaultTargetPlatform == TargetPlatform.macOS;
+
     return CallbackShortcuts(
       bindings: <ShortcutActivator, VoidCallback>{
-        const SingleActivator(
-          LogicalKeyboardKey.keyB,
-          control: false,
-          alt: false,
-          shift: false,
-          meta: true,
-        ): () {
-          // 🔍 Callback shortcut Cmd+B activado!
-          SearchFocusManager().showNavigationModal();
-        },
+        // Shortcut para macOS (Command + B)
+        if (isMacOS)
+          const SingleActivator(
+            LogicalKeyboardKey.keyB,
+            control: false,
+            alt: false,
+            shift: false,
+            meta: true,
+          ): () {
+            // 🔍 Callback shortcut Cmd+B activado!
+            SearchFocusManager().showNavigationModal();
+          },
+        // Shortcut para Windows/Linux (Ctrl + B)
+        if (!isMacOS)
+          const SingleActivator(
+            LogicalKeyboardKey.keyB,
+            control: true,
+            alt: false,
+            shift: false,
+            meta: false,
+          ): () {
+            // 🔍 Callback shortcut Ctrl+B activado!
+            SearchFocusManager().showNavigationModal();
+          },
       },
       child: Focus(autofocus: true, child: child),
     );

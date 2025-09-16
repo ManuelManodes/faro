@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../controllers/incident_form_controller.dart';
 import '../../domain/entities/incident.dart';
@@ -17,8 +19,38 @@ class IncidentFormWidget extends StatelessWidget {
   }
 }
 
-class _IncidentFormContent extends StatelessWidget {
+class _IncidentFormContent extends StatefulWidget {
   const _IncidentFormContent();
+
+  @override
+  State<_IncidentFormContent> createState() => _IncidentFormContentState();
+}
+
+class _IncidentFormContentState extends State<_IncidentFormContent> {
+  final _formKey = GlobalKey<FormBuilderState>();
+  final Map<String, TextEditingController> _controllers = {};
+
+  @override
+  void dispose() {
+    // Limpiar todos los controladores
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  TextEditingController _getController(String name, String initialValue) {
+    if (!_controllers.containsKey(name)) {
+      _controllers[name] = TextEditingController(text: initialValue);
+    }
+    return _controllers[name]!;
+  }
+
+  void _clearAllControllers() {
+    for (var textController in _controllers.values) {
+      textController.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,89 +80,103 @@ class _IncidentFormContent extends StatelessWidget {
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.only(right: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Título de la incidencia
-                        _buildTitleField(controller, isDarkMode),
-                        AppSpacing.lgV,
+                    child: FormBuilder(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Título de la incidencia
+                          _buildTitleField(controller, isDarkMode),
+                          AppSpacing.lgV,
 
-                        // Tipo
-                        _buildTypeField(controller, isDarkMode),
-                        AppSpacing.lgV,
+                          // Tipo
+                          _buildTypeField(controller, isDarkMode),
+                          AppSpacing.lgV,
 
-                        // Estudiante y Reportante
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildStudentField(controller, isDarkMode),
-                            ),
-                            AppSpacing.lgH,
-                            Expanded(
-                              child: _buildReportedByField(
-                                controller,
-                                isDarkMode,
+                          // Estudiante y Reportante
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildStudentField(
+                                  controller,
+                                  isDarkMode,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        AppSpacing.lgV,
-
-                        // Ubicación y Categoría
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildLocationField(
-                                controller,
-                                isDarkMode,
+                              AppSpacing.lgH,
+                              Expanded(
+                                child: _buildReportedByField(
+                                  controller,
+                                  isDarkMode,
+                                ),
                               ),
-                            ),
-                            AppSpacing.lgH,
-                            Expanded(
-                              child: _buildCategoryField(
-                                controller,
-                                isDarkMode,
-                              ),
-                            ),
-                          ],
-                        ),
-                        AppSpacing.lgV,
-
-                        // Prioridad
-                        _buildPriorityField(controller, isDarkMode),
-                        AppSpacing.lgV,
-
-                        // Descripción
-                        _buildDescriptionField(controller, isDarkMode),
-                        AppSpacing.lgV,
-
-                        // Testigos
-                        _buildWitnessesField(controller, isDarkMode),
-                        AppSpacing.lgV,
-
-                        // Derivación
-                        _buildDerivationField(controller, isDarkMode),
-                        AppSpacing.lgV,
-
-                        // Notificar a apoderado
-                        _buildNotifyParentField(controller, isDarkMode),
-                        AppSpacing.lgV,
-
-                        // Notas adicionales
-                        _buildNotesField(controller, isDarkMode),
-                        AppSpacing.xxlV,
-
-                        // Mensaje de error
-                        if (controller.errorMessage != null)
-                          _buildErrorMessage(
-                            controller.errorMessage!,
-                            isDarkMode,
+                            ],
                           ),
-                        AppSpacing.lgV,
+                          AppSpacing.lgV,
 
-                        // Botones de acción
-                        _buildActionButtons(controller, context),
-                      ],
+                          // Ubicación y Categoría
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildLocationField(
+                                  controller,
+                                  isDarkMode,
+                                ),
+                              ),
+                              AppSpacing.lgH,
+                              Expanded(
+                                child: _buildCategoryField(
+                                  controller,
+                                  isDarkMode,
+                                ),
+                              ),
+                            ],
+                          ),
+                          AppSpacing.lgV,
+
+                          // Severidad
+                          _buildSeverityField(controller, isDarkMode),
+                          AppSpacing.lgV,
+
+                          // Fecha del incidente
+                          _buildDateField(context, controller, isDarkMode),
+                          AppSpacing.lgV,
+
+                          // Prioridad
+                          _buildPriorityField(controller, isDarkMode),
+                          AppSpacing.lgV,
+
+                          // Descripción
+                          _buildDescriptionField(controller, isDarkMode),
+                          AppSpacing.lgV,
+
+                          // Testigos
+                          _buildWitnessesField(controller, isDarkMode),
+                          AppSpacing.lgV,
+
+                          // Derivación
+                          _buildDerivationField(controller, isDarkMode),
+                          AppSpacing.lgV,
+
+                          // Notificar a apoderado
+                          _buildNotifyParentField(controller, isDarkMode),
+                          AppSpacing.lgV,
+
+                          // Notas adicionales
+                          _buildNotesField(controller, isDarkMode),
+                          AppSpacing.xxlV,
+
+                          // Mensaje de error
+                          if (controller.errorMessage != null)
+                            _buildErrorMessage(
+                              controller.errorMessage!,
+                              isDarkMode,
+                            ),
+                          AppSpacing.lgV,
+
+                          // Botones de acción
+                          _buildActionButtons(controller, context),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -175,13 +221,17 @@ class _IncidentFormContent extends StatelessWidget {
 
   Widget _buildTitleField(IncidentFormController controller, bool isDarkMode) {
     return _buildFormField(
+      name: 'title',
       label: 'Título de la Incidencia *',
       icon: Icons.title,
       isDarkMode: isDarkMode,
-      controller: TextEditingController(text: controller.title),
+      initialValue: controller.title,
       onChanged: controller.setTitle,
       errorText: controller.getFieldError('title'),
       hintText: 'Ej: Acoso escolar en el patio',
+      validators: [
+        FormBuilderValidators.required(errorText: 'El título es obligatorio'),
+      ],
     );
   }
 
@@ -257,13 +307,19 @@ class _IncidentFormContent extends StatelessWidget {
     bool isDarkMode,
   ) {
     return _buildFormField(
+      name: 'studentName',
       label: 'Estudiante Involucrado *',
       icon: Icons.person,
       isDarkMode: isDarkMode,
-      controller: TextEditingController(text: controller.studentName),
+      initialValue: controller.studentName,
       onChanged: controller.setStudentName,
       errorText: controller.getFieldError('studentName'),
       hintText: 'Nombre completo del estudiante',
+      validators: [
+        FormBuilderValidators.required(
+          errorText: 'El nombre del estudiante es obligatorio',
+        ),
+      ],
     );
   }
 
@@ -272,13 +328,19 @@ class _IncidentFormContent extends StatelessWidget {
     bool isDarkMode,
   ) {
     return _buildFormField(
+      name: 'reportedBy',
       label: 'Reportado Por *',
       icon: Icons.person_add,
       isDarkMode: isDarkMode,
-      controller: TextEditingController(text: controller.reportedBy),
+      initialValue: controller.reportedBy,
       onChanged: controller.setReportedBy,
       errorText: controller.getFieldError('reportedBy'),
       hintText: 'Nombre del reportante',
+      validators: [
+        FormBuilderValidators.required(
+          errorText: 'El nombre del reportante es obligatorio',
+        ),
+      ],
     );
   }
 
@@ -359,15 +421,25 @@ class _IncidentFormContent extends StatelessWidget {
     bool isDarkMode,
   ) {
     return _buildFormField(
+      name: 'description',
       label: 'Descripción Detallada *',
       icon: Icons.description,
       isDarkMode: isDarkMode,
-      controller: TextEditingController(text: controller.description),
+      initialValue: controller.description,
       onChanged: controller.setDescription,
       errorText: controller.getFieldError('description'),
       hintText: 'Describa los detalles del incidente...',
       isMultiline: true,
       maxLines: 4,
+      validators: [
+        FormBuilderValidators.required(
+          errorText: 'La descripción es obligatoria',
+        ),
+        FormBuilderValidators.minLength(
+          10,
+          errorText: 'La descripción debe tener al menos 10 caracteres',
+        ),
+      ],
     );
   }
 
@@ -491,10 +563,11 @@ class _IncidentFormContent extends StatelessWidget {
 
   Widget _buildNotesField(IncidentFormController controller, bool isDarkMode) {
     return _buildFormField(
+      name: 'notes',
       label: 'Notas Adicionales (Opcional)',
       icon: Icons.note,
       isDarkMode: isDarkMode,
-      controller: TextEditingController(text: controller.notes),
+      initialValue: controller.notes,
       onChanged: controller.setNotes,
       hintText: 'Información adicional relevante...',
       isMultiline: true,
@@ -531,10 +604,7 @@ class _IncidentFormContent extends StatelessWidget {
       children: [
         AppButton.surface(
           text: 'Cancelar',
-          onPressed: () {
-            controller.clearForm();
-            AppSnackBar.showInfo(context, 'Formulario cancelado');
-          },
+          onPressed: () => _showCancelConfirmationDialog(context, controller),
         ),
         AppSpacing.lgH,
         AppButton.elegantGreen(
@@ -542,18 +612,24 @@ class _IncidentFormContent extends StatelessWidget {
           onPressed: controller.isLoading
               ? null
               : () async {
-                  final success = await controller.submitForm();
-                  if (success) {
-                    AppSnackBar.showSuccess(
-                      context,
-                      'Incidencia reportada exitosamente',
-                    );
-                    controller.clearForm();
-                  } else {
-                    AppSnackBar.showError(
-                      context,
-                      controller.errorMessage ?? 'Error al enviar el reporte',
-                    );
+                  if (_formKey.currentState?.saveAndValidate() ?? false) {
+                    final success = await controller.submitForm();
+                    if (context.mounted) {
+                      if (success) {
+                        AppSnackBar.showSuccess(
+                          context,
+                          'Incidencia reportada exitosamente',
+                        );
+                        controller.clearForm();
+                        _formKey.currentState?.reset();
+                      } else {
+                        AppSnackBar.showError(
+                          context,
+                          controller.errorMessage ??
+                              'Error al enviar el reporte',
+                        );
+                      }
+                    }
                   }
                 },
         ),
@@ -562,15 +638,17 @@ class _IncidentFormContent extends StatelessWidget {
   }
 
   Widget _buildFormField({
+    required String name,
     required String label,
     required IconData icon,
     required bool isDarkMode,
-    required TextEditingController controller,
+    required String initialValue,
     required ValueChanged<String> onChanged,
     String? errorText,
     String? hintText,
     bool isMultiline = false,
     int maxLines = 1,
+    List<FormFieldValidator<String>>? validators,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -602,13 +680,21 @@ class _IncidentFormContent extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
-                    controller: controller,
+                    controller: _getController(name, initialValue),
                     onChanged: onChanged,
                     maxLines: isMultiline ? maxLines : 1,
+                    keyboardType: isMultiline
+                        ? TextInputType.multiline
+                        : TextInputType.text,
+                    textCapitalization: TextCapitalization.sentences,
+                    textInputAction: isMultiline
+                        ? TextInputAction.newline
+                        : TextInputAction.done,
                     decoration: InputDecoration(
                       hintText: hintText,
                       border: InputBorder.none,
                       hintStyle: AppTextStyles.placeholderText(isDarkMode),
+                      isDense: true,
                     ),
                     style: AppTextStyles.controlText(isDarkMode),
                   ),
@@ -874,6 +960,248 @@ class _IncidentFormContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildSeverityField(
+    IncidentFormController controller,
+    bool isDarkMode,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Severidad *', style: AppTextStyles.controlText(isDarkMode)),
+        AppSpacing.compactV,
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface(isDarkMode),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: controller.shouldShowFieldError('severity')
+                  ? AppColors.error
+                  : AppColors.dividerTheme(isDarkMode),
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<IncidentSeverity>(
+              value: controller.severity,
+              isExpanded: true,
+              hint: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.warning,
+                      size: 16,
+                      color: AppColors.iconSecondary(isDarkMode),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Seleccionar severidad',
+                      style: AppTextStyles.placeholderText(isDarkMode),
+                    ),
+                  ],
+                ),
+              ),
+              items: IncidentSeverity.values.map((severity) {
+                return DropdownMenuItem(
+                  value: severity,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                    ),
+                    child: Row(
+                      children: [
+                        _getSeverityIcon(severity),
+                        const SizedBox(width: 8),
+                        Text(
+                          severity.displayName,
+                          style: AppTextStyles.controlText(isDarkMode),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: controller.setSeverity,
+              dropdownColor: AppColors.surface(isDarkMode),
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: AppColors.iconSecondary(isDarkMode),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDateField(
+    BuildContext context,
+    IncidentFormController controller,
+    bool isDarkMode,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Fecha del Incidente *',
+          style: AppTextStyles.controlText(isDarkMode),
+        ),
+        AppSpacing.compactV,
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface(isDarkMode),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: controller.shouldShowFieldError('incidentDate')
+                  ? AppColors.error
+                  : AppColors.dividerTheme(isDarkMode),
+            ),
+          ),
+          child: InkWell(
+            onTap: () => _showDatePicker(context, controller),
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.compact,
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    size: 16,
+                    color: AppColors.iconSecondary(isDarkMode),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      controller.getFormattedIncidentDate(),
+                      style: AppTextStyles.controlText(isDarkMode),
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    color: AppColors.iconSecondary(isDarkMode),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showDatePicker(
+    BuildContext context,
+    IncidentFormController controller,
+  ) async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: controller.incidentDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now().add(const Duration(days: 1)),
+      cancelText: 'Cancelar',
+      confirmText: 'Aceptar',
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.primary,
+              onPrimary: Colors.white,
+              surface: AppColors.surface(false),
+              onSurface: AppColors.textPrimary(false),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (date != null) {
+      controller.setIncidentDate(date);
+    }
+  }
+
+  Future<void> _showCancelConfirmationDialog(
+    BuildContext context,
+    IncidentFormController controller,
+  ) async {
+    final isDarkMode = context.read<ThemeProvider>().isDarkMode;
+
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface(isDarkMode),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 24),
+              const SizedBox(width: 12),
+              Text(
+                'Confirmar Cancelación',
+                style: AppTextStyles.titlePrimary(isDarkMode),
+              ),
+            ],
+          ),
+          content: Text(
+            '¿Estás seguro de que quieres cancelar el formulario? Se perderán todos los datos ingresados.',
+            style: AppTextStyles.controlText(isDarkMode),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'No, continuar',
+                style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('Sí, cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      // Limpiar el formulario y resetear el estado
+      controller.clearForm();
+      _formKey.currentState?.reset();
+
+      // Limpiar todos los controladores de texto
+      _clearAllControllers();
+
+      if (context.mounted) {
+        AppSnackBar.showInfo(context, 'Formulario cancelado exitosamente');
+      }
+    }
+  }
+
+  Widget _getSeverityIcon(IncidentSeverity severity) {
+    switch (severity) {
+      case IncidentSeverity.low:
+        return Icon(Icons.info_outline, size: 12, color: AppColors.success);
+      case IncidentSeverity.medium:
+        return Icon(Icons.warning_outlined, size: 12, color: Colors.orange);
+      case IncidentSeverity.high:
+        return Icon(Icons.warning, size: 12, color: Colors.red);
+      case IncidentSeverity.critical:
+        return Icon(Icons.error, size: 12, color: Colors.red);
+    }
   }
 
   Widget _getPriorityIcon(String priority) {
