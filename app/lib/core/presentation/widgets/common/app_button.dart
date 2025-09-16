@@ -333,12 +333,8 @@ class AppButton extends StatelessWidget {
       builder: (context, themeProvider, child) {
         return Container(
           decoration: BoxDecoration(
-            color: Colors.green.withValues(alpha: 0.15),
+            color: AppColors.success,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: Colors.green.withValues(alpha: 0.3),
-              width: 1,
-            ),
           ),
           child: ElevatedButton.icon(
             onPressed: onPressed,
@@ -346,7 +342,7 @@ class AppButton extends StatelessWidget {
             label: Text(text),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
-              foregroundColor: AppColors.success,
+              foregroundColor: Colors.white,
               shadowColor: Colors.transparent,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               shape: RoundedRectangleBorder(

@@ -603,7 +603,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
   Widget _getSeverityIcon(IncidentSeverity severity) {
     switch (severity) {
       case IncidentSeverity.low:
-        return Icon(Icons.circle, size: 16, color: Colors.green);
+        return Icon(Icons.circle, size: 16, color: AppColors.success);
       case IncidentSeverity.medium:
         return Icon(Icons.circle, size: 16, color: Colors.orange);
       case IncidentSeverity.high:
@@ -615,7 +615,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
 
   Widget _getLevelIcon(String level, BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final iconColor = isDarkMode ? Colors.white : Colors.black87;
+    final iconColor = AppColors.iconPrimary(isDarkMode);
 
     // Iconos apropiados para cada nivel educativo
     if (level.contains('Básico')) {
@@ -649,7 +649,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
 
   Widget _getCourseIcon(String course, BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final iconColor = isDarkMode ? Colors.white : Colors.black87;
+    final iconColor = AppColors.iconPrimary(isDarkMode);
 
     // Icono consistente para todos los cursos
     // Usamos un icono que represente secciones o grupos de clase
@@ -674,33 +674,17 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           data: Theme.of(context).copyWith(
             colorScheme: isDarkMode
                 ? ColorScheme.dark(
-                    primary: const Color(
-                      0xFF2A2A2A,
-                    ), // Fondo de fecha seleccionada más suave
-                    onPrimary: Colors.white.withValues(
-                      alpha: 0.9,
-                    ), // Texto sobre fecha seleccionada más suave
-                    surface: const Color(
-                      0xFF1E1E1E,
-                    ), // Fondo del calendario más suave
-                    onSurface: Colors.white.withValues(
-                      alpha: 0.87,
-                    ), // Texto principal más suave
-                    onSurfaceVariant: Colors.white.withValues(
-                      alpha: 0.6,
-                    ), // Texto secundario más suave
-                    outline: Colors.white.withValues(
-                      alpha: 0.12,
-                    ), // Bordes más suaves
-                    outlineVariant: Colors.white.withValues(
-                      alpha: 0.08,
-                    ), // Bordes secundarios más suaves
-                    secondary: const Color(
-                      0xFF2A2A2A,
-                    ), // Color secundario más suave
-                    onSecondary: Colors.white.withValues(
-                      alpha: 0.9,
-                    ), // Texto sobre secundario más suave
+                    primary: AppColors.accentPrimary(isDarkMode),
+                    onPrimary: Colors.white,
+                    surface: AppColors.surface(isDarkMode),
+                    onSurface: AppColors.textPrimary(isDarkMode),
+                    onSurfaceVariant: AppColors.textSecondary(isDarkMode),
+                    outline: AppColors.dividerTheme(isDarkMode),
+                    outlineVariant: AppColors.dividerTheme(
+                      isDarkMode,
+                    ).withValues(alpha: 0.5),
+                    secondary: AppColors.accentPrimary(isDarkMode),
+                    onSecondary: Colors.white,
                   )
                 : ColorScheme.light(
                     primary: AppColors.surface(

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
 import 'theme_provider.dart';
+import 'app_theme.dart';
 
 /// Modal de navegación que se abre desde el centro de la pantalla
 class NavigationModal extends StatefulWidget {
@@ -290,18 +291,14 @@ class _NavigationModalState extends State<NavigationModal>
                                   : MediaQuery.of(context).size.height * 0.85,
                             ),
                             decoration: BoxDecoration(
-                              color: isDarkMode
-                                  ? const Color(0xFF2A2A2A)
-                                  : Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              color: AppColors.backgroundPrimary(isDarkMode),
+                              borderRadius: AppBorderRadius.md,
                               boxShadow: [
                                 BoxShadow(
-                                  color: isDarkMode
-                                      ? Colors.black.withValues(alpha: 0.4)
-                                      : Colors.black.withValues(alpha: 0.1),
-                                  blurRadius: 20,
+                                  color: AppColors.shadow,
+                                  blurRadius: 8,
                                   spreadRadius: 0,
-                                  offset: const Offset(0, 10),
+                                  offset: const Offset(0, 2),
                                 ),
                               ],
                             ),
@@ -330,11 +327,11 @@ class _NavigationModalState extends State<NavigationModal>
                                         : 16,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: isDarkMode
-                                        ? Colors.white.withValues(alpha: 0.05)
-                                        : Colors.grey.withValues(alpha: 0.05),
+                                    color: AppColors.backgroundPrimary(
+                                      isDarkMode,
+                                    ),
                                     borderRadius: const BorderRadius.vertical(
-                                      top: Radius.circular(16),
+                                      top: Radius.circular(12),
                                     ),
                                   ),
                                   child: Column(
@@ -346,19 +343,15 @@ class _NavigationModalState extends State<NavigationModal>
                                           Icon(
                                             Icons.navigation,
                                             size: 18,
-                                            color: isDarkMode
-                                                ? Colors.white70
-                                                : Colors.grey[600],
+                                            color: AppColors.iconSecondary(
+                                              isDarkMode,
+                                            ),
                                           ),
                                           const SizedBox(width: 10),
                                           Text(
                                             'Ir a página',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: isDarkMode
-                                                  ? Colors.white
-                                                  : Colors.grey[800],
+                                            style: AppTextStyles.sectionTitle(
+                                              isDarkMode,
                                             ),
                                           ),
                                           const Spacer(),
@@ -368,24 +361,16 @@ class _NavigationModalState extends State<NavigationModal>
                                               vertical: 3,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: isDarkMode
-                                                  ? Colors.white.withValues(
-                                                      alpha: 0.1,
-                                                    )
-                                                  : Colors.grey.withValues(
-                                                      alpha: 0.1,
-                                                    ),
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
+                                              color:
+                                                  AppColors.backgroundPrimary(
+                                                    isDarkMode,
+                                                  ),
+                                              borderRadius: AppBorderRadius.sm,
                                             ),
                                             child: Text(
                                               NavigationModal.getShortcutText(),
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                                color: isDarkMode
-                                                    ? Colors.white70
-                                                    : Colors.grey[600],
+                                              style: AppTextStyles.controlText(
+                                                isDarkMode,
                                               ),
                                             ),
                                           ),
@@ -396,70 +381,44 @@ class _NavigationModalState extends State<NavigationModal>
                                       TextField(
                                         focusNode: _searchFocusNode,
                                         controller: _searchController,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: isDarkMode
-                                              ? Colors.white
-                                              : Colors.black87,
+                                        style: AppTextStyles.controlText(
+                                          isDarkMode,
                                         ),
                                         decoration: InputDecoration(
                                           hintText: 'Escribe para buscar...',
-                                          hintStyle: TextStyle(
-                                            fontSize: 15,
-                                            color: isDarkMode
-                                                ? Colors.white54
-                                                : Colors.grey[600],
-                                          ),
+                                          hintStyle:
+                                              AppTextStyles.placeholderText(
+                                                isDarkMode,
+                                              ),
                                           border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
+                                            borderRadius: AppBorderRadius.sm,
                                             borderSide: BorderSide(
-                                              color: isDarkMode
-                                                  ? Colors.white.withValues(
-                                                      alpha: 0.2,
-                                                    )
-                                                  : Colors.grey.withValues(
-                                                      alpha: 0.3,
-                                                    ),
+                                              color: AppColors.dividerTheme(
+                                                isDarkMode,
+                                              ),
                                             ),
                                           ),
                                           enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
+                                            borderRadius: AppBorderRadius.sm,
                                             borderSide: BorderSide(
-                                              color: isDarkMode
-                                                  ? Colors.white.withValues(
-                                                      alpha: 0.2,
-                                                    )
-                                                  : Colors.grey.withValues(
-                                                      alpha: 0.3,
-                                                    ),
+                                              color: AppColors.dividerTheme(
+                                                isDarkMode,
+                                              ),
                                             ),
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
+                                            borderRadius: AppBorderRadius.sm,
                                             borderSide: BorderSide(
-                                              color: isDarkMode
-                                                  ? Colors.white.withValues(
-                                                      alpha: 0.4,
-                                                    )
-                                                  : Colors.blue.withValues(
-                                                      alpha: 0.6,
-                                                    ),
+                                              color: AppColors.dividerTheme(
+                                                isDarkMode,
+                                              ),
                                             ),
                                           ),
                                           filled: true,
-                                          fillColor: isDarkMode
-                                              ? Colors.white.withValues(
-                                                  alpha: 0.05,
-                                                )
-                                              : Colors.grey.withValues(
-                                                  alpha: 0.05,
-                                                ),
+                                          fillColor:
+                                              AppColors.backgroundPrimary(
+                                                isDarkMode,
+                                              ),
                                           contentPadding: EdgeInsets.symmetric(
                                             horizontal:
                                                 MediaQuery.of(
@@ -546,18 +505,16 @@ class _NavigationModalState extends State<NavigationModal>
       margin: const EdgeInsets.symmetric(vertical: 1),
       decoration: BoxDecoration(
         color: isSelected
-            ? (isDarkMode
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : Colors.blue.withValues(alpha: 0.08))
+            ? (isDarkMode ? AppColors.surface(isDarkMode) : Colors.white)
             : Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppBorderRadius.sm,
       ),
       child: InkWell(
         onTap: () {
           widget.onItemSelected(item);
           _closeModal();
         },
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppBorderRadius.sm,
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width > 600 ? 16 : 12,
@@ -571,14 +528,14 @@ class _NavigationModalState extends State<NavigationModal>
                 height: MediaQuery.of(context).size.width > 600 ? 40 : 36,
                 decoration: BoxDecoration(
                   color: isDarkMode
-                      ? Colors.white.withValues(alpha: 0.1)
-                      : Colors.grey.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                      ? AppColors.surface(isDarkMode)
+                      : Colors.white,
+                  borderRadius: AppBorderRadius.sm,
                 ),
                 child: Icon(
                   _getIconForItem(item),
                   size: MediaQuery.of(context).size.width > 600 ? 20 : 18,
-                  color: isDarkMode ? Colors.white70 : Colors.grey[700],
+                  color: AppColors.iconSecondary(isDarkMode),
                 ),
               ),
               const SizedBox(width: 14),
@@ -590,37 +547,26 @@ class _NavigationModalState extends State<NavigationModal>
                   children: [
                     Text(
                       item,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: isCurrentItem
-                            ? FontWeight.w600
-                            : FontWeight.normal,
-                        color: isDarkMode ? Colors.white : Colors.black87,
-                      ),
+                      style: isCurrentItem
+                          ? AppTextStyles.sectionTitle(isDarkMode)
+                          : AppTextStyles.controlText(isDarkMode),
                     ),
                     if (isCurrentItem)
                       Text(
                         'Página actual',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: isDarkMode ? Colors.white54 : Colors.grey[600],
-                        ),
+                        style: AppTextStyles.secondaryText(isDarkMode),
                       ),
                   ],
                 ),
               ),
               // Indicadores
               if (isCurrentItem)
-                Icon(
-                  Icons.check_circle,
-                  size: 18,
-                  color: isDarkMode ? Colors.green[400] : Colors.green[600],
-                ),
+                Icon(Icons.check_circle, size: 18, color: AppColors.success),
               if (isSelected && !isCurrentItem)
                 Icon(
                   Icons.arrow_right,
                   size: 18,
-                  color: isDarkMode ? Colors.white70 : Colors.grey[600],
+                  color: AppColors.iconSecondary(isDarkMode),
                 ),
             ],
           ),

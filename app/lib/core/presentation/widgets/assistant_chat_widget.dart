@@ -136,17 +136,13 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.15),
+                color: AppColors.success,
                 borderRadius: BorderRadius.circular(40),
-                border: Border.all(
-                  color: Colors.green.withValues(alpha: 0.3),
-                  width: 1,
-                ),
               ),
               child: Icon(
                 Icons.chat_bubble_outline,
                 size: 40,
-                color: Colors.green.shade600,
+                color: Colors.white,
               ),
             ),
             AppSpacing.lgV,
@@ -377,20 +373,12 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
             builder: (context, chatController, child) {
               return Container(
                 decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.15),
+                  color: AppColors.success,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: Colors.green.withValues(alpha: 0.3),
-                    width: 1,
-                  ),
                 ),
                 child: IconButton(
                   onPressed: chatController.isTyping ? null : _sendMessage,
-                  icon: Icon(
-                    Icons.send,
-                    color: Colors.green.shade600,
-                    size: 20,
-                  ),
+                  icon: Icon(Icons.send, color: Colors.white, size: 20),
                   tooltip: 'Enviar mensaje',
                 ),
               );

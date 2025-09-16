@@ -68,7 +68,7 @@ class AppColors {
 
   // Colores de estado (mantenidos como están)
   static const Color error = Colors.red;
-  static const Color success = Colors.green;
+  static const Color success = Color(0xFF4CAF50); // Verde plano primario
   static const Color warning = Colors.orange;
   static const Color info = Colors.blue;
 

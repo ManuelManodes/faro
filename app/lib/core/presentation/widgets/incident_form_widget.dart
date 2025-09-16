@@ -879,7 +879,7 @@ class _IncidentFormContent extends StatelessWidget {
   Widget _getPriorityIcon(String priority) {
     switch (priority) {
       case 'Baja':
-        return Icon(Icons.arrow_downward, size: 12, color: Colors.green);
+        return Icon(Icons.arrow_downward, size: 12, color: AppColors.success);
       case 'Normal':
         return Icon(Icons.remove, size: 12, color: Colors.orange);
       case 'Alta':

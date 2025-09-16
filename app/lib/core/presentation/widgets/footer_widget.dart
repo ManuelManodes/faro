@@ -257,7 +257,7 @@ class _FooterWidgetState extends State<FooterWidget>
               width: 8,
               height: 8,
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: _blinkAnimation.value),
+                color: AppColors.success,
                 shape: BoxShape.circle,
               ),
             );

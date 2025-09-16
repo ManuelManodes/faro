@@ -40,8 +40,8 @@ class AppBadge extends StatelessWidget {
     return AppBadge(
       key: key,
       text: text,
-      backgroundColor: Colors.green.withAlpha(24),
-      textColor: Colors.green.shade700,
+      backgroundColor: AppColors.success.withValues(alpha: 0.1),
+      textColor: AppColors.success,
     );
   }
 

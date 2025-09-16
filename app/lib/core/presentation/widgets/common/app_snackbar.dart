@@ -21,14 +21,10 @@ class AppSnackBar {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.15),
+                color: AppColors.success,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.green.withValues(alpha: 0.3),
-                  width: 1,
-                ),
               ),
-              child: Icon(Icons.check, color: Colors.green.shade600, size: 20),
+              child: Icon(Icons.check, color: Colors.white, size: 20),
             ),
             const SizedBox(width: 12),
             // Mensaje

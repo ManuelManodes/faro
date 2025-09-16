@@ -848,16 +848,12 @@ class _ViewHeaderWidgetState extends State<ViewHeaderWidget>
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.green.withValues(alpha: 0.15),
+                        color: AppColors.success,
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: Colors.green.withValues(alpha: 0.3),
-                          width: 1,
-                        ),
                       ),
                       child: Icon(
                         Icons.check_circle,
-                        color: Colors.green.shade600,
+                        color: Colors.white,
                         size: 20,
                       ),
                     ),
