@@ -19,7 +19,7 @@ class AppLayout extends StatefulWidget {
 }
 
 class _AppLayoutState extends State<AppLayout> {
-  String _selected = 'Panel Principal';
+  String _selected = 'Control de Asistencia';
 
   @override
   void initState() {

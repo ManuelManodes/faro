@@ -46,7 +46,10 @@ class _FocusableStudentRowState extends State<FocusableStudentRow> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      padding: const EdgeInsets.symmetric(
+        vertical: AppSpacing.md,
+        horizontal: AppSpacing.lg,
+      ),
       decoration: BoxDecoration(
         color: widget.isAbsent
             ? AppColors.error.withValues(alpha: 0.05)
@@ -59,21 +62,11 @@ class _FocusableStudentRowState extends State<FocusableStudentRow> {
           Container(
             width: 32,
             height: 32,
-            decoration: BoxDecoration(
-              color: AppColors.surface(widget.isDarkMode),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: AppColors.dividerTheme(widget.isDarkMode),
-              ),
-            ),
+            decoration: AppDecorations.standardContainer(widget.isDarkMode),
             child: Center(
               child: Text(
                 '${widget.index + 1}',
-                style: TextStyle(
-                  color: AppColors.textSecondary(widget.isDarkMode),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyles.tableSecondaryText(widget.isDarkMode),
               ),
             ),
           ),
@@ -86,19 +79,12 @@ class _FocusableStudentRowState extends State<FocusableStudentRow> {
               children: [
                 Text(
                   widget.student.fullName,
-                  style: TextStyle(
-                    color: AppColors.textPrimary(widget.isDarkMode),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.tableText(widget.isDarkMode),
                 ),
-                AppSpacing.xsV,
+                AppSpacing.microV,
                 Text(
                   '${widget.student.level} - Curso ${widget.student.course}',
-                  style: TextStyle(
-                    color: AppColors.textSecondary(widget.isDarkMode),
-                    fontSize: 12,
-                  ),
+                  style: AppTextStyles.tableSecondaryText(widget.isDarkMode),
                 ),
               ],
             ),
@@ -117,11 +103,9 @@ class _FocusableStudentRowState extends State<FocusableStudentRow> {
                         ? AppColors.error
                         : AppColors.surface(widget.isDarkMode),
                     borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: widget.isAbsent
-                          ? AppColors.error
-                          : AppColors.dividerTheme(widget.isDarkMode),
-                      width: 2,
+                    border: AppBorders.fieldBorder(
+                      widget.isDarkMode,
+                      hasError: widget.isAbsent,
                     ),
                   ),
                   child: widget.isAbsent
@@ -284,21 +268,14 @@ class _KeyboardNavigationTableState extends State<KeyboardNavigationTable> {
                               children: [
                                 Text(
                                   student.fullName,
-                                  style: TextStyle(
-                                    color: AppColors.textPrimary(
-                                      widget.isDarkMode,
-                                    ),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
+                                  style: AppTextStyles.tableText(
+                                    widget.isDarkMode,
                                   ),
                                 ),
                                 Text(
                                   '${student.level} - ${student.course}',
-                                  style: TextStyle(
-                                    color: AppColors.textSecondary(
-                                      widget.isDarkMode,
-                                    ),
-                                    fontSize: 14,
+                                  style: AppTextStyles.tableSecondaryText(
+                                    widget.isDarkMode,
                                   ),
                                 ),
                               ],
@@ -378,11 +355,7 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
     return Container(
       height: 400,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.surface(isDarkMode),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.dividerTheme(isDarkMode), width: 1),
-      ),
+      decoration: AppDecorations.standardContainer(isDarkMode),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -391,10 +364,7 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
             AppSpacing.mdV,
             Text(
               'Cargando estudiantes...',
-              style: TextStyle(
-                color: AppColors.textSecondary(isDarkMode),
-                fontSize: 14,
-              ),
+              style: AppTextStyles.secondaryText(isDarkMode),
             ),
           ],
         ),
@@ -406,11 +376,7 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
     return Container(
       height: 200,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.surface(isDarkMode),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.dividerTheme(isDarkMode), width: 1),
-      ),
+      decoration: AppDecorations.standardContainer(isDarkMode),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -419,19 +385,12 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
             AppSpacing.mdV,
             Text(
               'Error al cargar estudiantes',
-              style: TextStyle(
-                color: AppColors.textPrimary(isDarkMode),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyles.sectionTitle(isDarkMode),
             ),
-            AppSpacing.smV,
+            AppSpacing.compactV,
             Text(
               error,
-              style: TextStyle(
-                color: AppColors.textSecondary(isDarkMode),
-                fontSize: 14,
-              ),
+              style: AppTextStyles.secondaryText(isDarkMode),
               textAlign: TextAlign.center,
             ),
           ],
@@ -444,11 +403,7 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
     return Container(
       height: 200,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.surface(isDarkMode),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.dividerTheme(isDarkMode), width: 1),
-      ),
+      decoration: AppDecorations.standardContainer(isDarkMode),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -461,19 +416,12 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
             AppSpacing.mdV,
             Text(
               'No hay estudiantes',
-              style: TextStyle(
-                color: AppColors.textPrimary(isDarkMode),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyles.sectionTitle(isDarkMode),
             ),
-            AppSpacing.smV,
+            AppSpacing.compactV,
             Text(
               'Selecciona un nivel y curso para ver los estudiantes',
-              style: TextStyle(
-                color: AppColors.textSecondary(isDarkMode),
-                fontSize: 14,
-              ),
+              style: AppTextStyles.secondaryText(isDarkMode),
               textAlign: TextAlign.center,
             ),
           ],
@@ -483,22 +431,23 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
   }
 
   Widget _buildTable(bool isDarkMode, AttendanceListController controller) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.surface(isDarkMode),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.dividerTheme(isDarkMode), width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header de la tabla
-          _buildTableHeader(isDarkMode, controller),
-          AppSpacing.mdV,
-          // Contenido de la tabla
-          _buildTableContent(isDarkMode, controller),
-        ],
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: AppDecorations.standardContainer(isDarkMode),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header de la tabla
+              _buildTableHeader(isDarkMode, controller),
+              AppSpacing.mdV,
+              // Contenido de la tabla
+              _buildTableContent(isDarkMode, controller),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -513,11 +462,7 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
           flex: 3,
           child: Text(
             'Estudiantes (${controller.students.length})',
-            style: TextStyle(
-              color: AppColors.textPrimary(isDarkMode),
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.sectionTitle(isDarkMode),
           ),
         ),
         Expanded(
@@ -525,14 +470,7 @@ class _AttendanceTableWidgetState extends State<AttendanceTableWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Ausente',
-                style: TextStyle(
-                  color: AppColors.textSecondary(isDarkMode),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              Text('Ausente', style: AppTextStyles.controlText(isDarkMode)),
               AppSpacing.xsH,
               Icon(
                 Icons.help_outline,

@@ -116,13 +116,9 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
                     widget.schedule == null
                         ? 'Nuevo Horario Escolar'
                         : 'Editar Horario Escolar',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
+                    style: AppTextStyles.titlePrimary(isDarkMode),
                   ),
-                  const SizedBox(height: 24),
+                  AppSpacing.xxlV,
 
                   // Campos del formulario
                   Expanded(
@@ -244,13 +240,9 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
                           // Días de la semana
                           Text(
                             'Días de la semana',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.textPrimary(isDarkMode),
-                            ),
+                            style: AppTextStyles.sectionTitle(isDarkMode),
                           ),
-                          AppSpacing.smV,
+                          AppSpacing.compactV,
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
@@ -330,13 +322,9 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
                           // Color
                           Text(
                             'Color del horario',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.textPrimary(isDarkMode),
-                            ),
+                            style: AppTextStyles.sectionTitle(isDarkMode),
                           ),
-                          AppSpacing.smV,
+                          AppSpacing.compactV,
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
@@ -397,10 +385,7 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
                               AppSpacing.smH,
                               Text(
                                 'Horario activo',
-                                style: TextStyle(
-                                  color: AppColors.textPrimary(isDarkMode),
-                                  fontSize: 16,
-                                ),
+                                style: AppTextStyles.sectionTitle(isDarkMode),
                               ),
                             ],
                           ),
@@ -443,14 +428,7 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
   }
 
   Widget _buildSectionTitle(String title, bool isDarkMode) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: AppColors.textPrimary(isDarkMode),
-      ),
-    );
+    return Text(title, style: AppTextStyles.titlePrimary(isDarkMode));
   }
 
   Widget _buildTextField({
@@ -464,23 +442,16 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        AppSpacing.xsV,
+        Text(label, style: AppTextStyles.controlText(isDarkMode)),
+        AppSpacing.microV,
         TextFormField(
           controller: controller,
           validator: validator,
           maxLines: maxLines,
-          style: TextStyle(color: AppColors.textPrimary(isDarkMode)),
+          style: AppTextStyles.controlText(isDarkMode),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+            hintStyle: AppTextStyles.placeholderText(isDarkMode),
             filled: true,
             fillColor: AppColors.backgroundSecondary(isDarkMode),
             border: OutlineInputBorder(
@@ -514,15 +485,8 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        AppSpacing.xsV,
+        Text(label, style: AppTextStyles.controlText(isDarkMode)),
+        AppSpacing.microV,
         GestureDetector(
           onTap: () async {
             final selectedTime = await showTimePicker(
@@ -550,10 +514,7 @@ class _SchoolScheduleFormWidgetState extends State<SchoolScheduleFormWidget> {
                 AppSpacing.smH,
                 Text(
                   '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 16,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 const Spacer(),
                 Icon(

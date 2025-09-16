@@ -18,7 +18,6 @@ class HeaderWidget extends StatefulWidget {
 
   // Lista pública de elementos de navegación (estructura visual solamente)
   static const List<String> navItems = [
-    'Panel Principal',
     'Control de Asistencia',
     'Agenda',
     'Evaluaciones',
@@ -56,8 +55,8 @@ class _HeaderWidgetState extends State<HeaderWidget> {
               height: MediaQuery.of(context).size.height > 800 ? 50 : 44,
               alignment: Alignment.centerLeft,
               color: isDarkMode
-                  ? const Color(0xFF1E1E1E)
-                  : AppColors.primaryDark,
+                  ? AppColors.backgroundSecondary(isDarkMode)
+                  : Colors.white,
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width > 1200
@@ -102,7 +101,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
               : isMediumScreen
               ? 26
               : 28,
-          color: Colors.orangeAccent,
+          color: isDarkMode
+              ? AppColors.accentPrimary(isDarkMode)
+              : AppColors.textPrimary(isDarkMode),
         ),
         SizedBox(width: isSmallScreen ? 8 : 12),
         if (!isSmallScreen) // Ocultar texto en pantallas pequeñas
@@ -157,7 +158,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
 
     return Container(
       height: isSmallScreen ? 36 : 40,
-      color: isDarkMode ? const Color(0xFF1E1E1E) : AppColors.primaryDark,
+      color: isDarkMode
+          ? AppColors.backgroundSecondary(isDarkMode)
+          : Colors.white,
       width: double.infinity, // Asegurar que vaya de borde a borde
       child: Center(
         // Centrar el contenido
@@ -221,14 +224,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   : 16,
               vertical: isSmallScreen ? 6 : 8,
             ),
-            textStyle: TextStyle(
-              fontSize: isSmallScreen
-                  ? 12
-                  : isMediumScreen
-                  ? 13
-                  : 14,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-            ),
+            textStyle: AppTextStyles.navigationText(isDarkMode, isActive),
           ),
           child: Text(label),
         ),

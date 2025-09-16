@@ -182,11 +182,7 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
         AppSpacing.smH,
         Text(
           widget.appointment != null ? 'Editar Cita' : 'Nueva Cita',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
+          style: AppTextStyles.titlePrimary(isDarkMode),
         ),
         const Spacer(),
         if (_error != null)
@@ -196,14 +192,7 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
               color: AppColors.error.withAlpha(24),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Text(
-              _error!,
-              style: TextStyle(
-                color: AppColors.error,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: Text(_error!, style: AppTextStyles.errorText(isDarkMode)),
           ),
       ],
     );
@@ -215,11 +204,7 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
       children: [
         Text(
           'Información Básica',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
+          style: AppTextStyles.sectionTitle(isDarkMode),
         ),
         AppSpacing.mdV,
 
@@ -300,14 +285,7 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Fecha y Hora',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
+        Text('Fecha y Hora', style: AppTextStyles.sectionTitle(isDarkMode)),
         AppSpacing.mdV,
 
         Row(
@@ -341,14 +319,7 @@ class _AppointmentFormWidgetState extends State<AppointmentFormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Tipo y Prioridad',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
+        Text('Tipo y Prioridad', style: AppTextStyles.sectionTitle(isDarkMode)),
         AppSpacing.mdV,
 
         Row(

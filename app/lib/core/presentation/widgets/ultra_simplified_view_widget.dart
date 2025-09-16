@@ -53,8 +53,11 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           return _buildSchedulingView(isDarkMode);
         }
 
-        // Otras vistas - ultra simple
-        return _buildSimpleView(isDarkMode);
+        // Vista no encontrada
+        return Container(
+          color: AppColors.backgroundPrimary(isDarkMode),
+          child: const Center(child: Text('Vista no encontrada')),
+        );
       },
     );
   }
@@ -75,14 +78,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
-                  ),
+                  Text(title, style: AppTextStyles.titlePrimary(isDarkMode)),
                   const Spacer(),
                   _buildAttendanceControls(),
                 ],
@@ -91,22 +87,19 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           ),
           // Contenido de la tabla
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Tabla de estudiantes
-                      AttendanceTableWidget(level: '1ero Básico', course: 'A'),
-                      AppSpacing.lgV,
-                      // Botones de acción
-                      _buildActionButtons(),
-                    ],
-                  ),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Tabla de estudiantes
+                    AttendanceTableWidget(level: '1ero Básico', course: 'A'),
+                    AppSpacing.lgV,
+                    // Botones de acción
+                    _buildActionButtons(),
+                  ],
                 ),
               ),
             ),
@@ -132,14 +125,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
-                  ),
+                  Text(title, style: AppTextStyles.titlePrimary(isDarkMode)),
                   const Spacer(),
                   _buildAssistantControls(),
                 ],
@@ -174,14 +160,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary(isDarkMode),
-                      ),
-                    ),
+                    Text(title, style: AppTextStyles.titlePrimary(isDarkMode)),
                     const Spacer(),
                     _buildIncidentFormControls(),
                   ],
@@ -202,78 +181,6 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildSimpleView(bool isDarkMode) {
-    return Container(
-      color: AppColors.backgroundPrimary(isDarkMode),
-      child: Column(
-        children: [
-          // Header con el mismo estilo que las otras vistas
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.backgroundSecondary(isDarkMode),
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.dividerTheme(isDarkMode),
-                  width: 1.0,
-                ),
-              ),
-            ),
-            height: 50,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
-                  ),
-                  const Spacer(),
-                  // Espacio para futuros controles si se necesitan
-                ],
-              ),
-            ),
-          ),
-          // Contenido simple
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.dashboard,
-                    size: 64,
-                    color: AppColors.textSecondary(isDarkMode),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: AppColors.textSecondary(isDarkMode),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Vista en desarrollo',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary(isDarkMode),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -321,11 +228,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 AppSpacing.xsH,
                 Text(
                   controller.getFormattedDate(),
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 AppSpacing.xsH,
                 Icon(
@@ -364,11 +267,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 AppSpacing.xsH,
                 Text(
                   controller.selectedLevel,
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 AppSpacing.xsH,
                 Icon(
@@ -407,11 +306,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 AppSpacing.xsH,
                 Text(
                   controller.selectedCourse,
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 AppSpacing.xsH,
                 Icon(
@@ -468,11 +363,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 AppSpacing.xsH,
                 Text(
                   controller.selectedDocument,
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 AppSpacing.xsH,
                 Icon(
@@ -515,11 +406,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 AppSpacing.xsH,
                 Text(
                   controller.selectedModel,
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 AppSpacing.xsH,
                 Icon(
@@ -580,11 +467,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 AppSpacing.xsH,
                 Text(
                   '${controller.incidentDate.day}/${controller.incidentDate.month}/${controller.incidentDate.year}',
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 AppSpacing.xsH,
                 Icon(
@@ -684,11 +567,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return AlertDialog(
           title: Text(
             'Seleccionar Severidad',
-            style: TextStyle(
-              color: AppColors.textPrimary(isDarkMode),
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.dialogTitle(isDarkMode),
           ),
           backgroundColor: AppColors.surface(isDarkMode),
           content: Column(
@@ -698,10 +577,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 leading: _getSeverityIcon(severity),
                 title: Text(
                   severity.displayName,
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 16,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 onTap: () {
                   controller.setSeverity(severity);
@@ -715,7 +591,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 'Cancelar',
-                style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+                style: AppTextStyles.secondaryText(isDarkMode),
               ),
             ),
           ],
@@ -888,11 +764,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return AlertDialog(
           title: Text(
             'Seleccionar Nivel',
-            style: TextStyle(
-              color: AppColors.textPrimary(isDarkMode),
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.dialogTitle(isDarkMode),
           ),
           backgroundColor: AppColors.surface(isDarkMode),
           content: Column(
@@ -902,10 +774,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 leading: _getLevelIcon(level, context),
                 title: Text(
                   level,
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 16,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 onTap: () {
                   controller.setLevel(level);
@@ -919,7 +788,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 'Cancelar',
-                style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+                style: AppTextStyles.secondaryText(isDarkMode),
               ),
             ),
           ],
@@ -939,11 +808,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
         return AlertDialog(
           title: Text(
             'Seleccionar Curso',
-            style: TextStyle(
-              color: AppColors.textPrimary(isDarkMode),
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.dialogTitle(isDarkMode),
           ),
           backgroundColor: AppColors.surface(isDarkMode),
           content: Column(
@@ -953,10 +818,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 leading: _getCourseIcon(course, context),
                 title: Text(
                   course,
-                  style: TextStyle(
-                    color: AppColors.textPrimary(isDarkMode),
-                    fontSize: 16,
-                  ),
+                  style: AppTextStyles.controlText(isDarkMode),
                 ),
                 onTap: () {
                   controller.setCourse(course);
@@ -970,7 +832,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 'Cancelar',
-                style: TextStyle(color: AppColors.textSecondary(isDarkMode)),
+                style: AppTextStyles.secondaryText(isDarkMode),
               ),
             ),
           ],
@@ -1061,11 +923,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                     AppSpacing.smH,
                     Text(
                       '${controller.absentStudentIds.length} ausencias marcadas',
-                      style: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: AppTextStyles.secondaryText(isDarkMode),
                     ),
                   ],
                 ),
@@ -1121,14 +979,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
-                  ),
+                  Text(title, style: AppTextStyles.titlePrimary(isDarkMode)),
                   const Spacer(),
                   _buildEvaluationsControls(),
                 ],
@@ -1162,11 +1013,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                   AppSpacing.xsH,
                   Text(
                     'Test de Holland',
-                    style: TextStyle(
-                      color: AppColors.textPrimary(isDarkMode),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: AppTextStyles.controlText(isDarkMode),
                   ),
                 ],
               ),
@@ -1193,14 +1040,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
-                  ),
+                  Text(title, style: AppTextStyles.titlePrimary(isDarkMode)),
                   const Spacer(),
                   _buildSchedulingControls(),
                 ],
@@ -1254,10 +1094,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
                 // Información
                 Text(
                   '${controller.appointments.length} citas • ${controller.schoolSchedules.length} horarios',
-                  style: TextStyle(
-                    color: AppColors.textSecondary(isDarkMode),
-                    fontSize: 14,
-                  ),
+                  style: AppTextStyles.secondaryText(isDarkMode),
                 ),
               ],
             );
@@ -1296,14 +1133,7 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           children: [
             Icon(icon, size: 14, color: AppColors.iconSecondary(isDarkMode)),
             AppSpacing.xsH,
-            Text(
-              label,
-              style: TextStyle(
-                color: AppColors.textPrimary(isDarkMode),
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            Text(label, style: AppTextStyles.controlText(isDarkMode)),
           ],
         ),
       ),

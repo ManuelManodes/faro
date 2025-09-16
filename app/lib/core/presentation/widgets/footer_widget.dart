@@ -52,8 +52,8 @@ class _FooterWidgetState extends State<FooterWidget>
         return Container(
           decoration: BoxDecoration(
             color: isDarkMode
-                ? const Color(0xFF1A1A1A)
-                : const Color(0xFFF8F9FA),
+                ? AppColors.backgroundPrimary(isDarkMode)
+                : AppColors.surface(isDarkMode),
             border: Border(
               top: BorderSide(
                 color: isDarkMode
@@ -160,7 +160,7 @@ class _FooterWidgetState extends State<FooterWidget>
           width: 16,
           height: 16,
           decoration: BoxDecoration(
-            color: Colors.orangeAccent,
+            color: AppColors.accentPrimary(isDarkMode),
             borderRadius: BorderRadius.circular(2),
           ),
           child: const Icon(Icons.location_on, size: 12, color: Colors.white),
@@ -191,7 +191,6 @@ class _FooterWidgetState extends State<FooterWidget>
       },
       {'text': 'Términos de Uso', 'url': 'https://sistema-faro.com/terms'},
     ];
-    final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return footerLinks.map((link) {
       return MouseRegion(
@@ -203,11 +202,7 @@ class _FooterWidgetState extends State<FooterWidget>
           },
           child: Text(
             link['text']!,
-            style: TextStyle(
-              color: textColor.withValues(alpha: 0.8),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
+            style: AppTextStyles.footerLink(isDarkMode),
           ),
         ),
       );
@@ -247,13 +242,7 @@ class _FooterWidgetState extends State<FooterWidget>
   Widget _buildCopyright(bool isDarkMode) {
     return Text(
       '© 2025, Sistema de Gestión Faro',
-      style: TextStyle(
-        color: isDarkMode
-            ? Colors.white.withValues(alpha: 0.6)
-            : Colors.black.withValues(alpha: 0.6),
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
-      ),
+      style: AppTextStyles.copyright(isDarkMode),
     );
   }
 
@@ -281,23 +270,11 @@ class _FooterWidgetState extends State<FooterWidget>
           children: [
             Text(
               'Sistema operativo',
-              style: TextStyle(
-                color: isDarkMode
-                    ? Colors.white.withValues(alpha: 0.8)
-                    : Colors.black.withValues(alpha: 0.8),
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
+              style: AppTextStyles.systemStatus(isDarkMode),
             ),
             Text(
               'v1.0.0 - Estable',
-              style: TextStyle(
-                color: isDarkMode
-                    ? Colors.white.withValues(alpha: 0.6)
-                    : Colors.black.withValues(alpha: 0.6),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
+              style: AppTextStyles.systemStatus(isDarkMode),
             ),
           ],
         ),
