@@ -41,53 +41,38 @@ class _TestStartScreen extends StatelessWidget {
       builder: (context, controller, themeProvider, child) {
         final isDarkMode = themeProvider.isDarkMode;
 
-        return Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: AppContainer.elevated(
-              isDarkMode: isDarkMode,
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Icono del test
-                  Icon(
-                    Icons.psychology,
-                    size: 64,
-                    color: AppColors.textPrimary(isDarkMode),
+        return SingleChildScrollView(
+          padding: const EdgeInsets.only(right: 16.0, top: 24.0),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surface(isDarkMode),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.dividerTheme(isDarkMode),
+                    width: 1,
                   ),
-                  AppSpacing.lgV,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header del test
+                      _buildTestHeader(isDarkMode),
+                      AppSpacing.xxlV,
 
-                  // Título
-                  Text(
-                    'Test de Holland',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
-                    textAlign: TextAlign.center,
+                      // Información del test
+                      _buildTestInfo(isDarkMode),
+                      AppSpacing.lgV,
+
+                      // Formulario de inicio
+                      _buildStartForm(context, controller, isDarkMode),
+                    ],
                   ),
-                  AppSpacing.mdV,
-
-                  // Descripción
-                  Text(
-                    'Descubre tu perfil vocacional y las carreras que mejor se adaptan a tu personalidad',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.textSecondary(isDarkMode),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  AppSpacing.lgV,
-
-                  // Información del test
-                  _buildTestInfo(isDarkMode),
-                  AppSpacing.lgV,
-
-                  // Formulario de inicio
-                  _buildStartForm(context, controller, isDarkMode),
-                ],
+                ),
               ),
             ),
           ),
@@ -96,22 +81,48 @@ class _TestStartScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildTestHeader(bool isDarkMode) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(Icons.psychology, color: AppColors.primary, size: 24),
+        ),
+        AppSpacing.mdH,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Test de Holland',
+                style: AppTextStyles.titlePrimary(isDarkMode),
+              ),
+              Text(
+                'Descubre tu perfil vocacional y las carreras que mejor se adaptan a tu personalidad',
+                style: AppTextStyles.secondaryText(isDarkMode),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildTestInfo(bool isDarkMode) {
-    return AppContainer.outlined(
-      isDarkMode: isDarkMode,
-      padding: const EdgeInsets.all(16),
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Información del Test',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary(isDarkMode),
-            ),
+            style: AppTextStyles.titlePrimary(isDarkMode),
           ),
-          AppSpacing.smV,
+          AppSpacing.compactV,
           _buildInfoItem(
             'Duración estimada',
             '15-20 minutos',
@@ -147,21 +158,8 @@ class _TestStartScreen extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: AppColors.iconSecondary(isDarkMode)),
           AppSpacing.smH,
-          Text(
-            '$label: ',
-            style: TextStyle(
-              color: AppColors.textSecondary(isDarkMode),
-              fontSize: 14,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              color: AppColors.textPrimary(isDarkMode),
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          Text('$label: ', style: AppTextStyles.secondaryText(isDarkMode)),
+          Text(value, style: AppTextStyles.controlText(isDarkMode)),
         ],
       ),
     );
@@ -180,11 +178,7 @@ class _TestStartScreen extends StatelessWidget {
       children: [
         Text(
           'Datos del Estudiante',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
+          style: AppTextStyles.titlePrimary(isDarkMode),
         ),
         AppSpacing.mdV,
 
@@ -196,7 +190,10 @@ class _TestStartScreen extends StatelessWidget {
             border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.compact,
+            ),
             child: Row(
               children: [
                 Icon(
@@ -211,11 +208,9 @@ class _TestStartScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: 'Ingresa el nombre completo',
                       border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                      ),
+                      hintStyle: AppTextStyles.placeholderText(isDarkMode),
                     ),
-                    style: TextStyle(color: AppColors.textPrimary(isDarkMode)),
+                    style: AppTextStyles.controlText(isDarkMode),
                   ),
                 ),
               ],
@@ -232,7 +227,10 @@ class _TestStartScreen extends StatelessWidget {
             border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.compact,
+            ),
             child: Row(
               children: [
                 Icon(
@@ -247,11 +245,9 @@ class _TestStartScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: 'Ingresa el ID o número de estudiante',
                       border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                      ),
+                      hintStyle: AppTextStyles.placeholderText(isDarkMode),
                     ),
-                    style: TextStyle(color: AppColors.textPrimary(isDarkMode)),
+                    style: AppTextStyles.controlText(isDarkMode),
                   ),
                 ),
               ],
@@ -260,27 +256,38 @@ class _TestStartScreen extends StatelessWidget {
         ),
         AppSpacing.lgV,
 
-        // Botón de inicio
-        SizedBox(
-          width: double.infinity,
-          child: AppButton.elegantGreen(
-            text: 'Iniciar Test',
-            onPressed: () {
-              if (nameController.text.trim().isEmpty ||
-                  idController.text.trim().isEmpty) {
-                AppSnackBar.showError(
-                  context,
-                  'Por favor completa todos los campos',
-                );
-                return;
-              }
+        // Botones de acción
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            AppButton.surface(
+              text: 'Cancelar',
+              onPressed: () {
+                nameController.clear();
+                idController.clear();
+                AppSnackBar.showInfo(context, 'Formulario cancelado');
+              },
+            ),
+            AppSpacing.lgH,
+            AppButton.elegantGreen(
+              text: 'Iniciar Test',
+              onPressed: () {
+                if (nameController.text.trim().isEmpty ||
+                    idController.text.trim().isEmpty) {
+                  AppSnackBar.showError(
+                    context,
+                    'Por favor completa todos los campos',
+                  );
+                  return;
+                }
 
-              controller.startTest(
-                nameController.text.trim(),
-                idController.text.trim(),
-              );
-            },
-          ),
+                controller.startTest(
+                  nameController.text.trim(),
+                  idController.text.trim(),
+                );
+              },
+            ),
+          ],
         ),
       ],
     );
@@ -305,11 +312,12 @@ class _TestQuestionScreen extends StatelessWidget {
             // Contenido del test
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.only(right: 16.0, top: 24.0),
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 1000),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Información del estudiante
                         _buildStudentInfo(controller, isDarkMode),
@@ -335,7 +343,7 @@ class _TestQuestionScreen extends StatelessWidget {
 
   Widget _buildProgressBar(HollandTestController controller, bool isDarkMode) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: AppColors.backgroundSecondary(isDarkMode),
         border: Border(
@@ -352,22 +360,15 @@ class _TestQuestionScreen extends StatelessWidget {
             children: [
               Text(
                 'Progreso del Test',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary(isDarkMode),
-                ),
+                style: AppTextStyles.progressText(isDarkMode),
               ),
               Text(
                 '${controller.completionPercentage}% completado',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textSecondary(isDarkMode),
-                ),
+                style: AppTextStyles.secondaryText(isDarkMode),
               ),
             ],
           ),
-          AppSpacing.smV,
+          AppSpacing.compactV,
           LinearProgressIndicator(
             value: controller.progress,
             minHeight: 8,
@@ -376,13 +377,10 @@ class _TestQuestionScreen extends StatelessWidget {
               AppColors.textPrimary(isDarkMode),
             ),
           ),
-          AppSpacing.xsV,
+          AppSpacing.microV,
           Text(
             '${controller.answeredQuestions} de ${controller.totalQuestions} preguntas respondidas',
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary(isDarkMode),
-            ),
+            style: AppTextStyles.secondaryText(isDarkMode),
           ),
         ],
       ),
@@ -391,7 +389,7 @@ class _TestQuestionScreen extends StatelessWidget {
 
   Widget _buildStudentInfo(HollandTestController controller, bool isDarkMode) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: Row(
         children: [
           AppAvatar.user(radius: 24),
@@ -402,18 +400,11 @@ class _TestQuestionScreen extends StatelessWidget {
               children: [
                 Text(
                   controller.studentName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
+                  style: AppTextStyles.titlePrimary(isDarkMode),
                 ),
                 Text(
                   'ID: ${controller.studentId}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.textSecondary(isDarkMode),
-                  ),
+                  style: AppTextStyles.secondaryText(isDarkMode),
                 ),
               ],
             ),
@@ -449,7 +440,7 @@ class _TestQuestionScreen extends StatelessWidget {
           // Título del bloque
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               color: AppColors.textPrimary(isDarkMode).withAlpha(20),
               borderRadius: const BorderRadius.only(
@@ -468,11 +459,7 @@ class _TestQuestionScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     block['title'],
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary(isDarkMode),
-                    ),
+                    style: AppTextStyles.titlePrimary(isDarkMode),
                   ),
                 ),
               ],
@@ -481,7 +468,7 @@ class _TestQuestionScreen extends StatelessWidget {
 
           // Encabezado de opciones
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               color: AppColors.backgroundSecondary(isDarkMode),
               border: Border(
@@ -497,11 +484,7 @@ class _TestQuestionScreen extends StatelessWidget {
                   flex: 3,
                   child: Text(
                     'Actividad',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textSecondary(isDarkMode),
-                    ),
+                    style: AppTextStyles.controlText(isDarkMode),
                   ),
                 ),
                 ...HollandTestData.answerOptions.map(
@@ -509,11 +492,7 @@ class _TestQuestionScreen extends StatelessWidget {
                     child: Text(
                       option,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textSecondary(isDarkMode),
-                      ),
+                      style: AppTextStyles.controlText(isDarkMode),
                     ),
                   ),
                 ),
@@ -551,7 +530,7 @@ class _TestQuestionScreen extends StatelessWidget {
     final currentAnswer = controller.getAnswer(questionId);
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -564,13 +543,7 @@ class _TestQuestionScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 3,
-            child: Text(
-              question,
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.textPrimary(isDarkMode),
-              ),
-            ),
+            child: Text(question, style: AppTextStyles.controlText(isDarkMode)),
           ),
           ...HollandTestData.answerOptions.asMap().entries.map((entry) {
             final optionIndex = entry.key;
@@ -714,11 +687,12 @@ class _TestResultScreenState extends State<_TestResultScreen> {
         return Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.only(right: 16.0, top: 24.0),
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1000),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Header de resultados
                       _buildResultHeader(controller, isDarkMode),
@@ -790,19 +764,12 @@ class _TestResultScreenState extends State<_TestResultScreen> {
           AppSpacing.mdV,
           Text(
             '¡Test Completado!',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary(isDarkMode),
-            ),
+            style: AppTextStyles.resultText(isDarkMode),
           ),
-          AppSpacing.smV,
+          AppSpacing.compactV,
           Text(
             'Resultados para ${controller.studentName}',
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textSecondary(isDarkMode),
-            ),
+            style: AppTextStyles.secondaryText(isDarkMode),
           ),
         ],
       ),
@@ -817,7 +784,7 @@ class _TestResultScreenState extends State<_TestResultScreen> {
         children: [
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             decoration: BoxDecoration(
               color: AppColors.textPrimary(isDarkMode).withAlpha(20),
               borderRadius: const BorderRadius.only(
@@ -835,45 +802,29 @@ class _TestResultScreenState extends State<_TestResultScreen> {
                 AppSpacing.mdV,
                 Text(
                   'Tu Perfil Principal',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
+                  style: AppTextStyles.titlePrimary(isDarkMode),
                 ),
-                AppSpacing.smV,
+                AppSpacing.compactV,
                 Text(
                   result.primaryType.displayName,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
+                  style: AppTextStyles.resultText(isDarkMode),
                 ),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Interpretación',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
+                  style: AppTextStyles.sectionTitle(isDarkMode),
                 ),
-                AppSpacing.smV,
+                AppSpacing.compactV,
                 Text(
                   result.interpretation,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.textSecondary(isDarkMode),
-                    height: 1.5,
-                  ),
+                  style: AppTextStyles.secondaryText(isDarkMode),
                 ),
                 AppSpacing.mdV,
                 Row(
@@ -906,7 +857,7 @@ class _TestResultScreenState extends State<_TestResultScreen> {
   Widget _buildTypeCard(String label, HollandType type, bool isDarkMode) {
     return AppContainer.surface(
       isDarkMode: isDarkMode,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
         children: [
           Icon(
@@ -914,23 +865,10 @@ class _TestResultScreenState extends State<_TestResultScreen> {
             size: 24,
             color: AppColors.textPrimary(isDarkMode),
           ),
-          AppSpacing.xsV,
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary(isDarkMode),
-            ),
-          ),
-          AppSpacing.xsV,
-          Text(
-            type.displayName,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary(isDarkMode),
-            ),
-          ),
+          AppSpacing.microV,
+          Text(label, style: AppTextStyles.secondaryText(isDarkMode)),
+          AppSpacing.microV,
+          Text(type.displayName, style: AppTextStyles.controlText(isDarkMode)),
         ],
       ),
     );
@@ -943,14 +881,10 @@ class _TestResultScreenState extends State<_TestResultScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: Text(
               'Puntuaciones por Tipo',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary(isDarkMode),
-              ),
+              style: AppTextStyles.titlePrimary(isDarkMode),
             ),
           ),
           Padding(
@@ -978,10 +912,7 @@ class _TestResultScreenState extends State<_TestResultScreen> {
                         flex: 2,
                         child: Text(
                           type.displayName,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.textPrimary(isDarkMode),
-                          ),
+                          style: AppTextStyles.controlText(isDarkMode),
                         ),
                       ),
                       Expanded(
@@ -1001,11 +932,7 @@ class _TestResultScreenState extends State<_TestResultScreen> {
                       AppSpacing.smH,
                       Text(
                         '$score',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary(isDarkMode),
-                        ),
+                        style: AppTextStyles.controlText(isDarkMode),
                       ),
                     ],
                   ),
@@ -1025,7 +952,7 @@ class _TestResultScreenState extends State<_TestResultScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: Row(
               children: [
                 Icon(
@@ -1036,11 +963,7 @@ class _TestResultScreenState extends State<_TestResultScreen> {
                 AppSpacing.smH,
                 Text(
                   'Sugerencias de Carrera',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
+                  style: AppTextStyles.titlePrimary(isDarkMode),
                 ),
               ],
             ),
@@ -1067,7 +990,7 @@ class _TestResultScreenState extends State<_TestResultScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: Row(
               children: [
                 Icon(
@@ -1078,11 +1001,7 @@ class _TestResultScreenState extends State<_TestResultScreen> {
                 AppSpacing.smH,
                 Text(
                   'Rasgos de Personalidad',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
+                  style: AppTextStyles.titlePrimary(isDarkMode),
                 ),
               ],
             ),

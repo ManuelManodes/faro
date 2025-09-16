@@ -42,7 +42,7 @@ class _IncidentFormContent extends StatelessWidget {
               children: [
                 // Header del formulario
                 _buildFormHeader(isDarkMode),
-                const SizedBox(height: 24),
+                AppSpacing.xxlV,
 
                 // Campos del formulario
                 Expanded(
@@ -53,11 +53,11 @@ class _IncidentFormContent extends StatelessWidget {
                       children: [
                         // Título de la incidencia
                         _buildTitleField(controller, isDarkMode),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Tipo
                         _buildTypeField(controller, isDarkMode),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Estudiante y Reportante
                         Row(
@@ -74,7 +74,7 @@ class _IncidentFormContent extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Ubicación y Categoría
                         Row(
@@ -94,31 +94,31 @@ class _IncidentFormContent extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Prioridad
                         _buildPriorityField(controller, isDarkMode),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Descripción
                         _buildDescriptionField(controller, isDarkMode),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Testigos
                         _buildWitnessesField(controller, isDarkMode),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Derivación
                         _buildDerivationField(controller, isDarkMode),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Notificar a apoderado
                         _buildNotifyParentField(controller, isDarkMode),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Notas adicionales
                         _buildNotesField(controller, isDarkMode),
-                        const SizedBox(height: 24),
+                        AppSpacing.xxlV,
 
                         // Mensaje de error
                         if (controller.errorMessage != null)
@@ -126,7 +126,7 @@ class _IncidentFormContent extends StatelessWidget {
                             controller.errorMessage!,
                             isDarkMode,
                           ),
-                        const SizedBox(height: 16),
+                        AppSpacing.lgV,
 
                         // Botones de acción
                         _buildActionButtons(controller, context),
@@ -160,18 +160,11 @@ class _IncidentFormContent extends StatelessWidget {
             children: [
               Text(
                 'Reportar Incidencia',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary(isDarkMode),
-                ),
+                style: AppTextStyles.titlePrimary(isDarkMode),
               ),
               Text(
                 'Complete todos los campos para reportar una incidencia educacional',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textSecondary(isDarkMode),
-                ),
+                style: AppTextStyles.secondaryText(isDarkMode),
               ),
             ],
           ),
@@ -198,13 +191,9 @@ class _IncidentFormContent extends StatelessWidget {
       children: [
         Text(
           'Tipo de Incidencia *',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
+          style: AppTextStyles.controlText(isDarkMode),
         ),
-        const SizedBox(height: 8),
+        AppSpacing.compactV,
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface(isDarkMode),
@@ -220,7 +209,7 @@ class _IncidentFormContent extends StatelessWidget {
               value: controller.type,
               isExpanded: true,
               hint: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Row(
                   children: [
                     Icon(
@@ -228,13 +217,10 @@ class _IncidentFormContent extends StatelessWidget {
                       size: 16,
                       color: AppColors.iconSecondary(isDarkMode),
                     ),
-                    AppSpacing.xsH,
+                    const SizedBox(width: 8),
                     Text(
                       'Seleccionar tipo',
-                      style: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.placeholderText(isDarkMode),
                     ),
                   ],
                 ),
@@ -243,13 +229,12 @@ class _IncidentFormContent extends StatelessWidget {
                 return DropdownMenuItem(
                   value: type,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                    ),
                     child: Text(
                       type.displayName,
-                      style: TextStyle(
-                        color: AppColors.textPrimary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.controlText(isDarkMode),
                     ),
                   ),
                 );
@@ -304,15 +289,8 @@ class _IncidentFormContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Ubicación *',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        const SizedBox(height: 8),
+        Text('Ubicación *', style: AppTextStyles.controlText(isDarkMode)),
+        AppSpacing.compactV,
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface(isDarkMode),
@@ -329,7 +307,7 @@ class _IncidentFormContent extends StatelessWidget {
                   ? controller.location
                   : null,
               hint: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Row(
                   children: [
                     Icon(
@@ -337,13 +315,10 @@ class _IncidentFormContent extends StatelessWidget {
                       size: 16,
                       color: AppColors.iconSecondary(isDarkMode),
                     ),
-                    AppSpacing.xsH,
+                    const SizedBox(width: 8),
                     Text(
                       'Seleccionar ubicación',
-                      style: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.placeholderText(isDarkMode),
                     ),
                   ],
                 ),
@@ -352,13 +327,12 @@ class _IncidentFormContent extends StatelessWidget {
                 return DropdownMenuItem(
                   value: location,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                    ),
                     child: Text(
                       location,
-                      style: TextStyle(
-                        color: AppColors.textPrimary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.controlText(isDarkMode),
                     ),
                   ),
                 );
@@ -406,13 +380,9 @@ class _IncidentFormContent extends StatelessWidget {
       children: [
         Text(
           'Testigos (Opcional)',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
+          style: AppTextStyles.controlText(isDarkMode),
         ),
-        const SizedBox(height: 8),
+        AppSpacing.compactV,
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface(isDarkMode),
@@ -443,13 +413,9 @@ class _IncidentFormContent extends StatelessWidget {
                           children: [
                             Text(
                               witness,
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: AppTextStyles.controlText(isDarkMode),
                             ),
-                            AppSpacing.xsH,
+                            const SizedBox(width: 8),
                             GestureDetector(
                               onTap: () => controller.removeWitness(witness),
                               child: Icon(
@@ -466,7 +432,7 @@ class _IncidentFormContent extends StatelessWidget {
                 ),
               // Selector de testigos
               Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Row(
                   children: [
                     Icon(
@@ -474,17 +440,14 @@ class _IncidentFormContent extends StatelessWidget {
                       size: 16,
                       color: AppColors.iconSecondary(isDarkMode),
                     ),
-                    AppSpacing.xsH,
+                    const SizedBox(width: 8),
                     Expanded(
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: null,
                           hint: Text(
                             'Agregar testigo',
-                            style: TextStyle(
-                              color: AppColors.textSecondary(isDarkMode),
-                              fontSize: 14,
-                            ),
+                            style: AppTextStyles.secondaryText(isDarkMode),
                           ),
                           items: IncidentFormController.availableWitnesses
                               .where(
@@ -496,9 +459,8 @@ class _IncidentFormContent extends StatelessWidget {
                                   value: witness,
                                   child: Text(
                                     witness,
-                                    style: TextStyle(
-                                      color: AppColors.textPrimary(isDarkMode),
-                                      fontSize: 14,
+                                    style: AppTextStyles.controlText(
+                                      isDarkMode,
                                     ),
                                   ),
                                 );
@@ -553,10 +515,7 @@ class _IncidentFormContent extends StatelessWidget {
           Icon(Icons.error_outline, color: AppColors.error, size: 20),
           AppSpacing.smH,
           Expanded(
-            child: Text(
-              message,
-              style: TextStyle(color: AppColors.error, fontSize: 14),
-            ),
+            child: Text(message, style: AppTextStyles.errorText(isDarkMode)),
           ),
         ],
       ),
@@ -616,15 +575,8 @@ class _IncidentFormContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        const SizedBox(height: 8),
+        Text(label, style: AppTextStyles.controlText(isDarkMode)),
+        AppSpacing.compactV,
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface(isDarkMode),
@@ -636,7 +588,10 @@ class _IncidentFormContent extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.compact,
+            ),
             child: Row(
               children: [
                 Icon(
@@ -653,11 +608,9 @@ class _IncidentFormContent extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: hintText,
                       border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                      ),
+                      hintStyle: AppTextStyles.placeholderText(isDarkMode),
                     ),
-                    style: TextStyle(color: AppColors.textPrimary(isDarkMode)),
+                    style: AppTextStyles.controlText(isDarkMode),
                   ),
                 ),
               ],
@@ -665,11 +618,8 @@ class _IncidentFormContent extends StatelessWidget {
           ),
         ),
         if (errorText != null) ...[
-          const SizedBox(height: 4),
-          Text(
-            errorText,
-            style: TextStyle(color: AppColors.error, fontSize: 12),
-          ),
+          AppSpacing.microV,
+          Text(errorText, style: AppTextStyles.errorText(isDarkMode)),
         ],
       ],
     );
@@ -682,15 +632,8 @@ class _IncidentFormContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Categoría *',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        const SizedBox(height: 8),
+        Text('Categoría *', style: AppTextStyles.controlText(isDarkMode)),
+        AppSpacing.compactV,
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface(isDarkMode),
@@ -705,7 +648,7 @@ class _IncidentFormContent extends StatelessWidget {
             child: DropdownButton<String>(
               value: controller.category,
               hint: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Row(
                   children: [
                     Icon(
@@ -713,13 +656,10 @@ class _IncidentFormContent extends StatelessWidget {
                       size: 16,
                       color: AppColors.iconSecondary(isDarkMode),
                     ),
-                    AppSpacing.xsH,
+                    const SizedBox(width: 8),
                     Text(
                       'Seleccionar categoría',
-                      style: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.placeholderText(isDarkMode),
                     ),
                   ],
                 ),
@@ -728,13 +668,12 @@ class _IncidentFormContent extends StatelessWidget {
                 return DropdownMenuItem(
                   value: category,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                    ),
                     child: Text(
                       category,
-                      style: TextStyle(
-                        color: AppColors.textPrimary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.controlText(isDarkMode),
                     ),
                   ),
                 );
@@ -763,15 +702,8 @@ class _IncidentFormContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Prioridad',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        const SizedBox(height: 8),
+        Text('Prioridad', style: AppTextStyles.controlText(isDarkMode)),
+        AppSpacing.compactV,
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface(isDarkMode),
@@ -783,7 +715,7 @@ class _IncidentFormContent extends StatelessWidget {
               value: controller.priority,
               isExpanded: true,
               hint: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Row(
                   children: [
                     Icon(
@@ -791,13 +723,10 @@ class _IncidentFormContent extends StatelessWidget {
                       size: 16,
                       color: AppColors.iconSecondary(isDarkMode),
                     ),
-                    AppSpacing.xsH,
+                    const SizedBox(width: 8),
                     Text(
                       'Seleccionar prioridad',
-                      style: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.placeholderText(isDarkMode),
                     ),
                   ],
                 ),
@@ -806,17 +735,16 @@ class _IncidentFormContent extends StatelessWidget {
                 return DropdownMenuItem(
                   value: priority,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                    ),
                     child: Row(
                       children: [
                         _getPriorityIcon(priority),
-                        AppSpacing.xsH,
+                        const SizedBox(width: 8),
                         Text(
                           priority,
-                          style: TextStyle(
-                            color: AppColors.textPrimary(isDarkMode),
-                            fontSize: 14,
-                          ),
+                          style: AppTextStyles.controlText(isDarkMode),
                         ),
                       ],
                     ),
@@ -847,15 +775,8 @@ class _IncidentFormContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Derivar a',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary(isDarkMode),
-          ),
-        ),
-        const SizedBox(height: 8),
+        Text('Derivar a', style: AppTextStyles.controlText(isDarkMode)),
+        AppSpacing.compactV,
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface(isDarkMode),
@@ -869,7 +790,7 @@ class _IncidentFormContent extends StatelessWidget {
                   : null,
               isExpanded: true,
               hint: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Row(
                   children: [
                     Icon(
@@ -877,13 +798,10 @@ class _IncidentFormContent extends StatelessWidget {
                       size: 16,
                       color: AppColors.iconSecondary(isDarkMode),
                     ),
-                    AppSpacing.xsH,
+                    const SizedBox(width: 8),
                     Text(
                       'Seleccionar derivación',
-                      style: TextStyle(
-                        color: AppColors.textSecondary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.placeholderText(isDarkMode),
                     ),
                   ],
                 ),
@@ -894,13 +812,12 @@ class _IncidentFormContent extends StatelessWidget {
                 return DropdownMenuItem(
                   value: derivation,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                    ),
                     child: Text(
                       derivation,
-                      style: TextStyle(
-                        color: AppColors.textPrimary(isDarkMode),
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.controlText(isDarkMode),
                     ),
                   ),
                 );
@@ -928,11 +845,7 @@ class _IncidentFormContent extends StatelessWidget {
   ) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface(isDarkMode),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
-      ),
+      decoration: AppDecorations.fieldContainer(isDarkMode),
       child: Row(
         children: [
           Checkbox(
@@ -949,18 +862,11 @@ class _IncidentFormContent extends StatelessWidget {
               children: [
                 Text(
                   'Notificar a Apoderado',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textPrimary(isDarkMode),
-                  ),
+                  style: AppTextStyles.sectionTitle(isDarkMode),
                 ),
                 Text(
                   'Enviar notificación automática al apoderado del estudiante',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.textSecondary(isDarkMode),
-                  ),
+                  style: AppTextStyles.secondaryText(isDarkMode),
                 ),
               ],
             ),
