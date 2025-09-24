@@ -3,6 +3,9 @@ import '../widgets/openai_integration_example.dart';
 import '../widgets/openai_quota_widget.dart';
 import '../widgets/openai_test_widget.dart';
 import '../widgets/openai_diagnostic_widget.dart';
+import '../widgets/api_key_debug_widget.dart';
+import '../widgets/api_key_config_widget.dart';
+import '../widgets/openai_connection_test.dart';
 
 /// Página del Asistente Virtual
 /// Integra el chat completo con OpenAI en una página dedicada
@@ -25,9 +28,12 @@ class AssistantPage extends StatelessWidget {
       ),
       body: const Column(
         children: [
+          APIKeyConfigWidget(),
+          OpenAIConnectionTest(),
           OpenAIQuotaWidget(),
           OpenAITestWidget(),
           OpenAIDiagnosticWidget(),
+          APIKeyDebugWidget(),
           Expanded(child: OpenAIIntegrationExample()),
         ],
       ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'chat_sessions_controller.dart';
 import '../../infrastructure/services/openai_service.dart';
+import '../../infrastructure/services/openai_config.dart';
 
 /// Modelo para representar un mensaje en el chat
 class ChatMessage {
@@ -65,7 +66,7 @@ class AssistantChatController extends ChangeNotifier {
   static const String _storageKey = 'assistant_chat_messages';
 
   // Servicio de OpenAI para respuestas reales
-  final OpenAIService _openAIService = OpenAIService();
+  late final OpenAIService _openAIService;
 
   // Referencia al controlador de sesiones (se establecerá después de la inicialización)
   ChatSessionsController? _sessionsController;
@@ -81,6 +82,7 @@ class AssistantChatController extends ChangeNotifier {
 
   /// Constructor que carga el historial al inicializar
   AssistantChatController() {
+    _openAIService = OpenAIService();
     _loadMessages();
   }
 
@@ -128,12 +130,24 @@ class AssistantChatController extends ChangeNotifier {
       // Obtener el último mensaje del usuario
       final lastUserMessage = _messages.lastWhere((msg) => msg.isUser);
 
+      print('DEBUG: Enviando mensaje a OpenAI: "${lastUserMessage.content}"');
+      print(
+        'DEBUG: OpenAI Service configurado: ${_openAIService.isConfigured}',
+      );
+      print(
+        'DEBUG: API Key desde config: ${OpenAIConfig.apiKey.substring(0, 10)}...',
+      );
+
       // Usar OpenAI para obtener respuesta real
       final response = await _openAIService.sendMessage(
         message: lastUserMessage.content,
         model: 'gpt-3.5-turbo',
         maxTokens: 500,
         temperature: 0.7,
+      );
+
+      print(
+        'DEBUG: Respuesta de OpenAI: success=${response.success}, error=${response.error}',
       );
 
       _isTyping = false;
@@ -146,7 +160,11 @@ class AssistantChatController extends ChangeNotifier {
         aiResponse = response.data!;
       } else {
         // Si falla OpenAI, usar respuesta de fallback inteligente
-        if (response.error?.contains('429') == true) {
+        if (response.error?.contains('401') == true) {
+          aiResponse =
+              'Error de autenticación: La API key de OpenAI no está configurada correctamente. '
+              'Por favor, contacta al administrador del sistema para configurar la API key.';
+        } else if (response.error?.contains('429') == true) {
           aiResponse = _generateFallbackResponse(lastUserMessage.content);
         } else {
           aiResponse =
@@ -253,41 +271,6 @@ class AssistantChatController extends ChangeNotifier {
     return 'Entiendo tu consulta sobre "$userMessage". Aunque mi servicio de IA avanzada está temporalmente no disponible '
         'debido a límites de cuota, puedo ayudarte con información básica. ¿Podrías reformular tu pregunta '
         'de una manera más específica para que pueda asistirte mejor?';
-  }
-
-  /// Genera una respuesta simulada de IA basada en el mensaje del usuario
-  String _generateAIResponse(String userMessage) {
-    final lowerMessage = userMessage.toLowerCase();
-
-    if (lowerMessage.contains('hola') ||
-        lowerMessage.contains('buenos días') ||
-        lowerMessage.contains('buenas')) {
-      return '¡Hola! Soy tu asistente virtual. Estoy aquí para ayudarte con cualquier consulta sobre el documento seleccionado. ¿En qué puedo asistirte?';
-    }
-
-    if (lowerMessage.contains('qué') && lowerMessage.contains('documento')) {
-      return 'Actualmente estoy analizando el documento seleccionado. Puedes hacerme preguntas específicas sobre su contenido y te ayudaré a encontrar la información que necesitas.';
-    }
-
-    if (lowerMessage.contains('ayuda') || lowerMessage.contains('cómo')) {
-      return 'Puedo ayudarte a:\n• Buscar información específica en el documento\n• Explicar conceptos o procedimientos\n• Resumir secciones del documento\n• Responder preguntas sobre políticas y procedimientos\n\n¿Qué te gustaría saber?';
-    }
-
-    if (lowerMessage.contains('resumen') || lowerMessage.contains('resumir')) {
-      return 'Basándome en el documento actual, puedo proporcionarte un resumen de los puntos más importantes. ¿Hay alguna sección específica que te interese o prefieres un resumen general?';
-    }
-
-    if (lowerMessage.contains('política') ||
-        lowerMessage.contains('procedimiento')) {
-      return 'He encontrado información relevante sobre políticas y procedimientos en el documento. ¿Podrías ser más específico sobre qué aspecto te interesa conocer?';
-    }
-
-    if (lowerMessage.contains('gracias') || lowerMessage.contains('thank')) {
-      return '¡De nada! Estoy aquí para ayudarte. Si tienes más preguntas sobre el documento, no dudes en preguntarme.';
-    }
-
-    // Respuesta genérica
-    return 'Entiendo tu consulta sobre "$userMessage". Basándome en el documento seleccionado, puedo ayudarte con esa información. ¿Podrías ser más específico para que pueda darte una respuesta más precisa?';
   }
 
   /// Limpia todos los mensajes del chat

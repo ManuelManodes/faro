@@ -7,16 +7,38 @@ class OpenAIService {
   static const String _baseUrl = 'https://api.openai.com/v1';
 
   // API Key obtenida desde la configuración
-  String get _apiKey => OpenAIConfig.apiKey;
+  String get _apiKey {
+    final key = OpenAIConfig.apiKey;
+    // Debug: verificar que la key no esté truncada
+    if (key.length < 50) {
+      print('WARNING: API Key parece estar truncada. Longitud: ${key.length}');
+    }
+    return key;
+  }
 
   /// Verifica si la API key está configurada correctamente
-  bool get isConfigured => _apiKey.isNotEmpty && _apiKey != 'tu-api-key-aqui';
+  bool get isConfigured {
+    final key = _apiKey;
+    final isValid =
+        key.isNotEmpty && key != 'tu-api-key-aqui' && key.startsWith('sk-');
+
+    print('DEBUG: API Key validation:');
+    print('  - Key length: ${key.length}');
+    print('  - Key starts with sk-: ${key.startsWith('sk-')}');
+    print('  - Key is not empty: ${key.isNotEmpty}');
+    print('  - Key is not placeholder: ${key != 'tu-api-key-aqui'}');
+    print('  - Is configured: $isValid');
+
+    return isValid;
+  }
 
   /// Obtiene los headers necesarios para las peticiones a OpenAI
-  Map<String, String> get _headers => {
-    'Authorization': 'Bearer $_apiKey',
-    'Content-Type': 'application/json',
-  };
+  Map<String, String> get _headers {
+    final key = _apiKey;
+    print('DEBUG: Usando API Key de longitud: ${key.length}');
+    print('DEBUG: Primeros 10 caracteres: ${key.substring(0, 10)}...');
+    return {'Authorization': 'Bearer $key', 'Content-Type': 'application/json'};
+  }
 
   /// Prueba la conexión con la API de OpenAI
   Future<OpenAIResponse<bool>> testConnection() async {
