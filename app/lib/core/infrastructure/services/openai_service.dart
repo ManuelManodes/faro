@@ -5,11 +5,11 @@ import 'package:http/http.dart' as http;
 class OpenAIService {
   static const String _baseUrl = 'https://api.openai.com/v1';
 
-  // API Key - debe configurarse como variable de entorno
-  // Para desarrollo local, crear un archivo .env con: OPENAI_API_KEY=tu-clave-aqui
+  // API Key - configurar como variable de entorno
+  // Para desarrollo: export OPENAI_API_KEY=tu-clave-aqui
   static const String _apiKey = String.fromEnvironment(
     'OPENAI_API_KEY',
-    defaultValue: 'tu-api-key-aqui',
+    defaultValue: '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',
   );
 
   /// Verifica si la API key está configurada correctamente

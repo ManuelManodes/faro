@@ -7,7 +7,6 @@ import 'core/presentation/pages/flexible_dashboard_page.dart';
 import 'core/presentation/widgets/common/common.dart';
 
 void main() {
-  // En Flutter Web, no cargamos el archivo .env
   // La API key se maneja directamente en el servicio OpenAIService
   runApp(
     MultiProvider(
