@@ -39,7 +39,7 @@ class MenuRepositoryImpl implements MenuRepository {
       MenuOption(
         id: 'assistant',
         title: 'Asistente Virtual',
-        description: 'Chatbot y asistencia inteligente',
+        description: 'Vista de demostración del asistente virtual',
         icon: 'smart_toy',
         route: '/assistant',
       ),

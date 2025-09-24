@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../controllers/attendance_header_controller.dart';
 import '../controllers/attendance_list_controller.dart';
-import '../controllers/assistant_header_controller.dart';
 import '../controllers/incident_form_controller.dart';
 import '../controllers/scheduling_controller.dart';
 import 'attendance_table_widget.dart';
@@ -323,99 +322,32 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
   }
 
   Widget _buildAssistantControls() {
-    return Consumer<AssistantHeaderController>(
-      builder: (context, controller, child) {
-        return Row(
-          children: [
-            _buildDocumentSelector(context, controller),
-            const SizedBox(width: 12),
-            _buildModelSelector(context, controller),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildDocumentSelector(
-    BuildContext context,
-    AssistantHeaderController controller,
-  ) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         final isDarkMode = themeProvider.isDarkMode;
-        return GestureDetector(
-          onTap: () => _showDocumentSelector(context, controller),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.description,
-                  size: 14,
-                  color: AppColors.iconSecondary(isDarkMode),
-                ),
-                AppSpacing.xsH,
-                Text(
-                  controller.selectedDocument,
-                  style: AppTextStyles.controlText(isDarkMode),
-                ),
-                AppSpacing.xsH,
-                Icon(
-                  Icons.arrow_drop_down,
-                  size: 14,
-                  color: AppColors.iconSecondary(isDarkMode),
-                ),
-              ],
-            ),
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.surface(isDarkMode),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
           ),
-        );
-      },
-    );
-  }
-
-  Widget _buildModelSelector(
-    BuildContext context,
-    AssistantHeaderController controller,
-  ) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        final isDarkMode = themeProvider.isDarkMode;
-        return GestureDetector(
-          onTap: () => _showModelSelector(context, controller),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.surface(isDarkMode),
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.psychology,
-                  size: 14,
-                  color: AppColors.iconSecondary(isDarkMode),
+          child: Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                size: 16,
+                color: AppColors.iconSecondary(isDarkMode),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Vista de demostración del asistente virtual',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textSecondary(isDarkMode),
                 ),
-                AppSpacing.xsH,
-                Text(
-                  controller.selectedModel,
-                  style: AppTextStyles.controlText(isDarkMode),
-                ),
-                AppSpacing.xsH,
-                Icon(
-                  Icons.arrow_drop_down,
-                  size: 14,
-                  color: AppColors.iconSecondary(isDarkMode),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -822,56 +754,6 @@ class UltraSimplifiedViewWidget extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-
-  void _showDocumentSelector(
-    BuildContext context,
-    AssistantHeaderController controller,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleccionar Documento'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: AssistantHeaderController.availableDocuments.map((
-            document,
-          ) {
-            return ListTile(
-              title: Text(document),
-              onTap: () {
-                controller.setDocument(document);
-                Navigator.of(context).pop();
-              },
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
-  void _showModelSelector(
-    BuildContext context,
-    AssistantHeaderController controller,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleccionar Modelo'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: AssistantHeaderController.availableModels.map((model) {
-            return ListTile(
-              title: Text(model),
-              onTap: () {
-                controller.setModel(model);
-                Navigator.of(context).pop();
-              },
-            );
-          }).toList(),
-        ),
-      ),
     );
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/attendance_header_controller.dart';
-import '../controllers/assistant_header_controller.dart';
 import 'attendance_table_widget.dart';
 import 'assistant_chat_widget.dart';
 import 'common/common.dart';
@@ -296,61 +295,31 @@ class _SimplifiedViewHeaderWidgetState
   }
 
   Widget _buildAssistantControls() {
-    return Consumer<AssistantHeaderController>(
-      builder: (context, controller, child) {
-        return Row(
-          children: [
-            // Selector de documento
-            Expanded(
-              child: AppCard.outlined(
-                child: InkWell(
-                  onTap: () => _showDocumentSelector(context, controller),
-                  borderRadius: AppBorderRadius.md,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.description, size: 16),
-                        const SizedBox(width: 8),
-                        Text(controller.selectedDocument),
-                        const Spacer(),
-                        const Icon(Icons.arrow_drop_down, size: 16),
-                      ],
-                    ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final isDarkMode = themeProvider.isDarkMode;
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.surface(isDarkMode),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.dividerTheme(isDarkMode)),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.school, size: 16, color: AppColors.primary),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Asistente Virtual del Reglamento Interno - Pregunta sobre normas, derechos, deberes y procedimientos del colegio',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.textSecondary(isDarkMode),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 12),
-
-            // Selector de modelo
-            Expanded(
-              child: AppCard.outlined(
-                child: InkWell(
-                  onTap: () => _showModelSelector(context, controller),
-                  borderRadius: AppBorderRadius.md,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.psychology, size: 16),
-                        const SizedBox(width: 8),
-                        Text(controller.selectedModel),
-                        const Spacer(),
-                        const Icon(Icons.arrow_drop_down, size: 16),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -492,56 +461,6 @@ class _SimplifiedViewHeaderWidgetState
               title: Text(course),
               onTap: () {
                 controller.setCourse(course);
-                Navigator.of(context).pop();
-              },
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
-  void _showDocumentSelector(
-    BuildContext context,
-    AssistantHeaderController controller,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleccionar Documento'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: AssistantHeaderController.availableDocuments.map((
-            document,
-          ) {
-            return ListTile(
-              title: Text(document),
-              onTap: () {
-                controller.setDocument(document);
-                Navigator.of(context).pop();
-              },
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
-  void _showModelSelector(
-    BuildContext context,
-    AssistantHeaderController controller,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleccionar Modelo'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: AssistantHeaderController.availableModels.map((model) {
-            return ListTile(
-              title: Text(model),
-              onTap: () {
-                controller.setModel(model);
                 Navigator.of(context).pop();
               },
             );

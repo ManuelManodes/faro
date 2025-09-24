@@ -5,7 +5,6 @@ import '../controllers/assistant_chat_controller.dart';
 import 'common/common.dart';
 import 'common/pressable_icon_button.dart';
 import 'common/confirmation_dialog.dart';
-import 'chat_sessions_sidebar.dart';
 
 /// Widget principal del chat del asistente virtual
 class AssistantChatWidget extends StatefulWidget {
@@ -39,38 +38,22 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
             color: AppColors.backgroundPrimary(isDarkMode),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Barra lateral de sesiones
-              const ChatSessionsSidebar(),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: Column(
+                children: [
+                  // Header del chat
+                  _buildChatHeader(context, isDarkMode),
 
-              // Separador vertical
-              Container(width: 1, color: AppColors.dividerTheme(isDarkMode)),
+                  // Área de mensajes
+                  Expanded(child: _buildMessagesArea(context, isDarkMode)),
 
-              // Área principal del chat
-              Expanded(
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 800),
-                    child: Column(
-                      children: [
-                        // Header del chat
-                        _buildChatHeader(context, isDarkMode),
-
-                        // Área de mensajes
-                        Expanded(
-                          child: _buildMessagesArea(context, isDarkMode),
-                        ),
-
-                        // Área de entrada de mensaje
-                        _buildMessageInput(context, isDarkMode),
-                      ],
-                    ),
-                  ),
-                ),
+                  // Área de entrada de mensaje
+                  _buildMessageInput(context, isDarkMode),
+                ],
               ),
-            ],
+            ),
           ),
         );
       },
@@ -126,47 +109,104 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
   }
 
   Widget _buildEmptyState(BuildContext context, bool isDarkMode) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: AppColors.success,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Icon(
-                Icons.chat_bubble_outline,
-                size: 40,
-                color: Colors.white,
-              ),
+    return Consumer<AssistantChatController>(
+      builder: (context, chatController, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: AppColors.success,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: Icon(Icons.school, size: 40, color: Colors.white),
+                ),
+                AppSpacing.lgV,
+                Text(
+                  'Asistente Virtual del Reglamento',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary(isDarkMode),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                AppSpacing.smV,
+                if (!chatController.isInitialized) ...[
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.primary,
+                    ),
+                  ),
+                  AppSpacing.smV,
+                  Text(
+                    'Inicializando servicio de reglamento...',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary(isDarkMode),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ] else ...[
+                  Text(
+                    'Pregúntame sobre el reglamento interno del colegio.\nPuedo ayudarte con información sobre:\n• Asistencia y puntualidad\n• Derechos y deberes\n• Disciplina\n• Uso de instalaciones\n• Y mucho más...',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary(isDarkMode),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  AppSpacing.mdV,
+                  _buildExampleQuestions(isDarkMode),
+                ],
+              ],
             ),
-            AppSpacing.lgV,
-            Text(
-              '¡Hola! Soy tu asistente virtual',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary(isDarkMode),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            AppSpacing.smV,
-            Text(
-              'Selecciona un documento y comienza a hacer preguntas',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary(isDarkMode),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildExampleQuestions(bool isDarkMode) {
+    final examples = [
+      '¿Cuál es la política de asistencia?',
+      '¿Puedo usar mi celular en clases?',
+      '¿Cuáles son mis derechos como estudiante?',
+      '¿Qué pasa si llego tarde?',
+    ];
+
+    return Column(
+      children: [
+        Text(
+          'Ejemplos de preguntas:',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textSecondary(isDarkMode),
+          ),
         ),
-      ),
+        AppSpacing.xsV,
+        ...examples
+            .map(
+              (example) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text(
+                  '• $example',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary(isDarkMode),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+            .toList(),
+      ],
     );
   }
 
@@ -321,71 +361,96 @@ class _AssistantChatWidgetState extends State<AssistantChatWidget> {
   }
 
   Widget _buildMessageInput(BuildContext context, bool isDarkMode) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-      child: Row(
-        children: [
-          // Campo de texto
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              focusNode: _focusNode,
-              decoration: InputDecoration(
-                hintText: 'Escribe tu mensaje...',
-                hintStyle: TextStyle(
-                  color: AppColors.textSecondary(isDarkMode),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(
-                    color: AppColors.dividerTheme(isDarkMode),
-                    width: 1,
+    return Consumer<AssistantChatController>(
+      builder: (context, chatController, child) {
+        final isEnabled =
+            chatController.isInitialized && !chatController.isTyping;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          child: Row(
+            children: [
+              // Campo de texto
+              Expanded(
+                child: TextField(
+                  controller: _messageController,
+                  focusNode: _focusNode,
+                  enabled: isEnabled,
+                  decoration: InputDecoration(
+                    hintText: isEnabled
+                        ? 'Pregunta sobre el reglamento interno...'
+                        : chatController.isTyping
+                        ? 'El asistente está escribiendo...'
+                        : 'Inicializando servicio...',
+                    hintStyle: TextStyle(
+                      color: AppColors.textSecondary(isDarkMode),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide(
+                        color: AppColors.dividerTheme(isDarkMode),
+                        width: 1,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide(
+                        color: AppColors.dividerTheme(isDarkMode),
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide(
+                        color: AppColors.dividerTheme(isDarkMode),
+                        width: 1,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                   ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(
-                    color: AppColors.dividerTheme(isDarkMode),
-                    width: 1,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(
-                    color: AppColors.dividerTheme(isDarkMode),
-                    width: 1,
-                  ),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
+                  maxLines: null,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: isEnabled ? (_) => _sendMessage() : null,
                 ),
               ),
-              maxLines: null,
-              textInputAction: TextInputAction.send,
-              onSubmitted: (_) => _sendMessage(),
-            ),
-          ),
-          AppSpacing.smH,
+              AppSpacing.smH,
 
-          // Botón de enviar
-          Consumer<AssistantChatController>(
-            builder: (context, chatController, child) {
-              return Container(
+              // Botón de enviar
+              Container(
                 decoration: BoxDecoration(
-                  color: AppColors.success,
+                  color: isEnabled
+                      ? AppColors.success
+                      : AppColors.textSecondary(isDarkMode),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: IconButton(
-                  onPressed: chatController.isTyping ? null : _sendMessage,
-                  icon: Icon(Icons.send, color: Colors.white, size: 20),
-                  tooltip: 'Enviar mensaje',
+                  onPressed: isEnabled ? _sendMessage : null,
+                  icon: chatController.isTyping
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        )
+                      : Icon(Icons.send, color: Colors.white, size: 20),
+                  tooltip: isEnabled
+                      ? 'Enviar mensaje'
+                      : chatController.isTyping
+                      ? 'El asistente está escribiendo...'
+                      : 'Inicializando servicio...',
                 ),
-              );
-            },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

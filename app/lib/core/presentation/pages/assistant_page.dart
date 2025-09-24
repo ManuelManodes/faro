@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/openai_integration_example.dart';
-import '../widgets/openai_quota_widget.dart';
-import '../widgets/openai_test_widget.dart';
-import '../widgets/openai_diagnostic_widget.dart';
-import '../widgets/api_key_debug_widget.dart';
-import '../widgets/api_key_config_widget.dart';
-import '../widgets/openai_connection_test.dart';
-import '../widgets/web_api_key_config.dart';
+import '../widgets/assistant_chat_widget.dart';
 
-/// Página del Asistente Virtual
-/// Integra el chat completo con OpenAI en una página dedicada
+/// Página del Asistente Virtual (solo vista)
 class AssistantPage extends StatelessWidget {
   const AssistantPage({super.key});
 
@@ -27,18 +19,7 @@ class AssistantPage extends StatelessWidget {
           ),
         ],
       ),
-      body: const Column(
-        children: [
-          WebAPIKeyConfigWidget(),
-          APIKeyConfigWidget(),
-          OpenAIConnectionTest(),
-          OpenAIQuotaWidget(),
-          OpenAITestWidget(),
-          OpenAIDiagnosticWidget(),
-          APIKeyDebugWidget(),
-          Expanded(child: OpenAIIntegrationExample()),
-        ],
-      ),
+      body: const AssistantChatWidget(),
     );
   }
 
@@ -58,17 +39,16 @@ class AssistantPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Tu asistente virtual está listo para ayudarte con:',
+              'El asistente virtual está en modo de vista únicamente.',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
-            Text('• Preguntas generales'),
-            Text('• Ayuda con el sistema'),
-            Text('• Información educativa'),
-            Text('• Soporte técnico'),
+            Text('• La funcionalidad de IA ha sido deshabilitada'),
+            Text('• Solo se muestra la interfaz de chat'),
+            Text('• No se procesan mensajes automáticamente'),
             SizedBox(height: 8),
             Text(
-              'Escribe tu mensaje en el campo de texto y presiona enviar.',
+              'Esta es una vista de demostración del asistente virtual.',
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
           ],

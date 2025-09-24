@@ -3,6 +3,9 @@ openai_config_local.dart
 .env
 .env.local
 
+# Archivos de configuración local
+lib/core/infrastructure/services/openai_config_local.dart
+
 # Archivos de Flutter
 build/
 .dart_tool/
