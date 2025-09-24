@@ -6,6 +6,7 @@ import '../controllers/menu_controller.dart' as menu;
 import '../widgets/app_layout.dart';
 import '../widgets/common/common.dart';
 import '../widgets/simplified_view_header_widget.dart';
+import 'assistant_page.dart';
 
 class FlexibleDashboardPage extends StatefulWidget {
   const FlexibleDashboardPage({super.key});
@@ -41,7 +42,13 @@ class _FlexibleDashboardPageState extends State<FlexibleDashboardPage> {
   }
 
   Widget _buildSelectedView() {
-    return SimplifiedViewHeaderWidget(title: _selectedViewTitle!);
+    // Mostrar la página específica según el tipo de vista seleccionada
+    switch (_selectedViewType) {
+      case 'assistant':
+        return const AssistantPage();
+      default:
+        return SimplifiedViewHeaderWidget(title: _selectedViewTitle!);
+    }
   }
 
   Widget _buildMenuGrid() {

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'chat_sessions_controller.dart';
+import '../../infrastructure/services/openai_service.dart';
 
 /// Modelo para representar un mensaje en el chat
 class ChatMessage {
@@ -63,6 +64,9 @@ class AssistantChatController extends ChangeNotifier {
   bool _isTyping = false;
   static const String _storageKey = 'assistant_chat_messages';
 
+  // Servicio de OpenAI para respuestas reales
+  final OpenAIService _openAIService = OpenAIService();
+
   // Referencia al controlador de sesiones (se establecerá después de la inicialización)
   ChatSessionsController? _sessionsController;
 
@@ -103,8 +107,8 @@ class AssistantChatController extends ChangeNotifier {
     _simulateAIResponse();
   }
 
-  /// Simula una respuesta de IA
-  void _simulateAIResponse() {
+  /// Obtiene respuesta real de OpenAI
+  void _simulateAIResponse() async {
     _isTyping = true;
     notifyListeners();
 
@@ -120,16 +124,35 @@ class AssistantChatController extends ChangeNotifier {
     _messages.add(loadingMessage);
     notifyListeners();
 
-    // Simular delay de respuesta
-    Future.delayed(const Duration(seconds: 2), () {
+    try {
+      // Obtener el último mensaje del usuario
+      final lastUserMessage = _messages.lastWhere((msg) => msg.isUser);
+
+      // Usar OpenAI para obtener respuesta real
+      final response = await _openAIService.sendMessage(
+        message: lastUserMessage.content,
+        model: 'gpt-3.5-turbo',
+        maxTokens: 500,
+        temperature: 0.7,
+      );
+
       _isTyping = false;
 
       // Remover mensaje de carga
       _messages.removeWhere((msg) => msg.isLoading);
 
-      // Agregar respuesta simulada
-      final lastUserMessage = _messages.lastWhere((msg) => msg.isUser);
-      final aiResponse = _generateAIResponse(lastUserMessage.content);
+      String aiResponse;
+      if (response.success) {
+        aiResponse = response.data!;
+      } else {
+        // Si falla OpenAI, usar respuesta de fallback inteligente
+        if (response.error?.contains('429') == true) {
+          aiResponse = _generateFallbackResponse(lastUserMessage.content);
+        } else {
+          aiResponse =
+              'Lo siento, no pude procesar tu mensaje en este momento. ${response.error}';
+        }
+      }
 
       final responseMessage = ChatMessage(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -145,7 +168,91 @@ class AssistantChatController extends ChangeNotifier {
       _sessionsController?.addMessageToActiveSession(responseMessage);
 
       notifyListeners();
-    });
+    } catch (e) {
+      _isTyping = false;
+
+      // Remover mensaje de carga
+      _messages.removeWhere((msg) => msg.isLoading);
+
+      // Respuesta de error
+      final errorMessage = ChatMessage(
+        id: 'ai_error_${DateTime.now().millisecondsSinceEpoch}',
+        content:
+            'Lo siento, ocurrió un error al procesar tu mensaje. Por favor, inténtalo de nuevo.',
+        isUser: false,
+        timestamp: DateTime.now(),
+      );
+
+      _messages.add(errorMessage);
+      _saveMessages();
+      _sessionsController?.addMessageToActiveSession(errorMessage);
+      notifyListeners();
+    }
+  }
+
+  /// Genera una respuesta de fallback cuando OpenAI no está disponible
+  String _generateFallbackResponse(String userMessage) {
+    final lowerMessage = userMessage.toLowerCase();
+
+    // Respuestas específicas para preguntas comunes
+    if (lowerMessage.contains('día') ||
+        lowerMessage.contains('hoy') ||
+        lowerMessage.contains('fecha')) {
+      final now = DateTime.now();
+      final dayNames = [
+        'Lunes',
+        'Martes',
+        'Miércoles',
+        'Jueves',
+        'Viernes',
+        'Sábado',
+        'Domingo',
+      ];
+      final monthNames = [
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre',
+      ];
+
+      return 'Hoy es ${dayNames[now.weekday - 1]}, ${now.day} de ${monthNames[now.month - 1]} de ${now.year}. '
+          '¿Hay algo específico en lo que pueda ayudarte hoy?';
+    }
+
+    if (lowerMessage.contains('hola') ||
+        lowerMessage.contains('buenos días') ||
+        lowerMessage.contains('buenas')) {
+      return '¡Hola! Soy tu asistente virtual. Aunque mi servicio de IA avanzada está temporalmente no disponible, '
+          'puedo ayudarte con información básica. ¿En qué puedo asistirte?';
+    }
+
+    if (lowerMessage.contains('ayuda') || lowerMessage.contains('cómo')) {
+      return 'Puedo ayudarte con:\n• Información sobre fechas y tiempo\n• Preguntas básicas sobre el sistema\n• Orientación general\n\n'
+          'Mi servicio de IA avanzada estará disponible nuevamente pronto. ¿Hay algo específico en lo que pueda ayudarte?';
+    }
+
+    if (lowerMessage.contains('tiempo') || lowerMessage.contains('clima')) {
+      return 'No puedo acceder a información del clima en este momento, pero puedo ayudarte con otras consultas. '
+          '¿Hay algo más en lo que pueda asistirte?';
+    }
+
+    if (lowerMessage.contains('gracias') || lowerMessage.contains('thank')) {
+      return '¡De nada! Estoy aquí para ayudarte. Aunque mi servicio de IA avanzada está temporalmente limitado, '
+          'puedo seguir asistiéndote con información básica.';
+    }
+
+    // Respuesta genérica inteligente
+    return 'Entiendo tu consulta sobre "$userMessage". Aunque mi servicio de IA avanzada está temporalmente no disponible '
+        'debido a límites de cuota, puedo ayudarte con información básica. ¿Podrías reformular tu pregunta '
+        'de una manera más específica para que pueda asistirte mejor?';
   }
 
   /// Genera una respuesta simulada de IA basada en el mensaje del usuario

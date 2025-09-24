@@ -62,6 +62,12 @@ dependencies:
   flutter_form_builder: ^10.1.0
   form_builder_validators: ^11.0.0
 
+  # Variables de entorno para configuración segura
+  flutter_dotenv: ^5.1.0
+
+  # HTTP para comunicación con APIs
+  http: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
