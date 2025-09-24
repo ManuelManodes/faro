@@ -44,6 +44,10 @@ flutter clean
 echo "🔧 Verificando Flutter..."
 flutter doctor
 
+echo "🔐 Inyectando variables de entorno..."
+# Ejecutar script de inyección de variables de entorno
+dart run scripts/inject_env.dart
+
 echo "🏗️ Construyendo aplicación para web..."
 flutter build web --release
 

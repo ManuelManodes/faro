@@ -1,0 +1,5 @@
+{
+  "env": {
+    "OPENAI_API_KEY": "tu-api-key-aqui"
+  }
+}
