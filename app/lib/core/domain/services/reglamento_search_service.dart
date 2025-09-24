@@ -178,6 +178,34 @@ class ReglamentoSearchService {
   ReglamentoSearchResult _searchDirectKeywords(String question) {
     final lowerQuestion = question.toLowerCase();
 
+    // Respuestas específicas para preguntas sobre el nombre del colegio
+    if (lowerQuestion.contains('nombre') && lowerQuestion.contains('colegio')) {
+      return ReglamentoSearchResult(
+        found: true,
+        content: 'El nombre del colegio es "Aldo de las cumbres italianas".',
+        sectionTitle: 'Información del Colegio',
+        similarity: 1.0,
+      );
+    }
+
+    if (lowerQuestion.contains('cómo se llama') && lowerQuestion.contains('colegio')) {
+      return ReglamentoSearchResult(
+        found: true,
+        content: 'El nombre del colegio es "Aldo de las cumbres italianas".',
+        sectionTitle: 'Información del Colegio',
+        similarity: 1.0,
+      );
+    }
+
+    if (lowerQuestion.contains('cuál es el nombre') && lowerQuestion.contains('colegio')) {
+      return ReglamentoSearchResult(
+        found: true,
+        content: 'El nombre del colegio es "Aldo de las cumbres italianas".',
+        sectionTitle: 'Información del Colegio',
+        similarity: 1.0,
+      );
+    }
+
     // Búsqueda específica por palabras clave
     for (final section in _sections) {
       final lowerTitle = section.title.toLowerCase();
@@ -224,6 +252,14 @@ class ReglamentoSearchService {
 
     // Respuestas específicas para preguntas comunes
     if (lowerQuestion.contains('nombre') && lowerQuestion.contains('colegio')) {
+      return 'El nombre del colegio es "Aldo de las cumbres italianas".';
+    }
+
+    if (lowerQuestion.contains('cómo se llama') && lowerQuestion.contains('colegio')) {
+      return 'El nombre del colegio es "Aldo de las cumbres italianas".';
+    }
+
+    if (lowerQuestion.contains('cuál es el nombre') && lowerQuestion.contains('colegio')) {
       return 'El nombre del colegio es "Aldo de las cumbres italianas".';
     }
 
