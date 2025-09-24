@@ -15,6 +15,8 @@ class ReglamentoSearchService {
 
   /// Busca la sección más relevante para una pregunta
   Future<ReglamentoSearchResult> search(String question) async {
+    print('DEBUG: Buscando respuesta para: "$question"');
+    
     if (_sections.isEmpty) {
       await initialize();
     }
@@ -30,6 +32,7 @@ class ReglamentoSearchService {
 
     // Filtrar saludos y preguntas no relacionadas con el reglamento
     if (_isGreetingOrUnrelated(question)) {
+      print('DEBUG: Detectado saludo o pregunta no relacionada');
       return ReglamentoSearchResult(
         found: true, // Cambiado a true para que se muestre la respuesta
         content:
@@ -40,10 +43,13 @@ class ReglamentoSearchService {
     }
 
     // Primero intentar búsqueda directa por palabras clave
+    print('DEBUG: Intentando búsqueda directa...');
     final directResult = _searchDirectKeywords(question);
     if (directResult.found) {
+      print('DEBUG: Búsqueda directa exitosa');
       return directResult;
     }
+    print('DEBUG: Búsqueda directa no encontró resultados');
 
     // Luego usar embeddings para búsqueda semántica
     final questionEmbedding = await EmbeddingService.generateEmbedding(
@@ -180,6 +186,7 @@ class ReglamentoSearchService {
 
     // Respuestas específicas para preguntas sobre el nombre del colegio
     if (lowerQuestion.contains('nombre') && lowerQuestion.contains('colegio')) {
+      print('DEBUG: Encontrada pregunta sobre nombre del colegio');
       return ReglamentoSearchResult(
         found: true,
         content: 'El nombre del colegio es "Aldo de las cumbres italianas".',
@@ -189,6 +196,7 @@ class ReglamentoSearchService {
     }
 
     if (lowerQuestion.contains('cómo se llama') && lowerQuestion.contains('colegio')) {
+      print('DEBUG: Encontrada pregunta "cómo se llama el colegio"');
       return ReglamentoSearchResult(
         found: true,
         content: 'El nombre del colegio es "Aldo de las cumbres italianas".',
@@ -198,6 +206,28 @@ class ReglamentoSearchService {
     }
 
     if (lowerQuestion.contains('cuál es el nombre') && lowerQuestion.contains('colegio')) {
+      print('DEBUG: Encontrada pregunta "cuál es el nombre del colegio"');
+      return ReglamentoSearchResult(
+        found: true,
+        content: 'El nombre del colegio es "Aldo de las cumbres italianas".',
+        sectionTitle: 'Información del Colegio',
+        similarity: 1.0,
+      );
+    }
+
+    // Agregar más patrones de búsqueda
+    if (lowerQuestion.contains('como se llama') && lowerQuestion.contains('colegio')) {
+      print('DEBUG: Encontrada pregunta "como se llama el colegio" (sin acento)');
+      return ReglamentoSearchResult(
+        found: true,
+        content: 'El nombre del colegio es "Aldo de las cumbres italianas".',
+        sectionTitle: 'Información del Colegio',
+        similarity: 1.0,
+      );
+    }
+
+    if (lowerQuestion.contains('cual es el nombre') && lowerQuestion.contains('colegio')) {
+      print('DEBUG: Encontrada pregunta "cual es el nombre del colegio" (sin acento)');
       return ReglamentoSearchResult(
         found: true,
         content: 'El nombre del colegio es "Aldo de las cumbres italianas".',
