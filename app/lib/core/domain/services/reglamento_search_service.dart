@@ -236,19 +236,21 @@ class ReglamentoSearchService {
       );
     }
 
-    // Búsqueda específica por palabras clave
-    for (final section in _sections) {
-      final lowerTitle = section.title.toLowerCase();
-      final lowerContent = section.content.toLowerCase();
+    // Búsqueda específica por palabras clave (solo si no es pregunta sobre el nombre del colegio)
+    if (!lowerQuestion.contains('colegio') || (!lowerQuestion.contains('nombre') && !lowerQuestion.contains('llama'))) {
+      for (final section in _sections) {
+        final lowerTitle = section.title.toLowerCase();
+        final lowerContent = section.content.toLowerCase();
 
-      // Buscar coincidencias en título y contenido
-      if (_hasKeywordMatch(lowerQuestion, lowerTitle, lowerContent)) {
-        return ReglamentoSearchResult(
-          found: true,
-          content: _formatResponse(section, question),
-          sectionTitle: section.title,
-          similarity: 1.0, // Máxima similitud para búsqueda directa
-        );
+        // Buscar coincidencias en título y contenido
+        if (_hasKeywordMatch(lowerQuestion, lowerTitle, lowerContent)) {
+          return ReglamentoSearchResult(
+            found: true,
+            content: _formatResponse(section, question),
+            sectionTitle: section.title,
+            similarity: 1.0, // Máxima similitud para búsqueda directa
+          );
+        }
       }
     }
 
